@@ -1,0 +1,7 @@
+numpy
+opencv-python
+matplotlib
+jupyter
+nbformat
+nbclient
+ipykernel
