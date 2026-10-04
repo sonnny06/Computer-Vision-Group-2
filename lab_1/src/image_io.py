@@ -10,11 +10,11 @@ from __future__ import annotations
 import os
 import time
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional
 
 import cv2
 import numpy as np
-from PIL import Image, ExifTags
+from PIL import Image
 
 
 # ---------------------------------------------------------------------------
@@ -70,7 +70,7 @@ def get_image_info(img: Image.Image) -> Dict:
         "RGB": 3, "RGBA": 4,
         "CMYK": 4, "YCbCr": 3, "LAB": 3,
         "HSV": 3, "I": 1, "F": 1,
-        "LA": 2, "PA": 2, "RGBa": 4, "La": 2, "PA": 2,
+        "LA": 2, "RGBa": 4, "La": 2, "PA": 2,
     }
     channels = mode_channels.get(mode, len(img.getbands()))
 
@@ -97,7 +97,7 @@ def print_image_info(img: Image.Image, label: str = "") -> None:
     print(header)
     print(f"  Format   : {info['format']}")
     print(f"  Mode     : {info['mode']}")
-    print(f"  Size     : {info['size']}  →  width={info['width']}px, height={info['height']}px")
+    print(f"  Size     : {info['size']}  ->  width={info['width']}px, height={info['height']}px")
     print(f"  Channels : {info['channels']}")
     print(f"  Pixels   : {info['n_pixels']:,}")
     print()
