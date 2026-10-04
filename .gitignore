@@ -1,1 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
 
+# Environments
+.venv/
+env/
+venv/
+ENV/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# VS Code
+.vscode/
+
+# Pyrefly
+.pyrefly/
+
+# Generated outputs
+lab_1/data/output/*
+!lab_1/data/output/.gitkeep

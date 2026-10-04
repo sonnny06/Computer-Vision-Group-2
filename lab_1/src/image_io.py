@@ -107,11 +107,12 @@ def print_image_info(img: Image.Image, label: str = "") -> None:
 # Đọc ảnh – OpenCV
 # ---------------------------------------------------------------------------
 
-def cv2_open(path: str | Path) -> np.ndarray:
-    """Đọc ảnh bằng OpenCV (BGR).
+def cv2_open(path: str | Path, flags: int = cv2.IMREAD_COLOR) -> np.ndarray:
+    """Đọc ảnh bằng OpenCV (BGR), hỗ trợ tốt đường dẫn Unicode trên Windows.
 
     Args:
         path: Đường dẫn file ảnh.
+        flags: Cờ đọc ảnh của OpenCV (mặc định cv2.IMREAD_COLOR).
 
     Returns:
         numpy.ndarray (H, W, C) BGR.
@@ -124,7 +125,18 @@ def cv2_open(path: str | Path) -> np.ndarray:
     if not path.exists():
         raise FileNotFoundError(f"Không tìm thấy file: {path}")
 
-    img = cv2.imread(str(path))
+    # Trên Windows, cv2.imread() lỗi với đường dẫn Unicode/tiếng Việt.
+    # Sử dụng np.fromfile + cv2.imdecode để tương thích 100%.
+    img = None
+    try:
+        data = np.fromfile(str(path), dtype=np.uint8)
+        img = cv2.imdecode(data, flags)
+    except Exception:
+        pass
+
+    if img is None:
+        img = cv2.imread(str(path), flags)
+
     if img is None:
         raise ValueError(f"OpenCV không thể đọc: {path}")
     return img
@@ -266,7 +278,8 @@ def benchmark_read(
     # --- OpenCV ---
     t0 = time.perf_counter()
     for _ in range(n_runs):
-        cv2.imread(path)
+        data = np.fromfile(path, dtype=np.uint8)
+        _ = cv2.imdecode(data, cv2.IMREAD_COLOR)
     opencv_ms = (time.perf_counter() - t0) / n_runs * 1000
 
     winner = "Pillow" if pillow_ms < opencv_ms else "OpenCV"
@@ -306,7 +319,7 @@ def compare_pillow_opencv(path: str | Path) -> Dict:
     arr_pil = np.array(img_pil.convert("RGB"))
     arr_cv = cv2.cvtColor(img_cv, cv2.COLOR_BGR2RGB)
 
-    pixel_match = bool(np.array_equal(arr_pil, arr_cv))
+    pixel_match = np.array_equal(arr_pil, arr_cv)
     max_diff = int(np.max(np.abs(arr_pil.astype(int) - arr_cv.astype(int))))
 
     # Benchmark
@@ -326,13 +339,27 @@ def compare_pillow_opencv(path: str | Path) -> Dict:
 # ---------------------------------------------------------------------------
 
 def pil_to_cv2(img: Image.Image) -> np.ndarray:
-    """Chuyển PIL Image (RGB) sang OpenCV ndarray (BGR)."""
-    return cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
+    """Chuyển PIL Image sang OpenCV ndarray (BGR / BGRA / Gray)."""
+    arr = np.array(img)
+    if img.mode == "RGB":
+        return cv2.cvtColor(arr, cv2.COLOR_RGB2BGR)
+    elif img.mode == "RGBA":
+        return cv2.cvtColor(arr, cv2.COLOR_RGBA2BGRA)
+    elif img.mode in ("L", "1"):
+        return arr
+    return cv2.cvtColor(np.array(img.convert("RGB")), cv2.COLOR_RGB2BGR)
 
 
 def cv2_to_pil(img: np.ndarray) -> Image.Image:
-    """Chuyển OpenCV ndarray (BGR) sang PIL Image (RGB)."""
-    return Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+    """Chuyển OpenCV ndarray (BGR / BGRA / Gray) sang PIL Image."""
+    if img.ndim == 2:
+        return Image.fromarray(img, mode="L")
+    elif img.ndim == 3:
+        if img.shape[2] == 3:
+            return Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+        elif img.shape[2] == 4:
+            return Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGRA2RGBA))
+    return Image.fromarray(img)
 
 
 def ensure_output_dir(output_dir: str | Path) -> Path:
