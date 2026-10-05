@@ -1,1 +1,9 @@
 
+
+# Local Python environment and generated caches
+.venv/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+# Temporary execution and preview artifacts
+.qa/
