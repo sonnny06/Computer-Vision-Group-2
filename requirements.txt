@@ -1,6 +1,7 @@
-numpy
-opencv-python
-matplotlib
+numpy>=2.0.0
+pillow>=10.0.0
+opencv-python>=4.8.0
+matplotlib>=3.8.0
 jupyter
 nbformat
 nbclient

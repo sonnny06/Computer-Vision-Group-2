@@ -1,9 +1,28 @@
-
-
-# Local Python environment and generated caches
-.venv/
+# Python
 __pycache__/
 *.py[cod]
+*$py.class
+*.so
+
+# Environments
+.venv/
+env/
+venv/
+ENV/
+
+# Jupyter Notebook
 .ipynb_checkpoints/
+.ipynb_checkpoints
+
+# VS Code
+.vscode/
+
+# Pyrefly
+.pyrefly/
+
 # Temporary execution and preview artifacts
 .qa/
+
+# Generated outputs
+lab_1/data/output/*
+!lab_1/data/output/.gitkeep
