@@ -6,3 +6,4 @@ jupyter
 nbformat
 nbclient
 ipykernel
+scikit-image>=0.24.0
