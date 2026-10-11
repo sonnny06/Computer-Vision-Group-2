@@ -14,9 +14,3 @@ Bao gồm 8 ảnh đầu vào gốc và 42 ảnh biến thể có kiểm soát, 
 
 Ảnh biến thể được tổng hợp từ ảnh gốc để so sánh ảnh hưởng của từng điều kiện lên Canny; không phải 50 cảnh chụp độc lập.
 
-## Chạy thử
-```bash
-pip install -r requirements.txt
-python demo_canny.py
-```
-Kết quả sẽ được lưu vào `results/`. Trong `demo_canny.py`, thử thay đổi ngưỡng thấp/cao OpenCV và sigma/threshold scikit-image.
