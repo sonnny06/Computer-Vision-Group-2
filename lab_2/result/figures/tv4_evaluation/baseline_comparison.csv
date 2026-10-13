@@ -1,0 +1,19 @@
+﻿image,config,method,reference,iou_vs_baseline,edge_count,delta_edges_vs_baseline
+hinh_hoc,co_so,OpenCV,co_so same method; not ground truth,1.0,3134,0
+hinh_hoc,co_so,scikit-image,co_so same method; not ground truth,1.0,3166,0
+hinh_hoc,nguong_thap,OpenCV,co_so same method; not ground truth,0.9990436722983742,3137,3
+hinh_hoc,nguong_thap,scikit-image,co_so same method; not ground truth,1.0,3166,0
+hinh_hoc,nguong_cao,OpenCV,co_so same method; not ground truth,0.9993618379068283,3132,-2
+hinh_hoc,nguong_cao,scikit-image,co_so same method; not ground truth,0.9996841440303221,3165,-1
+tuong_phan_thap,co_so,OpenCV,co_so same method; not ground truth,1.0,0,0
+tuong_phan_thap,co_so,scikit-image,co_so same method; not ground truth,1.0,0,0
+tuong_phan_thap,nguong_thap,OpenCV,co_so same method; not ground truth,0.0,1044,1044
+tuong_phan_thap,nguong_thap,scikit-image,co_so same method; not ground truth,0.0,1011,1011
+tuong_phan_thap,nguong_cao,OpenCV,co_so same method; not ground truth,1.0,0,0
+tuong_phan_thap,nguong_cao,scikit-image,co_so same method; not ground truth,1.0,0,0
+nhieu_chi_tiet,co_so,OpenCV,co_so same method; not ground truth,1.0,7936,0
+nhieu_chi_tiet,co_so,scikit-image,co_so same method; not ground truth,1.0,7554,0
+nhieu_chi_tiet,nguong_thap,OpenCV,co_so same method; not ground truth,0.2980769230769231,26624,18688
+nhieu_chi_tiet,nguong_thap,scikit-image,co_so same method; not ground truth,0.2920774852105324,25863,18309
+nhieu_chi_tiet,nguong_cao,OpenCV,co_so same method; not ground truth,0.7591985887096774,6025,-1911
+nhieu_chi_tiet,nguong_cao,scikit-image,co_so same method; not ground truth,0.7725708234048186,5836,-1718

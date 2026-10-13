@@ -1,0 +1,4 @@
+﻿image,file,height,width,dtype,min,max,sha256,ground_truth
+hinh_hoc,lab_2/data/input/01_hinh_hoc_ro_net.png,512,512,uint8,15,245,35058504729c01d38e62c9cc238dddd31122fd247972b34be5cea0c086ffedc9,not provided
+tuong_phan_thap,lab_2/data/input/02_tuong_phan_thap.png,512,512,uint8,112,143,03f4ee37c55d8296cb4d42d050a711e72e8dac1ce3c8c1dfc14e1b8d634ac31f,not provided
+nhieu_chi_tiet,lab_2/data/input/04_anh_that_nhieu_chi_tiet.png,512,512,uint8,0,255,b779d2c8e2a7098a0182c26227c3b516fb2d9d15f14ed99940c6196ba4a2c4e2,not provided
