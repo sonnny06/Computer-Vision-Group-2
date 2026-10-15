@@ -1,0 +1,2 @@
+﻿source,TP,FP,FN,TN,Precision,Recall,F1,IoU
+manual 8x8 masks; not real-image Canny,3,1,2,58,0.75,0.6,0.6666666666666666,0.5
