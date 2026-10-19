@@ -1,0 +1,51 @@
+﻿Ten_file,Nhom,Mo_ta,Nguon
+01_astronaut.png,chan_dung,Chan dung phi hanh gia,anh mau thu mo (scikit-image/matplotlib)
+02_chelsea.png,dong_vat,Meo vang,anh mau thu mo (scikit-image/matplotlib)
+03_coffee.png,do_vat,Ly ca phe,anh mau thu mo (scikit-image/matplotlib)
+04_camera.png,chan_dung,Nguoi cam may anh B&W,anh mau thu mo (scikit-image/matplotlib)
+05_coins.png,vat_the,Nhieu dong xu,anh mau thu mo (scikit-image/matplotlib)
+06_horse.png,canh,Hinh ngua silhouette,anh mau thu mo (scikit-image/matplotlib)
+07_rocket.png,cong_nghe,Ten lua,anh mau thu mo (scikit-image/matplotlib)
+08_hubble_deep_field.png,vu_tru,Thien ha,anh mau thu mo (scikit-image/matplotlib)
+09_moon.png,vu_tru,Mat trang,anh mau thu mo (scikit-image/matplotlib)
+10_retina.png,y_te,Vong mac,anh mau thu mo (scikit-image/matplotlib)
+11_brick.png,ket_cau,Be mat gach,anh mau thu mo (scikit-image/matplotlib)
+12_grass.png,thien_nhien,Co,anh mau thu mo (scikit-image/matplotlib)
+13_gravel.png,ket_cau,Da soi,anh mau thu mo (scikit-image/matplotlib)
+14_cell.png,y_te,Te bao,anh mau thu mo (scikit-image/matplotlib)
+15_chessboard_RGB.png,hinh_hoc,Ban co mau,anh mau thu mo (scikit-image/matplotlib)
+16_clock_motion.png,chuyen_dong,Dong ho chuyen dong,anh mau thu mo (scikit-image/matplotlib)
+17_motorcycle_left.png,phuong_tien,Xe may - ben trai,anh mau thu mo (scikit-image/matplotlib)
+18_page.png,van_ban,Trang sach,anh mau thu mo (scikit-image/matplotlib)
+19_text.png,van_ban,Van ban mau,anh mau thu mo (scikit-image/matplotlib)
+20_ihc.png,y_te,Mo benh hoc,anh mau thu mo (scikit-image/matplotlib)
+21_microaneurysms.png,y_te,Anh diem benh,anh mau thu mo (scikit-image/matplotlib)
+22_color.png,mau_sac,Bieu do mau,anh mau thu mo (scikit-image/matplotlib)
+23_phantom.png,y_te,Mo phong y te,anh mau thu mo (scikit-image/matplotlib)
+24_grace_hopper.png,chan_dung,Chan dung Grace Hopper,anh mau thu mo (scikit-image/matplotlib)
+25_gradient_rgb.png,gradient,Gradient hai chieu mau sac,anh kiem thu tao bang thuat toan
+26_gradient_gray.png,gradient,Thang xam tu den toi trang,anh kiem thu tao bang thuat toan
+27_radial_light.png,gradient,Do sang trung tam,anh kiem thu tao bang thuat toan
+28_vertical_stripes.png,hinh_hoc,Soc dung tan so cao,anh kiem thu tao bang thuat toan
+29_grid_lines.png,hinh_hoc,Luoi duong ngang dung,anh kiem thu tao bang thuat toan
+30_concentric_circles.png,hinh_hoc,Vong tron dong tam,anh kiem thu tao bang thuat toan
+31_flat_shapes.png,hinh_hoc,Khoi mau phang co canh sac,anh kiem thu tao bang thuat toan
+32_checkerboard.png,hinh_hoc,O vuong den trang,anh kiem thu tao bang thuat toan
+33_typography.png,van_ban,Chu va duong bien chi tiet,anh kiem thu tao bang thuat toan
+34_flow_diagram.png,do_hoa,So do node va duong noi,anh kiem thu tao bang thuat toan
+35_gaussian_noise.png,nhieu,Nhieu Gaussian,anh kiem thu tao bang thuat toan
+36_saltpepper_noise.png,nhieu,Nhieu muoi tieu,anh kiem thu tao bang thuat toan
+37_impulse_noise.png,nhieu,Cham manh roi rac,anh kiem thu tao bang thuat toan
+38_color_noise.png,nhieu,Nhieu RGB,anh kiem thu tao bang thuat toan
+39_metal_diagonals.png,ket_cau,Cac thanh kim loai cheo,anh kiem thu tao bang thuat toan
+40_hsv_bands.png,mau_sac,12 dai mau tang sang,anh kiem thu tao bang thuat toan
+41_blur_shapes.png,do_net,Canh tron mo,anh kiem thu tao bang thuat toan
+42_gold_discs.png,vat_the,Nhieu hinh tron vang,anh kiem thu tao bang thuat toan
+43_wave_lines.png,duong_net,Duong song song uon luon,anh kiem thu tao bang thuat toan
+44_city_skyline.png,kien_truc,Silhouette cac toa nha,anh kiem thu tao bang thuat toan
+45_mountain_landscape.png,phong_canh,Phong canh nui nhieu lop,anh kiem thu tao bang thuat toan
+46_fruit_stilllife.png,tinh_vat,Ba qua trai mau,anh kiem thu tao bang thuat toan
+47_road_perspective.png,phong_canh,Duong voi diem tu,anh kiem thu tao bang thuat toan
+48_color_spiral.png,hinh_hoc,Duong xoan oc mau,anh kiem thu tao bang thuat toan
+49_halftone_dots.png,ket_cau,Cham in halftone,anh kiem thu tao bang thuat toan
+50_fine_arcs.png,chi_tiet,Cung tron manh phuc tap,anh kiem thu tao bang thuat toan
