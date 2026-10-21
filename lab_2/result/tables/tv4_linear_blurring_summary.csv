@@ -1,5 +1,5 @@
 ﻿Bộ lọc,Kernel / Trọng số,Độ sắc nét LapVar (Gốc 110.8),PSNR khử nhiễu Gauss (dB),SSIM khử nhiễu Gauss,Thời gian OpenCV (ms),Ưu điểm chính,Hạn chế,Ứng dụng khuyến nghị
-Mean Filter 3x3,3x3 (Đồng đều 1/9),79.9,27.39,0.6473,0.417,"Tính toán cực nhanh, đơn giản","Làm mờ cạnh mạnh, nhòe khối","Làm mờ phông nền nhanh, tiền xử lý sơ bộ"
-Mean Filter 5x5,5x5 (Đồng đều 1/25),22.9,26.17,0.6893,0.597,Khử nhiễu mạnh trên vùng phẳng,Mất sạch các chi tiết mảnh và góc,Xóa chi tiết nền quy mô lớn
-Gaussian Filter 3x3,"3x3 (Chuông Gauss, σ=0.8)",103.6,28.01,0.6541,0.076,Cân bằng tối ưu giữa khử nhiễu & giữ cạnh,Không khử triệt để nhiễu muối tiêu,"Tiền xử lý Canny/Sobel, khử nhiễu ảnh tự nhiên"
-Gaussian Filter 5x5,"5x5 (Chuông Gauss, σ=1.1)",45.2,27.83,0.7107,0.079,Làm mượt sâu nhưng đường viền tự nhiên,Chi phí cao hơn kernel nhỏ,"Khử nhiễu ảnh cường độ cao, làm mịn da"
+Mean Filter 3x3,3x3 (Đồng đều 1/9),79.9,27.39,0.6473,0.376,"Tính toán cực nhanh, đơn giản","Làm mờ cạnh mạnh, nhòe khối","Làm mờ phông nền nhanh, tiền xử lý sơ bộ"
+Mean Filter 5x5,5x5 (Đồng đều 1/25),22.9,26.17,0.6893,0.538,Khử nhiễu mạnh trên vùng phẳng,Mất sạch các chi tiết mảnh và góc,Xóa chi tiết nền quy mô lớn
+Gaussian Filter 3x3,"3x3 (Chuông Gauss, σ=0.8)",103.6,28.01,0.6541,0.096,Cân bằng tối ưu giữa khử nhiễu & giữ cạnh,Không khử triệt để nhiễu muối tiêu,"Tiền xử lý Canny/Sobel, khử nhiễu ảnh tự nhiên"
+Gaussian Filter 5x5,"5x5 (Chuông Gauss, σ=1.1)",45.2,27.83,0.7107,0.12,Làm mượt sâu nhưng đường viền tự nhiên,Chi phí cao hơn kernel nhỏ,"Khử nhiễu ảnh cường độ cao, làm mịn da"

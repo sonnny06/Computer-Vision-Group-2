@@ -170,7 +170,11 @@ def create_gaussian_kernel_1d(ksize: int, sigma: float = 0.0) -> np.ndarray:
     Returns:
         np.ndarray: Kernel 1 chiều float32 được chuẩn hóa có tổng bằng 1.0.
     """
-    kw, _ = validate_ksize((ksize, ksize))
+    if isinstance(ksize, int):
+        kw, _ = validate_ksize((ksize, ksize))
+    else:
+        kw, _ = validate_ksize(ksize)
+
     if sigma <= 0:
         sigma = 0.3 * ((kw - 1) * 0.5 - 1.0) + 0.8
 
@@ -478,6 +482,12 @@ def calculate_ssim(
     else:
         i1 = img1.astype(np.float64)
         i2 = img2.astype(np.float64)
+
+    min_dim = min(i1.shape[0], i1.shape[1])
+    if win_size > min_dim:
+        win_size = min_dim if min_dim % 2 == 1 else max(1, min_dim - 1)
+    if win_size <= 1:
+        return 1.0 if np.array_equal(i1, i2) else 0.0
 
     L = 255.0
     C1 = (k1 * L) ** 2
