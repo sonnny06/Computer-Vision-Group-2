@@ -27,6 +27,8 @@ def validate_image(image: np.ndarray) -> np.ndarray:
         raise ValueError("Ảnh đầu vào không được rỗng.")
     if image.ndim not in (2, 3):
         raise ValueError(f"Ảnh phải có 2 chiều (ảnh xám) hoặc 3 chiều (ảnh màu), nhận được: {image.ndim} chiều.")
+    if image.ndim == 3 and image.shape[2] not in (1, 3, 4):
+        raise ValueError(f"Ảnh màu phải có 1, 3 hoặc 4 kênh màu, nhận được: {image.shape[2]} kênh.")
     return image
 
 
@@ -71,6 +73,10 @@ def bgr_to_rgb(image_bgr: np.ndarray) -> np.ndarray:
     validate_image(image_bgr)
     if image_bgr.ndim == 2:
         return image_bgr
+    if image_bgr.ndim == 3 and image_bgr.shape[2] == 1:
+        return image_bgr[:, :, 0]
+    if image_bgr.ndim == 3 and image_bgr.shape[2] == 4:
+        return cv2.cvtColor(image_bgr, cv2.COLOR_BGRA2RGBA)
     return cv2.cvtColor(image_bgr, cv2.COLOR_BGR2RGB)
 
 
@@ -99,6 +105,8 @@ def show_images(
         ax = axes[r, c]
         if img.ndim == 2:
             ax.imshow(img, cmap=cmap)
+        elif img.ndim == 3 and img.shape[2] == 1:
+            ax.imshow(img[:, :, 0], cmap=cmap)
         else:
             ax.imshow(bgr_to_rgb(img))
         if titles and idx < len(titles):

@@ -44,8 +44,8 @@ def validate_image(image: np.ndarray) -> np.ndarray:
         raise ValueError("Ảnh đầu vào không được rỗng (kích thước bằng 0).")
     if image.ndim not in (2, 3):
         raise ValueError(f"Ảnh phải có 2 chiều (grayscale) hoặc 3 chiều (color), nhận được {image.ndim} chiều.")
-    if image.ndim == 3 and image.shape[2] not in (1, 3):
-        raise ValueError(f"Ảnh màu phải có 1 hoặc 3 kênh màu, nhận được {image.shape[2]} kênh.")
+    if image.ndim == 3 and image.shape[2] not in (1, 3, 4):
+        raise ValueError(f"Ảnh màu phải có 1, 3 hoặc 4 kênh màu, nhận được {image.shape[2]} kênh.")
     return image
 
 
@@ -204,9 +204,12 @@ def create_gaussian_kernel_2d(
         np.ndarray: Kernel 2D float32 với tổng các phần tử bằng 1.0.
     """
     kw, kh = validate_ksize(ksize)
-    if sigma_x <= 0:
+    if sigma_x <= 0 and sigma_y <= 0:
         sigma_x = 0.3 * ((kw - 1) * 0.5 - 1.0) + 0.8
-    if sigma_y <= 0:
+        sigma_y = 0.3 * ((kh - 1) * 0.5 - 1.0) + 0.8
+    elif sigma_x <= 0:
+        sigma_x = 0.3 * ((kw - 1) * 0.5 - 1.0) + 0.8
+    elif sigma_y <= 0:
         sigma_y = sigma_x
 
     kx = create_gaussian_kernel_1d(kw, sigma_x).reshape(1, kw)
@@ -395,6 +398,8 @@ def add_salt_and_pepper_noise(
         np.ndarray: Ảnh chứa nhiễu muối tiêu uint8.
     """
     validate_image(image)
+    if salt_prob < 0.0 or pepper_prob < 0.0 or (salt_prob + pepper_prob) > 1.0:
+        raise ValueError(f"Xác suất muối ({salt_prob}) và tiêu ({pepper_prob}) phải không âm và có tổng không vượt quá 1.0.")
     rng = np.random.default_rng(seed)
     noisy = image.copy()
 
@@ -475,15 +480,27 @@ def calculate_ssim(
     if img1.shape != img2.shape:
         raise ValueError(f"Kích thước hai ảnh phải khớp nhau: {img1.shape} vs {img2.shape}")
 
-    # Chuyển ảnh xám nếu là ảnh màu để tính SSIM trên kênh cường độ sáng
+    # Chuyển ảnh xám nếu là ảnh nhiều kênh để tính SSIM trên kênh cường độ sáng
     if img1.ndim == 3:
-        i1 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY).astype(np.float64)
-        i2 = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY).astype(np.float64)
+        if img1.shape[2] == 1:
+            i1 = img1[:, :, 0].astype(np.float64)
+            i2 = img2[:, :, 0].astype(np.float64)
+        elif img1.shape[2] == 3:
+            i1 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY).astype(np.float64)
+            i2 = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY).astype(np.float64)
+        elif img1.shape[2] == 4:
+            i1 = cv2.cvtColor(img1, cv2.COLOR_BGRA2GRAY).astype(np.float64)
+            i2 = cv2.cvtColor(img2, cv2.COLOR_BGRA2GRAY).astype(np.float64)
+        else:
+            i1 = img1[:, :, 0].astype(np.float64)
+            i2 = img2[:, :, 0].astype(np.float64)
     else:
         i1 = img1.astype(np.float64)
         i2 = img2.astype(np.float64)
 
     min_dim = min(i1.shape[0], i1.shape[1])
+    if win_size % 2 == 0:
+        win_size = max(1, win_size - 1)
     if win_size > min_dim:
         win_size = min_dim if min_dim % 2 == 1 else max(1, min_dim - 1)
     if win_size <= 1:
@@ -527,7 +544,17 @@ def calculate_laplacian_variance(image: np.ndarray) -> float:
         float: Phương sai đáp ứng của bộ lọc Laplacian (Var(Laplacian)).
     """
     validate_image(image)
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) if image.ndim == 3 else image
+    if image.ndim == 3:
+        if image.shape[2] == 1:
+            gray = image[:, :, 0]
+        elif image.shape[2] == 3:
+            gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        elif image.shape[2] == 4:
+            gray = cv2.cvtColor(image, cv2.COLOR_BGRA2GRAY)
+        else:
+            gray = image[:, :, 0]
+    else:
+        gray = image
     lap = cv2.Laplacian(gray, cv2.CV_64F)
     return float(lap.var())
 
