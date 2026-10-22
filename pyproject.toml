@@ -13,10 +13,12 @@ dependencies = [
 ]
 
 [tool.pyrefly]
-python-interpreter-path = "../.venv/Scripts/python.exe"
+python-interpreter-path = "C:/Users/manht/AppData/Local/Programs/Python/Python312/python.exe"
 search-path = [
     "lab_1/src",
     "lab_2/src",
     "lab_4/src",
     ".",
+    "C:/Users/manht/AppData/Local/Programs/Python/Python312/Lib/site-packages",
+    "../.venv/Lib/site-packages",
 ]
