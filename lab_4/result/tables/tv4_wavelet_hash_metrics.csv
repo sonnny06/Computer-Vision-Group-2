@@ -1,0 +1,9 @@
+﻿Chỉ số / Thử nghiệm,Giá trị,Ghi chú
+Độ dài mã băm chuẩn,64 bits (16 ký tự Hex),Kích thước ma trận LL: 8x8
+Tỷ lệ cân bằng bit (Median mode),50.0%,"Cân bằng tối ưu 50/50, bảo toàn entropy"
+Khoảng cách Hamming tự đối sánh,0 bit,Trùng khớp tuyệt đối khi cùng ảnh
+Khoảng cách khi nén JPEG (Q=50),0 bits,Kháng nén JPEG xuất sắc (<= 5 bits)
+Khoảng cách khi thêm Nhiễu Gauss,0 bits,Triệt tiêu nhiễu tần số cao tốt
+Khoảng cách trung bình giữa các ảnh KHÁC NHAU,30.8 / 64 bits,"Xấp xỉ 50% kỳ vọng lý thuyết, tính phân biệt cao"
+Họ Wavelet tối ưu tổng hòa,Haar (DWT level=1),Cân bằng hoàn hảo giữa độ chính xác và tốc độ
+Tốc độ xử lý trên ảnh 512x512,2120.7 FPS,Đủ năng lực phục vụ tìm kiếm ảnh Realtime
