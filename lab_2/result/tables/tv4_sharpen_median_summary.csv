@@ -1,0 +1,8 @@
+﻿Phép biến đổi,Tham số,PSNR (dB),SSIM,Laplacian Var,Ghi chú
+Ảnh gốc (Camera),N/A,Ref (inf),1.0,1133.2,Mốc tham chiếu chuẩn
+Laplacian Sharpen,"Kernel 4, α=1.0",19.24,0.7053,27401.7,Làm sắc nét 4 lân cận chuẩn
+Laplacian Sharpen,"Kernel 8, α=1.0",15.16,0.5134,44406.0,Làm sắc nét đẳng hướng mạnh mẽ
+Unsharp Masking,"k=5, amount=2.0",62.25,0.9997,1.4,Tăng chi tiết ảnh mờ (Shapes)
+High-Boost Filtering,"k=5, A=1.7",12.76,0.9327,0.7,Khuếch đại biên và tương phản
+Khử nhiễu Muối Tiêu (p=0.1),Mean Filter 3x3,22.47,0.3808,-,Tuyến tính: hạt nhiễu nhòe thành đốm xám
+Khử nhiễu Muối Tiêu (p=0.1),Median Filter 3x3,29.54,0.8489,-,Phi tuyến: triệt tiêu hoàn toàn nhiễu!
