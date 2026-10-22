@@ -45,7 +45,7 @@ def validate_ksize(ksize: Union[int, Tuple[int, int]]) -> int:
     elif isinstance(ksize, (tuple, list)) and len(ksize) == 2:
         if ksize[0] != ksize[1]:
             raise ValueError(f"Bộ lọc trung vị OpenCV yêu cầu kernel vuông (kw == kh), nhận được: {ksize}")
-        k = int(ksize[0])
+        k = ksize[0]
     else:
         raise TypeError(f"ksize phải là số nguyên int hoặc tuple 2 phần tử bằng nhau, nhận được: {ksize}")
 

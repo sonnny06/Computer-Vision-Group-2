@@ -65,7 +65,7 @@ def validate_ksize(ksize: Union[int, Tuple[int, int]]) -> Tuple[int, int]:
     if isinstance(ksize, int):
         kw, kh = ksize, ksize
     elif isinstance(ksize, (tuple, list)) and len(ksize) == 2:
-        kw, kh = int(ksize[0]), int(ksize[1])
+        kw, kh = ksize[0], ksize[1]
     else:
         raise TypeError(f"ksize phải là số nguyên int hoặc tuple 2 phần tử, nhận được: {ksize}")
 
