@@ -80,6 +80,22 @@ def bgr_to_rgb(image_bgr: np.ndarray) -> np.ndarray:
     return cv2.cvtColor(image_bgr, cv2.COLOR_BGR2RGB)
 
 
+def to_grayscale(image: np.ndarray) -> np.ndarray:
+    """Chuyển đổi ảnh sang thang xám chuẩn uint8 2D."""
+    validate_image(image)
+    if image.ndim == 2:
+        return image.copy()
+    if image.ndim == 3:
+        channels = image.shape[2]
+        if channels == 1:
+            return image[:, :, 0].copy()
+        elif channels == 3:
+            return cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        elif channels == 4:
+            return cv2.cvtColor(image, cv2.COLOR_BGRA2GRAY)
+    raise ValueError(f"Không thể chuyển đổi ảnh shape={image.shape} sang grayscale.")
+
+
 def show_images(
     images: List[np.ndarray],
     titles: List[str] | None = None,

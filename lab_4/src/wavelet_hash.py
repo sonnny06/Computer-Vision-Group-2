@@ -21,7 +21,16 @@ import cv2
 import numpy as np
 import pywt
 
-from common import read_image, to_grayscale, validate_image
+try:
+    from common import read_image, to_grayscale, validate_image
+except ImportError:
+    try:
+        from lab_4.src.common import read_image, to_grayscale, validate_image
+    except ImportError:
+        # Fallback to local common in same directory
+        import sys
+        sys.path.insert(0, str(Path(__file__).parent))
+        from common import read_image, to_grayscale, validate_image
 
 
 # ==============================================================================
