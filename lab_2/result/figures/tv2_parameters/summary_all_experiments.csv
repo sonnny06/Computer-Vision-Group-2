@@ -1,0 +1,23 @@
+﻿image_name,experiment,sigma,low_threshold,high_threshold,edge_pixels,edge_ratio_percent
+01_hinh_hoc_ro_net.png,Baseline,1.0,0.1,0.2,3755,1.432
+02_tuong_phan_thap.png,Baseline,1.0,0.1,0.2,892,0.34
+01_hinh_hoc_ro_net.png,Sigma,0.8,0.1,0.2,3848,1.468
+01_hinh_hoc_ro_net.png,Sigma,1.4,0.1,0.2,3736,1.425
+01_hinh_hoc_ro_net.png,Sigma,2.2,0.1,0.2,3695,1.41
+02_tuong_phan_thap.png,Sigma,0.8,0.1,0.2,956,0.365
+02_tuong_phan_thap.png,Sigma,1.4,0.1,0.2,0,0.0
+02_tuong_phan_thap.png,Sigma,2.2,0.1,0.2,0,0.0
+01_hinh_hoc_ro_net.png,Threshold,1.0,0.05,0.15,3755,1.432
+01_hinh_hoc_ro_net.png,Threshold,1.0,0.1,0.2,3755,1.432
+01_hinh_hoc_ro_net.png,Threshold,1.0,0.15,0.3,3755,1.432
+01_hinh_hoc_ro_net.png,Threshold,1.0,0.2,0.4,3755,1.432
+02_tuong_phan_thap.png,Threshold,1.0,0.05,0.15,2426,0.925
+02_tuong_phan_thap.png,Threshold,1.0,0.1,0.2,892,0.34
+02_tuong_phan_thap.png,Threshold,1.0,0.15,0.3,0,0.0
+02_tuong_phan_thap.png,Threshold,1.0,0.2,0.4,0,0.0
+01_hinh_hoc_ro_net.png,Manual 50-150,,50.0,150.0,3051,1.164
+01_hinh_hoc_ro_net.png,Manual 100-200,,100.0,200.0,3051,1.164
+01_hinh_hoc_ro_net.png,Auto-Canny,,164.0,255.0,3051,1.164
+02_tuong_phan_thap.png,Manual 50-150,,50.0,150.0,0,0.0
+02_tuong_phan_thap.png,Manual 100-200,,100.0,200.0,0,0.0
+02_tuong_phan_thap.png,Auto-Canny,,85.0,168.0,0,0.0

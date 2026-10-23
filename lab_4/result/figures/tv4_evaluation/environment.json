@@ -1,0 +1,20 @@
+{
+  "executed_at": "2026-10-13T21:30:13+07:00",
+  "python": "3.11.9",
+  "platform": "Windows-10-10.0.26200-SP0",
+  "machine": "AMD64",
+  "processor": "AMD64 Family 25 Model 68 Stepping 1, AuthenticAMD",
+  "packages": {
+    "numpy": "2.4.6",
+    "opencv-python": "5.0.0.93",
+    "scikit-image": "0.26.0",
+    "matplotlib": "3.11.2",
+    "nbformat": "5.11.1",
+    "nbclient": "0.11.0"
+  },
+  "opencv_threads": 1,
+  "opencv_opencl": false,
+  "input_dtype_cv": "uint8",
+  "input_dtype_sk": "float64 [0,1]",
+  "timing_scope": "Gaussian smoothing + Canny; exclude reading, conversion, plotting, saving"
+}

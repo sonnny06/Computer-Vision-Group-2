@@ -1,0 +1,4 @@
+﻿id,label,cv_low,cv_high,sigma,cv_kernel,aperture,L2gradient,sk_low,sk_high,sk_mode,use_quantiles
+co_so,Cơ sở,50,150,1.0,9,3,True,0.19607843137254902,0.5882352941176471,reflect,False
+nguong_thap,Ngưỡng thấp,20,60,1.0,9,3,True,0.0784313725490196,0.23529411764705882,reflect,False
+nguong_cao,Ngưỡng cao,100,200,1.0,9,3,True,0.39215686274509803,0.7843137254901961,reflect,False
