@@ -1,97 +1,61 @@
-from __future__ import annotations
+"""Hàm chuyển đổi không gian màu bằng OpenCV.
 
-from pathlib import Path
+Phần Grayscale (TV3). Phần HSV/LAB (TV4) sẽ được thêm bên dưới.
+"""
 import cv2
 import numpy as np
 
 
-def bgr_to_grayscale(image_bgr: np.ndarray) -> np.ndarray:
-    """Convert a non-empty uint8 BGR image (H, W, 3) to grayscale (H, W).
-
-    The input is preserved. Raises TypeError for a non-array or non-uint8
-    input, and ValueError for an empty image or an invalid shape.
-    """
-    if not isinstance(image_bgr, np.ndarray):
-        raise TypeError("image_bgr must be a numpy.ndarray.")
-    if image_bgr.dtype != np.uint8:
-        raise TypeError("image_bgr must have dtype uint8.")
-    if image_bgr.ndim != 3 or image_bgr.shape[2] != 3:
-        raise ValueError("image_bgr must have shape (H, W, 3).")
-    if image_bgr.size == 0:
-        raise ValueError("image_bgr must not be empty.")
-
-    return cv2.cvtColor(image_bgr, cv2.COLOR_BGR2GRAY)
+def bgr_to_gray(image):
+    """Chuyển ảnh BGR (H, W, 3) sang grayscale (H, W) bằng cv2.cvtColor."""
+    if image is None:
+        raise ValueError("Ảnh rỗng (None)")
+    return cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
 
-def bgr_to_rgb(image_bgr: np.ndarray) -> np.ndarray:
-    """Chuyển đổi ảnh BGR sang RGB cho Matplotlib / Pillow."""
-    if not isinstance(image_bgr, np.ndarray) or image_bgr.ndim != 3:
-        raise ValueError("image_bgr phải là mảng NumPy 3 chiều.")
-    return cv2.cvtColor(image_bgr, cv2.COLOR_BGR2RGB)
+def gray_manual(image):
+    """Tự tính grayscale theo công thức trọng số: Y = 0.299 R + 0.587 G + 0.114 B."""
+    b, g, r = [image[:, :, i].astype(np.float32) for i in range(3)]
+    return np.clip(0.299 * r + 0.587 * g + 0.114 * b, 0, 255).round().astype(np.uint8)
 
 
-def bgr_to_hsv(image_bgr: np.ndarray) -> np.ndarray:
-    """Chuyển đổi ảnh BGR sang không gian màu HSV."""
-    if not isinstance(image_bgr, np.ndarray) or image_bgr.ndim != 3:
-        raise ValueError("image_bgr phải là mảng NumPy 3 chiều.")
-    return cv2.cvtColor(image_bgr, cv2.COLOR_BGR2HSV)
+def gray_mean(image):
+    """Grayscale kiểu trung bình đơn giản 3 kênh (để so sánh, không phải cách chuẩn)."""
+    return image.astype(np.float32).mean(axis=2).round().astype(np.uint8)
 
 
-def bgr_to_lab(image_bgr: np.ndarray) -> np.ndarray:
-    """Chuyển đổi ảnh BGR sang không gian màu CIE L*a*b*."""
-    if not isinstance(image_bgr, np.ndarray) or image_bgr.ndim != 3:
-        raise ValueError("image_bgr phải là mảng NumPy 3 chiều.")
-    return cv2.cvtColor(image_bgr, cv2.COLOR_BGR2LAB)
+def intensity_stats(gray):
+    """Thống kê cường độ pixel: min, max, mean."""
+    return {"min": int(gray.min()), "max": int(gray.max()), "mean": float(gray.mean())}
 
 
-def enhance_contrast_clahe_lab(
-    image_bgr: np.ndarray,
-    clip_limit: float = 3.0,
-    tile_grid_size: tuple[int, int] = (8, 8),
-) -> np.ndarray:
-    """Cân bằng tương phản thích ứng (CLAHE) trên kênh L của không gian màu LAB."""
-    img_lab = cv2.cvtColor(image_bgr, cv2.COLOR_BGR2LAB)
-    l_ch, a_ch, b_ch = cv2.split(img_lab)
-    clahe = cv2.createCLAHE(clipLimit=clip_limit, tileGridSize=tile_grid_size)
-    l_enhanced = clahe.apply(l_ch)
-    lab_enhanced = cv2.merge([l_enhanced, a_ch, b_ch])
-    return cv2.cvtColor(lab_enhanced, cv2.COLOR_LAB2BGR)
+# ---------------------------------------------------------------------------
+# Phần HSV và LAB (TV4)
+# ---------------------------------------------------------------------------
+def bgr_to_hsv(image):
+    """BGR -> HSV (ảnh 8-bit: H trong 0-179, S và V trong 0-255)."""
+    if image is None:
+        raise ValueError("Ảnh rỗng (None)")
+    return cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
 
-def segment_color_hsv(
-    image_bgr: np.ndarray,
-    lower_bound: np.ndarray,
-    upper_bound: np.ndarray,
-) -> tuple[np.ndarray, np.ndarray]:
-    """Phân đoạn màu sắc bằng ngưỡng HSV, trả về (mask_binary, segmented_bgr)."""
-    hsv = cv2.cvtColor(image_bgr, cv2.COLOR_BGR2HSV)
-    mask = cv2.inRange(hsv, lower_bound, upper_bound)
-    segmented = cv2.bitwise_and(image_bgr, image_bgr, mask=mask)
-    return mask, segmented
+def bgr_to_lab(image):
+    """BGR -> LAB (ảnh 8-bit: L, a, b đều được co về 0-255, a và b lệch 128)."""
+    if image is None:
+        raise ValueError("Ảnh rỗng (None)")
+    return cv2.cvtColor(image, cv2.COLOR_BGR2LAB)
 
 
-def read_image_bgr(path: str | Path) -> np.ndarray:
-    """Đọc ảnh BGR an toàn với đường dẫn tiếng Việt / Unicode trên Windows."""
-    from pathlib import Path
-    p = Path(path)
-    if not p.is_file():
-        raise FileNotFoundError(f"Không tìm thấy file: {p}")
-    data = np.fromfile(str(p), dtype=np.uint8)
-    img = cv2.imdecode(data, cv2.IMREAD_COLOR)
-    if img is None:
-        raise ValueError(f"Không thể giải mã ảnh: {p}")
-    return img
+def hsv_to_bgr(hsv):
+    """HSV -> BGR để hiển thị hoặc lưu đúng màu."""
+    return cv2.cvtColor(hsv, cv2.COLOR_HSV2BGR)
 
 
-def save_image(path: str | Path, img: np.ndarray) -> bool:
-    """Lưu ảnh an toàn với đường dẫn tiếng Việt / Unicode trên Windows."""
-    from pathlib import Path
-    p = Path(path)
-    ext = p.suffix if p.suffix else ".png"
-    p.parent.mkdir(parents=True, exist_ok=True)
-    success, buffer = cv2.imencode(ext, img)
-    if not success:
-        raise OSError(f"Lỗi khi mã hóa ảnh: {p}")
-    with open(p, "wb") as f:
-        f.write(buffer)
-    return True
+def lab_to_bgr(lab):
+    """LAB -> BGR để hiển thị hoặc lưu đúng màu."""
+    return cv2.cvtColor(lab, cv2.COLOR_LAB2BGR)
+
+
+def channel_ranges(img, names):
+    """Trả về dict {tên kênh: (min, max)} cho ảnh nhiều kênh."""
+    return {n: (int(img[:, :, i].min()), int(img[:, :, i].max())) for i, n in enumerate(names)}
