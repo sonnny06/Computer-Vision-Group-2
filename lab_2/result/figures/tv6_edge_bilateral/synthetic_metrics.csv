@@ -1,0 +1,5 @@
+filter,weak_stripe_contrast,strong_step_contrast,mse_to_clean
+Sạch tổng hợp,24.0,130.0,0.0
+Có nhiễu,24.2057,129.6813,36.3784
+"Bilateral vừa (9,12,5)",20.3498,129.7396,3.2161
+"Bilateral mạnh (15,150,15)",6.1233,129.8396,41.2404

@@ -4,6 +4,6 @@ Tỷ lệ cân bằng bit (Median mode),50.0%,"Cân bằng tối ưu 50/50, bả
 Khoảng cách Hamming tự đối sánh,0 bit,Trùng khớp tuyệt đối khi cùng ảnh
 Khoảng cách khi nén JPEG (Q=50),0 bits,Kháng nén JPEG xuất sắc (<= 5 bits)
 Khoảng cách khi thêm Nhiễu Gauss,0 bits,Triệt tiêu nhiễu tần số cao tốt
-Khoảng cách trung bình giữa các ảnh KHÁC NHAU,30.8 / 64 bits,"Xấp xỉ 50% kỳ vọng lý thuyết, tính phân biệt cao"
+Khoảng cách trung bình giữa các ảnh KHÁC NHAU,31.0 / 64 bits,"Xấp xỉ 50% kỳ vọng lý thuyết, tính phân biệt cao"
 Họ Wavelet tối ưu tổng hòa,Haar (DWT level=1),Cân bằng hoàn hảo giữa độ chính xác và tốc độ
-Tốc độ xử lý trên ảnh 512x512,2120.7 FPS,Đủ năng lực phục vụ tìm kiếm ảnh Realtime
+Tốc độ xử lý trên ảnh 512x512,1822.6 FPS,Đủ năng lực phục vụ tìm kiếm ảnh Realtime
