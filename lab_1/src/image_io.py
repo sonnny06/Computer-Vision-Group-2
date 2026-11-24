@@ -1,3 +1,17 @@
+<<<<<<< HEAD
+import cv2
+
+
+def read_image(image_path):
+    image = cv2.imread(image_path)
+
+    if image is None:
+        raise FileNotFoundError(
+            f"Không thể đọc ảnh tại: {image_path}"
+        )
+
+    return image
+=======
 """Hàm đọc, kiểm tra và hiển thị ảnh bằng OpenCV (TV1).
 
 OpenCV đọc ảnh màu theo thứ tự kênh BGR, còn Matplotlib hiển thị theo RGB.
@@ -97,3 +111,4 @@ def find_input_image(preferred=None, folder="../data/input"):
     if preferred:
         print(f"Không thấy '{preferred}', dùng ảnh: {files[0].name}")
     return files[0]
+>>>>>>> main
