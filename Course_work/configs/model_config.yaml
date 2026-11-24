@@ -1,10 +1,11 @@
-# Default: Vietnamese-oriented experiment; no training.
 model:
   backend: qwen
   id: Qwen/Qwen3-VL-2B-Instruct
-  device: auto
+  device: cuda
+  dtype: auto
   load_in_4bit: false
   local_files_only: false
+
 inference:
   language: vi
   max_new_tokens: 128
