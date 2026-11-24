@@ -1,0 +1,6 @@
+image_id,filename,body_part,ground_truth,prediction,success,error,bleu1,f1,time_s
+IMG_001,phoi_1.jpg,Phổi / Lồng ngực (Chest),"Ảnh CT ngực cắt ngang lớp cắt tim, các cấu trúc tim và phổi nằm trong giới hạn giải phẫu bình thường.",Kết quả giả lập,True,,0.0,0.0,0.01
+IMG_002,phoi_2.jpg,Phổi / Lồng ngực (Chest),Ảnh CT lồng ngực hiển thị quai động mạch chủ và các mạch máu lớn trung thất.,Kết quả giả lập,True,,0.0,0.0,0.0
+IMG_003,phoi_3.jpg,Phổi / Lồng ngực (Chest),"Ảnh X-quang ngực thẳng PA bình thường, không thấy thâm nhiễm phế trường hay tràn dịch màng phổi.",Kết quả giả lập,True,,0.0,0.0,0.01
+IMG_004,phoi_4.jpg,Phổi / Lồng ngực (Chest),Ảnh X-quang phổi tư thế thẳng ghi nhận giải phẫu lồng ngực và trường phổi bình thường.,Kết quả giả lập,True,,0.0,0.0,0.01
+IMG_005,phoi_5.jpg,Phổi / Lồng ngực (Chest),Ảnh X-quang lồng ngực đánh giá nhu mô phổi và rốn phổi hai bên.,Kết quả giả lập,True,,0.0,0.0,0.01

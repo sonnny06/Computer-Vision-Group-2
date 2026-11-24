@@ -1,0 +1,15 @@
+# Cấu hình Qwen3-VL cho máy có GPU NVIDIA.
+model:
+  backend: qwen
+  id: Qwen/Qwen3-VL-2B-Instruct
+  device: auto             # Tự động dùng GPU CUDA nếu có, ngược lại dùng CPU.
+  dtype: auto              # BF16 nếu GPU hỗ trợ phần cứng, còn lại dùng FP16.
+  load_in_4bit: false      # Nạp dạng 4-bit (yêu cầu bitsandbytes và CUDA).
+  local_files_only: false  # Cho phép tải các tệp còn thiếu từ Hugging Face.
+
+inference:
+  language: vi             # Pipeline dùng để chọn prompt tiếng Việt.
+  max_new_tokens: 128      # Giới hạn số token sinh thêm cho mỗi câu trả lời.
+  max_image_side: 768      # Cạnh dài tối đa sau bước chuẩn hóa ảnh của dự án.
+  max_upload_mb: 15        # Giới hạn dung lượng với đầu vào là tệp hoặc bytes.
+  max_question_chars: 1500 # Giới hạn câu hỏi ở bước tạo prompt VQA.

@@ -1,0 +1,1373 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Medical-VQA | Hệ thống AI Đa phương thức Phân tích Ảnh Y tế</title>
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --surface: #ffffff;
+      --surface-subtle: #f1f5f9;
+      --surface-hover: #f8fafc;
+      --border: #e2e8f0;
+      --border-strong: #cbd5e1;
+      --text: #0f172a;
+      --text-secondary: #334155;
+      --muted: #64748b;
+      --primary: #0284c7;
+      --primary-hover: #0369a1;
+      --primary-soft: #e0f2fe;
+      --teal: #0d9488;
+      --teal-soft: #f0fdfa;
+      --teal-border: #99f6e4;
+      --amber: #b45309;
+      --amber-bg: #fffbeb;
+      --amber-border: #fde68a;
+      --success: #15803d;
+      --success-bg: #dcfce7;
+      --danger: #dc2626;
+      --danger-bg: #fef2f2;
+      --sidebar-w: 280px;
+      --radius: 14px;
+      --radius-sm: 10px;
+      --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.04);
+      --shadow: 0 6px 24px rgba(15, 23, 42, 0.05);
+    }
+
+    [data-theme="dark"] {
+      --bg: #0b1120;
+      --surface: #111827;
+      --surface-subtle: #1e293b;
+      --surface-hover: #1a2436;
+      --border: #1f2937;
+      --border-strong: #334155;
+      --text: #f1f5f9;
+      --text-secondary: #cbd5e1;
+      --muted: #94a3b8;
+      --primary: #38bdf8;
+      --primary-hover: #0ea5e9;
+      --primary-soft: rgba(56, 189, 248, 0.14);
+      --teal: #2dd4bf;
+      --teal-soft: rgba(45, 212, 191, 0.1);
+      --teal-border: rgba(45, 212, 191, 0.28);
+      --amber: #fbbf24;
+      --amber-bg: rgba(251, 191, 36, 0.1);
+      --amber-border: rgba(251, 191, 36, 0.28);
+      --success: #4ade80;
+      --success-bg: rgba(74, 222, 128, 0.14);
+      --danger: #f87171;
+      --danger-bg: rgba(248, 113, 113, 0.12);
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.25);
+      --shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.58;
+    }
+
+    .app-shell { display: flex; min-height: 100vh; }
+
+    /* Sidebar */
+    .sidebar {
+      width: var(--sidebar-w);
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      inset: 0 auto 0 0;
+      z-index: 20;
+      padding: 18px 14px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 2px 6px 14px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 12px;
+    }
+    .brand-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: linear-gradient(135deg, #0284c7, #0d9488);
+      color: #fff; display: flex; align-items: center; justify-content: center;
+      font-size: 1.15rem; flex-shrink: 0;
+    }
+    .brand-title { font-weight: 700; font-size: 1rem; line-height: 1.2; }
+    .brand-sub { font-size: 0.72rem; color: var(--muted); }
+
+    .nav-label {
+      font-size: 0.69rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.06em; color: var(--muted);
+      padding: 0 8px; margin: 6px 0;
+    }
+    .nav-list { display: flex; flex-direction: column; gap: 3px; }
+    .nav-btn {
+      display: flex; align-items: center; justify-content: space-between;
+      width: 100%; border: none; background: transparent;
+      color: var(--text-secondary); font-size: 0.88rem; font-weight: 600;
+      padding: 9px 11px; border-radius: var(--radius-sm);
+      cursor: pointer; text-align: left; transition: background 0.15s, color 0.15s;
+    }
+    .nav-btn:hover { background: var(--surface-subtle); color: var(--text); }
+    .nav-btn.active { background: var(--primary-soft); color: var(--primary); }
+    .nav-count {
+      background: var(--surface-subtle); color: var(--muted);
+      font-size: 0.72rem; padding: 1px 8px; border-radius: 999px;
+    }
+    .nav-btn.active .nav-count { background: var(--primary); color: #fff; }
+
+    .sidebar-dataset {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+    .sample-scroll {
+      flex: 1;
+      overflow-y: auto;
+      margin-top: 8px;
+      padding-right: 2px;
+    }
+    .sample-item {
+      width: 100%;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-secondary);
+      border-radius: 9px;
+      padding: 7px 8px;
+      margin-bottom: 4px;
+      cursor: pointer;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      transition: all 0.14s;
+    }
+    .sample-item:hover { background: var(--surface-subtle); }
+    .sample-item.active {
+      background: var(--teal-soft);
+      border-color: var(--teal-border);
+      color: var(--text);
+    }
+    .sample-thumb {
+      width: 36px; height: 36px; border-radius: 7px;
+      object-fit: cover; background: #090e1a; flex-shrink: 0;
+    }
+    .sample-text { min-width: 0; }
+    .sample-text strong {
+      display: block; font-size: 0.8rem; white-space: nowrap;
+      overflow: hidden; text-overflow: ellipsis;
+    }
+    .sample-text span {
+      display: block; font-size: 0.71rem; color: var(--muted);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+
+    .sidebar-footer {
+      padding-top: 10px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* Main Workspace */
+    .main-area {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+    .topbar {
+      min-height: 60px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 8px 26px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      position: sticky;
+      top: 0;
+      z-index: 15;
+    }
+    .topbar-left { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .topbar-title { font-size: 1.02rem; font-weight: 700; }
+    .status-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.75rem; font-weight: 600; padding: 4px 10px;
+      border-radius: 999px; background: var(--surface-subtle);
+      color: var(--text-secondary); border: 1px solid var(--border);
+    }
+    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--success); }
+    .topbar-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+    .workspace {
+      padding: 22px 26px 40px;
+      max-width: 1540px;
+      width: 100%;
+      margin: 0 auto;
+    }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    .analyze-grid {
+      display: grid;
+      grid-template-columns: minmax(390px, 1fr) minmax(430px, 1.14fr);
+      gap: 24px;
+      align-items: start;
+    }
+    @media (max-width: 1120px) {
+      .sidebar { position: static; width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--border); }
+      .app-shell { flex-direction: column; }
+      .main-area { margin-left: 0; }
+      .sample-scroll { max-height: 200px; }
+      .analyze-grid { grid-template-columns: 1fr; }
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      box-shadow: var(--shadow);
+    }
+    .panel + .panel { margin-top: 18px; }
+    .panel-head {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 10px; margin-bottom: 12px; flex-wrap: wrap;
+    }
+    .panel-head h2 {
+      margin: 0; font-size: 0.98rem; font-weight: 700;
+      display: flex; align-items: center; gap: 7px;
+    }
+
+    /* Upload Strip */
+    .upload-strip {
+      border: 1.5px dashed var(--border-strong);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      background: var(--surface-subtle);
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 10px; cursor: pointer; margin-bottom: 12px;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .upload-strip:hover, .upload-strip.dragover {
+      border-color: var(--primary);
+      background: var(--primary-soft);
+    }
+
+    /* Film Viewer */
+    .film-stage {
+      background: #090e1a;
+      border-radius: 12px;
+      position: relative;
+      overflow: hidden;
+      height: 400px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .film-inner { position: relative; transition: transform 0.1s ease-out; display: inline-flex; }
+    .film-inner img {
+      max-width: 100%; max-height: 388px;
+      object-fit: contain; display: block;
+    }
+    .roi-overlay {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      display: none;
+    }
+    .roi-overlay.visible { display: block; }
+    .model-box {
+      margin-top: 10px;
+      padding: 9px 10px;
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+    .model-box label {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 5px;
+    }
+    .film-badge-tl {
+      position: absolute; top: 10px; left: 12px;
+      background: rgba(15, 23, 42, 0.8); color: #e2e8f0;
+      font-size: 0.74rem; padding: 4px 10px; border-radius: 7px;
+    }
+    .film-badge-tr {
+      position: absolute; top: 10px; right: 12px;
+      background: rgba(2, 132, 199, 0.88); color: #fff;
+      font-size: 0.72rem; font-weight: 600; padding: 4px 10px; border-radius: 7px;
+    }
+
+    .viewer-controls {
+      margin-top: 12px; padding: 11px 14px;
+      background: var(--surface-subtle); border-radius: var(--radius-sm);
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .slider-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    @media (max-width: 600px) { .slider-row { grid-template-columns: 1fr; } }
+    .slider-item label {
+      display: flex; justify-content: space-between;
+      font-size: 0.74rem; font-weight: 600; color: var(--text-secondary);
+      margin-bottom: 3px;
+    }
+    .slider-item input[type="range"] { width: 100%; accent-color: var(--primary); cursor: pointer; }
+    .viewer-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    .meta-bar {
+      margin-top: 12px; padding: 9px 12px;
+      border: 1px solid var(--border); border-radius: var(--radius-sm);
+      display: flex; flex-wrap: wrap; align-items: center;
+      justify-content: space-between; gap: 8px; font-size: 0.8rem;
+    }
+    .meta-chips { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+    .meta-chip { background: var(--surface-subtle); padding: 3px 8px; border-radius: 6px; font-weight: 600; }
+    .meta-chip.ok { background: var(--success-bg); color: var(--success); }
+    .meta-chip.warn { background: var(--amber-bg); color: var(--amber); }
+
+    .ref-card {
+      margin-top: 10px;
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      background: var(--surface-subtle);
+      border-radius: 9px;
+      padding: 9px 12px;
+    }
+
+    /* Buttons & Inputs */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      border: 1px solid transparent; border-radius: 9px;
+      padding: 8px 14px; font-size: 0.85rem; font-weight: 600;
+      cursor: pointer; font-family: inherit; transition: all 0.14s;
+    }
+    .btn:disabled { opacity: 0.55; cursor: not-allowed; }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover:not(:disabled) { background: var(--primary-hover); }
+    .btn-teal { background: var(--teal); color: #fff; }
+    .btn-teal:hover:not(:disabled) { filter: brightness(0.92); }
+    .btn-ghost { background: var(--surface); color: var(--text-secondary); border-color: var(--border); }
+    .btn-ghost:hover:not(:disabled) { background: var(--surface-subtle); color: var(--text); }
+    .btn-ghost.active-toggle { background: var(--primary-soft); color: var(--primary); border-color: var(--primary); }
+    .btn-danger-soft { background: var(--danger-bg); color: var(--danger); }
+    .btn-sm { padding: 5px 10px; font-size: 0.78rem; }
+
+    textarea, input[type="text"], select {
+      width: 100%; padding: 9px 11px;
+      border: 1px solid var(--border-strong); border-radius: 9px;
+      font-family: inherit; font-size: 0.88rem;
+      background: var(--surface); color: var(--text); outline: none;
+    }
+    textarea:focus, input[type="text"]:focus, select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-soft);
+    }
+
+    /* Caption & Chat */
+    .caption-box {
+      background: var(--surface-subtle);
+      border-left: 4px solid var(--primary);
+      border-radius: 10px;
+      padding: 13px 15px;
+      font-size: 0.92rem;
+    }
+    .caption-meta {
+      display: flex; justify-content: space-between;
+      font-size: 0.75rem; color: var(--muted); margin-bottom: 5px;
+    }
+
+    .chat-box {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+      min-height: 225px;
+      max-height: 345px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .chat-empty { margin: auto; text-align: center; color: var(--muted); font-size: 0.86rem; max-width: 360px; }
+    .msg { display: flex; flex-direction: column; max-width: 88%; }
+    .msg.user { align-self: flex-end; align-items: flex-end; }
+    .msg.ai { align-self: flex-start; align-items: flex-start; }
+    .msg-bubble { padding: 10px 14px; border-radius: 13px; font-size: 0.9rem; line-height: 1.55; }
+    .msg.user .msg-bubble { background: var(--primary); color: #fff; border-bottom-right-radius: 4px; }
+    .msg.ai .msg-bubble {
+      background: var(--surface); color: var(--text);
+      border: 1px solid var(--border); border-bottom-left-radius: 4px;
+      box-shadow: var(--shadow-sm);
+    }
+    .msg-meta { font-size: 0.72rem; color: var(--muted); margin-top: 4px; display: flex; gap: 8px; align-items: center; }
+    .copy-link { border: none; background: none; color: var(--primary); font-size: 0.72rem; font-weight: 600; cursor: pointer; padding: 0; }
+
+    .quick-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+    .chip {
+      border: 1px solid var(--border); background: var(--surface-subtle);
+      color: var(--text-secondary); border-radius: 999px;
+      padding: 5px 11px; font-size: 0.76rem; cursor: pointer;
+    }
+    .chip:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-soft); }
+    .chip.trap { border-color: var(--amber-border); background: var(--amber-bg); color: var(--amber); }
+
+    .chat-input-row { display: flex; gap: 8px; align-items: flex-end; }
+    details.prompt-view { margin-top: 8px; font-size: 0.77rem; color: var(--muted); }
+    details.prompt-view pre {
+      background: #0f172a; color: #e2e8f0; padding: 10px;
+      border-radius: 8px; white-space: pre-wrap; margin-top: 6px; font-size: 0.74rem;
+    }
+
+    .disclaimer {
+      margin-top: 12px; background: var(--amber-bg);
+      border: 1px solid var(--amber-border); border-radius: 10px;
+      padding: 9px 13px; font-size: 0.8rem; color: var(--amber);
+    }
+    .error-msg {
+      margin-top: 8px; background: var(--danger-bg); color: var(--danger);
+      padding: 8px 12px; border-radius: 8px; font-size: 0.83rem; display: none;
+    }
+
+    /* History, Eval, Arch */
+    .toolbar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+    .hist-card {
+      border: 1px solid var(--border); border-radius: 12px;
+      padding: 13px 15px; margin-bottom: 10px; background: var(--surface-hover);
+      display: flex; justify-content: space-between; gap: 12px;
+    }
+    .pill { padding: 2px 9px; border-radius: 999px; font-size: 0.72rem; font-weight: 700; }
+    .pill-cap { background: var(--primary-soft); color: var(--primary); }
+    .pill-vqa { background: var(--teal-soft); color: var(--teal); }
+
+    .kpi-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin: 16px 0; }
+    @media (max-width: 820px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+    .kpi {
+      background: var(--surface-subtle); border: 1px solid var(--border);
+      border-radius: 12px; padding: 14px; text-align: center;
+    }
+    .kpi .val { font-size: 1.45rem; font-weight: 800; color: var(--primary); }
+    .kpi .lbl { font-size: 0.77rem; color: var(--muted); }
+
+    .grid-2-equal { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media (max-width: 900px) { .grid-2-equal { grid-template-columns: 1fr; } }
+    table { width: 100%; border-collapse: collapse; font-size: 0.84rem; margin-top: 8px; }
+    th, td { border-bottom: 1px solid var(--border); padding: 9px 10px; text-align: left; vertical-align: top; }
+    th { background: var(--surface-subtle); font-weight: 700; color: var(--text-secondary); }
+
+    .pipeline {
+      display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: center;
+      padding: 18px; background: var(--surface-subtle); border-radius: 14px; margin-bottom: 18px;
+    }
+    .pipe-node {
+      background: var(--surface); border: 1px solid var(--border);
+      border-top: 4px solid var(--primary); border-radius: 10px;
+      padding: 10px 13px; min-width: 148px; text-align: center;
+    }
+    .pipe-node strong { display: block; font-size: 0.86rem; }
+    .pipe-node span { font-size: 0.74rem; color: var(--muted); }
+    .pipe-arrow { font-size: 1.15rem; font-weight: 800; color: var(--primary); }
+    canvas.chart-canvas { width: 100%; height: 230px; display: block; }
+
+    /* Print Report Modal */
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(15, 23, 42, 0.55);
+      display: none; align-items: center; justify-content: center; z-index: 50; padding: 20px;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal-sheet {
+      background: #ffffff; color: #0f172a; border-radius: 16px;
+      max-width: 780px; width: 100%; max-height: 90vh; overflow-y: auto;
+      padding: 26px 30px; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+    }
+    @media print {
+      .app-shell, .no-print { display: none !important; }
+      .modal-backdrop { position: static; background: none; padding: 0; display: block !important; }
+      .modal-sheet { box-shadow: none; max-height: none; padding: 0; max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">🩺</div>
+        <div>
+          <div class="brand-title">Medical-VQA</div>
+          <div class="brand-sub" id="sidebarSub">Đang kết nối backend...</div>
+        </div>
+      </div>
+
+      <div class="nav-label">Điều hướng</div>
+      <nav class="nav-list">
+        <button class="nav-btn active" data-tab="analyze"><span>🩺 Phân tích ảnh</span></button>
+        <button class="nav-btn" data-tab="history"><span>🕘 Lịch sử phiên</span><span class="nav-count" id="histCount">0</span></button>
+        <button class="nav-btn" data-tab="eval"><span>📊 Đánh giá (F06)</span></button>
+        <button class="nav-btn" data-tab="arch"><span>🏗️ Kiến trúc &amp; Nhóm</span></button>
+      </nav>
+
+      <div class="sidebar-dataset">
+        <div class="nav-label">Bộ ảnh thật của nhóm (<span id="imgTotalCount">0</span>)</div>
+        <select id="bodyPartFilter" style="padding:6px 8px;font-size:0.8rem;">
+          <option value="ALL">Tất cả 7 vùng cơ thể</option>
+        </select>
+        <div class="sample-scroll" id="sampleList"></div>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="model-box" style="margin-top:0;margin-bottom:8px;">
+          <label for="sidebarModeSelect">⚙️ Chuyển đổi Mô hình AI</label>
+          <select id="sidebarModeSelect" style="padding:6px 8px;font-size:0.78rem;font-weight:600;">
+            <option value="qwen3-vl" selected>🚀 Qwen3-VL-2B (Tự động GPU / Nhanh)</option>
+            <option value="smart-demo">⚡ Smart CV + Dữ liệu nhóm (Siêu nhanh)</option>
+            <option value="qwen3-vl-cpu">🐢 Ép chạy Qwen3-VL trên CPU (Chậm)</option>
+          </select>
+        </div>
+        <button class="btn btn-ghost btn-sm" id="btnThemeToggle" style="width:100%;">🌙 Chuyển chế độ Tối</button>
+      </div>
+    </aside>
+
+    <!-- MAIN WORKSPACE -->
+    <div class="main-area">
+      <header class="topbar">
+        <div class="topbar-left">
+          <div class="topbar-title" id="topbarTitle">Phân tích hình ảnh y tế (Captioning &amp; VQA)</div>
+          <span class="status-pill" id="hwBadge"><span class="status-dot"></span> Đang kiểm tra...</span>
+        </div>
+        <div class="topbar-actions">
+          <select id="modeSelect" style="width:auto;padding:5px 10px;font-size:0.8rem;font-weight:600;">
+            <option value="qwen3-vl" selected>🚀 Qwen3-VL-2B (Tự động GPU / Nhanh)</option>
+            <option value="smart-demo">⚡ Smart CV + Dữ liệu nhóm (Siêu nhanh)</option>
+            <option value="qwen3-vl-cpu">🐢 Ép chạy Qwen3-VL trên CPU (Chậm)</option>
+          </select>
+          <button class="btn btn-ghost btn-sm" id="btnOpenReport">📄 Xuất phiếu báo cáo</button>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <!-- TAB 1: ANALYZE -->
+        <section id="tab-analyze" class="tab-panel active">
+          <div class="analyze-grid">
+            <!-- LEFT: RADIOLOGY VIEWER -->
+            <div class="panel">
+              <div class="panel-head">
+                <h2>🖼️ Trình xem ảnh y tế (F01 — Trí)</h2>
+                <button class="btn btn-ghost btn-sm" id="btnPickFile">📤 Tải ảnh từ máy</button>
+              </div>
+
+              <div class="upload-strip" id="dropzone">
+                <div style="font-size:0.83rem;"><strong>Kéo thả ảnh y tế (JPG/PNG)</strong> hoặc chọn ảnh thật của nhóm ở thanh bên trái</div>
+                <span style="font-size:0.74rem;color:var(--muted);">Tự động kiểm tra bằng validate_image()</span>
+                <input type="file" id="fileInput" accept=".jpg,.jpeg,.png,image/jpeg,image/png" hidden />
+              </div>
+
+              <div class="film-stage">
+                <div class="film-inner" id="filmInner">
+                  <img id="previewImg" alt="Ảnh y tế đầu vào" />
+                  <svg class="roi-overlay visible" id="roiSvg" viewBox="0 0 1000 1000" preserveAspectRatio="none"></svg>
+                </div>
+                <span class="film-badge-tl" id="previewCaption">Đang tải...</span>
+                <span class="film-badge-tr" id="previewModality">--</span>
+              </div>
+              <div id="uploadError" class="error-msg"></div>
+
+              <div class="viewer-controls">
+                <div class="slider-row">
+                  <div class="slider-item">
+                    <label><span>🔍 Phóng to</span><span id="valZoom">100%</span></label>
+                    <input type="range" id="rngZoom" min="100" max="240" value="100" />
+                  </div>
+                  <div class="slider-item">
+                    <label><span>☀️ Độ sáng</span><span id="valBright">100%</span></label>
+                    <input type="range" id="rngBright" min="50" max="170" value="100" />
+                  </div>
+                  <div class="slider-item">
+                    <label><span>◐ Tương phản</span><span id="valContrast">100%</span></label>
+                    <input type="range" id="rngContrast" min="60" max="190" value="100" />
+                  </div>
+                </div>
+                <div class="viewer-actions">
+                  <button class="btn btn-ghost btn-sm active-toggle" id="btnToggleRoi">🎯 Khoanh vùng dị thường (ROI)</button>
+                  <button class="btn btn-ghost btn-sm" id="btnInvert">🔄 Đảo màu phim</button>
+                  <button class="btn btn-ghost btn-sm" id="btnResetView">↺ Đặt lại góc nhìn</button>
+                </div>
+              </div>
+
+              <div class="meta-bar">
+                <div class="meta-chips">
+                  <span class="meta-chip" id="mFormat">--</span>
+                  <span class="meta-chip" id="mSize">--</span>
+                  <span class="meta-chip" id="mStats">--</span>
+                  <span class="meta-chip ok" id="mQuality">✓ Hợp lệ</span>
+                </div>
+                <span style="font-size:0.74rem;color:var(--muted);">image_processing.py</span>
+              </div>
+              <div id="refInfoBox" class="ref-card" style="display:none;"></div>
+            </div>
+
+            <!-- RIGHT: CAPTIONING & MULTI-TURN VQA -->
+            <div>
+              <div class="panel">
+                <div class="panel-head">
+                  <h2>📝 Mô tả hình ảnh — Image Captioning (F02)</h2>
+                  <div style="display:flex;gap:8px;">
+                    <button class="btn btn-ghost btn-sm" id="btnCopyCaption" style="display:none;">📋 Sao chép</button>
+                    <button class="btn btn-primary btn-sm" id="btnCaption">✨ Generate Caption</button>
+                  </div>
+                </div>
+                <div id="captionResultArea">
+                  <div style="color:var(--muted);font-size:0.87rem;">
+                    Nhấn <strong>Generate Caption</strong> để gọi <code>pipeline.run(image, task="caption")</code> sinh mô tả tiếng Việt.
+                  </div>
+                </div>
+                <div id="captionError" class="error-msg"></div>
+              </div>
+
+              <div class="panel">
+                <div class="panel-head">
+                  <h2>💬 Hỏi đáp ảnh y tế — Medical VQA (F03 &amp; F04)</h2>
+                  <button class="btn btn-ghost btn-sm" id="btnClearChat">Xóa hội thoại</button>
+                </div>
+
+                <div class="chat-box" id="chatBox">
+                  <div class="chat-empty">
+                    Chọn câu hỏi thật từ bộ <code>questions.csv</code> bên dưới hoặc nhập câu hỏi tiếng Việt bất kỳ về ảnh đang xem.
+                  </div>
+                </div>
+
+                <div style="font-size:0.75rem;color:var(--muted);margin-bottom:5px;">Câu hỏi gợi ý từ bộ dữ liệu của nhóm (nhấn để hỏi ngay):</div>
+                <div class="quick-chips" id="quickChips"></div>
+
+                <div class="chat-input-row">
+                  <textarea id="questionInput" rows="2" placeholder="Nhập câu hỏi tiếng Việt... (Nhấn Enter để gửi)"></textarea>
+                  <button class="btn btn-teal" id="btnAsk" style="height:46px;white-space:nowrap;">💬 Hỏi AI</button>
+                </div>
+                <div id="vqaError" class="error-msg"></div>
+
+                <div class="disclaimer">
+                  ⚠️ <strong>Lưu ý y khoa:</strong> Kết quả AI đa phương thức (Qwen3-VL) chỉ phục vụ học thuật và tham khảo trực quan, không thay thế chẩn đoán lâm sàng của bác sĩ chuyên khoa.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 2: HISTORY -->
+        <section id="tab-history" class="tab-panel">
+          <div class="panel">
+            <div class="panel-head">
+              <h2>🕘 Lịch sử Captioning &amp; VQA trong phiên (F05 — Sơn &amp; Bão)</h2>
+            </div>
+            <div class="toolbar">
+              <select id="histFilter" style="max-width:190px;">
+                <option value="ALL">Tất cả tác vụ</option>
+                <option value="Captioning">Chỉ Captioning</option>
+                <option value="VQA">Chỉ VQA</option>
+              </select>
+              <input type="text" id="histSearch" placeholder="Tìm theo từ khóa hoặc tên ảnh..." style="flex:1;min-width:220px;" />
+              <button class="btn btn-ghost" id="btnExportCsv">⬇️ Xuất CSV</button>
+              <button class="btn btn-ghost" id="btnExportJson">⬇️ Xuất JSON</button>
+              <button class="btn btn-danger-soft" id="btnClearHist">🗑️ Xóa toàn bộ</button>
+            </div>
+            <div id="historyList"></div>
+          </div>
+        </section>
+
+        <!-- TAB 3: EVALUATION -->
+        <section id="tab-eval" class="tab-panel">
+          <div class="panel">
+            <div class="panel-head">
+              <h2>📊 Đánh giá Mô hình trên Tập Dữ Liệu Thật (F06 — Phúc)</h2>
+              <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                <select id="evalScope" style="width:auto;padding:6px 10px;font-size:0.82rem;">
+                  <option value="15,25">Nhanh (15 ảnh • 25 câu VQA)</option>
+                  <option value="35,100">Mở rộng (35 ảnh • 100 câu VQA)</option>
+                  <option value="35,235">Toàn bộ (35 ảnh • 235 câu VQA)</option>
+                </select>
+                <button class="btn btn-primary" id="btnRunEval">▶️ Chạy đánh giá</button>
+              </div>
+            </div>
+            <p style="margin:0;color:var(--muted);font-size:0.88rem;">
+              Gọi trực tiếp hàm <code>compute_bleu1</code> và <code>compute_f1_score</code> trong <code>src/evaluation/</code> trên 35 ảnh y tế thật và 235 câu hỏi tiếng Việt.
+            </p>
+            <div id="evalError" class="error-msg"></div>
+
+            <div id="evalOutput" style="display:none;">
+              <div class="kpi-grid">
+                <div class="kpi"><div class="val" id="kpiBleu">0.00</div><div class="lbl">Avg BLEU-1</div></div>
+                <div class="kpi"><div class="val" id="kpiCapF1">0.00</div><div class="lbl">Caption Avg F1</div></div>
+                <div class="kpi"><div class="val" id="kpiAcc">0%</div><div class="lbl">VQA Accuracy</div></div>
+                <div class="kpi"><div class="val" id="kpiVqaF1">0.00</div><div class="lbl">VQA Avg F1</div></div>
+                <div class="kpi"><div class="val" id="kpiTime">0.00s</div><div class="lbl">Avg Latency</div></div>
+              </div>
+
+              <div class="grid-2-equal">
+                <div class="panel" style="box-shadow:none;background:var(--surface-subtle);">
+                  <h2 style="font-size:0.93rem;margin-top:0;">Caption F1 trung bình theo 7 vùng cơ thể</h2>
+                  <canvas id="bpChart" class="chart-canvas" width="540" height="230"></canvas>
+                </div>
+                <div class="panel" style="box-shadow:none;background:var(--surface-subtle);">
+                  <h2 style="font-size:0.93rem;margin-top:0;">Medical VQA Token F1 (12 câu hỏi đầu)</h2>
+                  <canvas id="vqaChart" class="chart-canvas" width="540" height="230"></canvas>
+                </div>
+              </div>
+
+              <h3 style="margin-top:20px;">Chi tiết đánh giá Captioning</h3>
+              <div style="overflow-x:auto;">
+                <table id="capTable">
+                  <thead><tr><th>Mã</th><th>Ảnh</th><th>Vùng cơ thể</th><th>BLEU-1</th><th>F1</th><th>Mô tả sinh ra</th></tr></thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+
+              <h3 style="margin-top:20px;">Chi tiết đánh giá Medical VQA</h3>
+              <div style="overflow-x:auto;">
+                <table id="vqaTable">
+                  <thead><tr><th>Mã</th><th>Ảnh</th><th>Câu hỏi</th><th>Đáp án chuẩn</th><th>Trả lời AI</th><th>F1</th><th>Đạt</th></tr></thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 4: ARCHITECTURE -->
+        <section id="tab-arch" class="tab-panel">
+          <div class="panel">
+            <div class="panel-head">
+              <h2>🏗️ Kiến trúc Hệ thống &amp; Luồng Pipeline (Nhóm 6 thành viên)</h2>
+            </div>
+            <div class="pipeline">
+              <div class="pipe-node" style="border-top-color:#0284c7;"><strong>1. Web / App (Sơn)</strong><span>web/ &amp; app/app.py<br/>UI &amp; History F05</span></div>
+              <div class="pipe-arrow">→</div>
+              <div class="pipe-node" style="border-top-color:#0d9488;"><strong>2. Preprocessing (Trí)</strong><span>image_processing.py<br/>35 ảnh • 7 vùng</span></div>
+              <div class="pipe-arrow">→</div>
+              <div class="pipe-node" style="border-top-color:#7c3aed;"><strong>3. Prompting (Tôn)</strong><span>utils/prompt.py<br/>prompt_config.yaml</span></div>
+              <div class="pipe-arrow">→</div>
+              <div class="pipe-node" style="border-top-color:#ea580c;"><strong>4. Qwen3-VL (Thái)</strong><span>pretrained_vlm.py<br/>CUDA / 4-bit / Lock</span></div>
+              <div class="pipe-arrow">→</div>
+              <div class="pipe-node" style="border-top-color:#16a34a;"><strong>5. Pipeline (Bão)</strong><span>engine/pipeline.py<br/>Timeout &amp; Error Codes</span></div>
+              <div class="pipe-arrow">→</div>
+              <div class="pipe-node" style="border-top-color:#dc2626;"><strong>6. Evaluation (Phúc)</strong><span>evaluate_*.py<br/>235 câu hỏi VQA</span></div>
+            </div>
+
+            <div class="grid-2-equal" style="margin-bottom:20px;">
+              <div>
+                <h3 style="margin-top:0;">Sơ đồ luồng tổng quát của nhóm</h3>
+                <img src="/diagrams/flow%20t%E1%BB%95ng%20qu%C3%A1t.jpg" alt="Flow tổng quát" style="width:100%;border-radius:10px;border:1px solid var(--border);" />
+              </div>
+              <div>
+                <h3 style="margin-top:0;">Sơ đồ VQA Pipeline</h3>
+                <img src="/diagrams/vqa%20pipeline.jpg" alt="VQA Pipeline" style="width:100%;border-radius:10px;border:1px solid var(--border);" />
+              </div>
+            </div>
+
+            <h3>👥 Bảng phân công 6 thành viên</h3>
+            <table>
+              <thead><tr><th>Thành viên</th><th>Vai trò</th><th>Module đã tích hợp</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Sơn</strong></td><td>Application Development</td><td><code>web/index.html</code>, <code>web/server.py</code>, <code>app/app.py</code>, <code>src/utils/history.py</code></td></tr>
+                <tr><td><strong>Thái</strong></td><td>Pre-trained Model Integration</td><td><code>src/models/pretrained_vlm.py</code>, <code>configs/model_config.yaml</code></td></tr>
+                <tr><td><strong>Tôn</strong></td><td>Prompt Engineering</td><td><code>src/utils/prompt.py</code>, <code>configs/prompt_config.yaml</code></td></tr>
+                <tr><td><strong>Trí</strong></td><td>Image Preprocessing &amp; Data</td><td><code>src/preprocessing/image_processing.py</code>, <code>src/data/preprocessing.py</code>, 35 ảnh thật</td></tr>
+                <tr><td><strong>Phúc</strong></td><td>Model Evaluation &amp; Testing</td><td><code>src/evaluation/evaluate_captioning.py</code>, <code>evaluate_vqa.py</code>, 235 câu hỏi</td></tr>
+                <tr><td><strong>Bão</strong></td><td>Backend &amp; System Integration</td><td><code>src/engine/pipeline.py</code>, <code>schemas.py</code>, <code>errors.py</code>, <code>src/inference/*.py</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- REPORT MODAL -->
+  <div class="modal-backdrop" id="reportModal">
+    <div class="modal-sheet">
+      <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #0284c7;padding-bottom:12px;margin-bottom:16px;">
+        <div>
+          <h2 style="margin:0;">🩺 Phiếu Tóm tắt Phân tích Ảnh Y tế (Medical-VQA)</h2>
+          <div style="font-size:0.82rem;color:#64748b;" id="repTime"></div>
+        </div>
+        <div class="no-print" style="display:flex;gap:8px;">
+          <button class="btn btn-primary btn-sm" onclick="window.print()">🖨️ In / Lưu PDF</button>
+          <button class="btn btn-ghost btn-sm" id="btnCloseReport">Đóng</button>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:220px 1fr;gap:18px;align-items:start;margin-bottom:16px;">
+        <img id="repImg" style="width:100%;border-radius:10px;background:#090e1a;" />
+        <div>
+          <div style="font-size:0.85rem;margin-bottom:6px;"><strong>Tệp ảnh:</strong> <span id="repFile"></span></div>
+          <div style="font-size:0.85rem;margin-bottom:10px;"><strong>Thông số kiểm tra:</strong> <span id="repMeta"></span></div>
+          <div style="background:#f8fafc;border-left:4px solid #0284c7;padding:11px;border-radius:8px;font-size:0.9rem;">
+            <strong>Mô tả tự động (Image Captioning):</strong>
+            <div id="repCaption" style="margin-top:4px;"></div>
+          </div>
+        </div>
+      </div>
+      <h3 style="margin:0 0 8px;font-size:0.95rem;">Hội thoại Medical VQA</h3>
+      <div id="repVqaList" style="font-size:0.87rem;"></div>
+      <div style="margin-top:16px;padding:10px 12px;background:#fffbeb;border:1px solid #fde68a;border-radius:8px;font-size:0.79rem;color:#92400e;">
+        ⚠️ Tài liệu sinh bởi hệ thống Medical-VQA (Topic 4 — Qwen3-VL) phục vụ mục đích học thuật và báo cáo đồ án, không thay thế chẩn đoán lâm sàng.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let datasetImages = [];
+    let currentSource = { type: "sample", filename: "", base64: "", url: "", metaObj: null };
+    let currentCaptionText = "";
+    let currentChat = [];
+    let historyItems = [];
+    let viewState = { zoom: 100, bright: 100, contrast: 100, invert: false, showRoi: true };
+
+    const getMode = () => document.getElementById("modeSelect").value;
+
+    function syncModelSelect(val) {
+      document.getElementById("modeSelect").value = val;
+      document.getElementById("sidebarModeSelect").value = val;
+    }
+
+    function renderRoiOverlay(roi) {
+      const svg = document.getElementById("roiSvg");
+      if (!roi || !roi.regions || !roi.regions.length) {
+        svg.innerHTML = "";
+        return;
+      }
+      const colors = ["#f97316", "#ef4444", "#eab308"];
+      svg.innerHTML = roi.regions.map((r, i) => {
+        const col = colors[i % colors.length];
+        const x = Math.round(r.x * 1000);
+        const y = Math.round(r.y * 1000);
+        const w = Math.round(r.w * 1000);
+        const h = Math.round(r.h * 1000);
+        const cx = Math.round(r.cx * 1000);
+        const cy = Math.round(r.cy * 1000);
+        const rx = Math.max(25, Math.round(w / 2));
+        const ry = Math.max(25, Math.round(h / 2));
+        const lblY = Math.max(38, y - 10);
+        return `
+          <ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="${col}26" stroke="${col}" stroke-width="6" stroke-dasharray="18 10" />
+          <rect x="${x}" y="${y}" width="${w}" height="${h}" fill="none" stroke="${col}" stroke-width="3" stroke-opacity="0.65" rx="12" />
+          <rect x="${Math.max(8, x)}" y="${lblY - 28}" width="250" height="32" rx="8" fill="rgba(15,23,42,0.88)" stroke="${col}" stroke-width="2" />
+          <text x="${Math.max(18, x + 10)}" y="${lblY - 7}" fill="#ffffff" font-size="22" font-weight="700">🎯 #${r.id} (${Math.round(r.score * 100)}%)</text>
+        `;
+      }).join("");
+    }
+
+    async function apiGet(url) {
+      const r = await fetch(url);
+      return r.json();
+    }
+    async function apiPost(url, body, timeoutMs = 45000) {
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), timeoutMs);
+      try {
+        const r = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+          signal: ctrl.signal
+        });
+        return await r.json();
+      } finally {
+        clearTimeout(timer);
+      }
+    }
+
+    function applyViewerTransform() {
+      document.getElementById("filmInner").style.transform = `scale(${viewState.zoom / 100})`;
+      document.getElementById("previewImg").style.filter =
+        `brightness(${viewState.bright}%) contrast(${viewState.contrast}%) invert(${viewState.invert ? 100 : 0}%)`;
+      document.getElementById("valZoom").textContent = `${viewState.zoom}%`;
+      document.getElementById("valBright").textContent = `${viewState.bright}%`;
+      document.getElementById("valContrast").textContent = `${viewState.contrast}%`;
+      document.getElementById("btnInvert").classList.toggle("active-toggle", viewState.invert);
+      document.getElementById("btnToggleRoi").classList.toggle("active-toggle", viewState.showRoi);
+      document.getElementById("roiSvg").classList.toggle("visible", viewState.showRoi);
+    }
+
+    function renderSampleList() {
+      const bp = document.getElementById("bodyPartFilter").value;
+      const list = bp === "ALL" ? datasetImages : datasetImages.filter(x => x.body_part === bp);
+      const box = document.getElementById("sampleList");
+      box.innerHTML = list.map(item => `
+        <button class="sample-item ${currentSource.type === "sample" && currentSource.filename === item.filename ? "active" : ""}" data-fn="${item.filename}">
+          <img class="sample-thumb" src="${item.url}" loading="lazy" alt="${item.filename}" />
+          <div class="sample-text">
+            <strong>${item.filename}</strong>
+            <span>${item.view_position} • ${item.body_part.split("(")[0].trim()}</span>
+          </div>
+        </button>
+      `).join("");
+      box.querySelectorAll(".sample-item").forEach(btn => {
+        btn.addEventListener("click", () => selectSample(btn.dataset.fn));
+      });
+    }
+
+    function renderQuickChips(metaObj) {
+      const box = document.getElementById("quickChips");
+      const qs = (metaObj && metaObj.questions && metaObj.questions.length)
+        ? metaObj.questions.slice(0, 4).map(q => q.question_vi)
+        : [
+            "Hình ảnh này thuộc bộ phận nào của cơ thể?",
+            "Phương pháp nào được sử dụng để chụp hình ảnh này?",
+            "Có dấu hiệu bất thường nào nổi bật trên ảnh không?"
+          ];
+      box.innerHTML = qs.map(q => `<button class="chip">${q}</button>`).join("") +
+        `<button class="chip trap">🛡️ Bẫy suy diễn: Bệnh nhân bao nhiêu tuổi, uống thuốc gì?</button>`;
+      box.querySelectorAll(".chip").forEach(ch => {
+        ch.addEventListener("click", () => {
+          document.getElementById("questionInput").value = ch.textContent.replace(/^🛡️ Bẫy suy diễn:\s*/, "");
+          sendVqa();
+        });
+      });
+    }
+
+    function resetAnalysis() {
+      currentCaptionText = "";
+      currentChat = [];
+      document.getElementById("btnCopyCaption").style.display = "none";
+      document.getElementById("captionError").style.display = "none";
+      document.getElementById("vqaError").style.display = "none";
+      document.getElementById("captionResultArea").innerHTML =
+        `<div style="color:var(--muted);font-size:0.87rem;">Nhấn <strong>Generate Caption</strong> để sinh mô tả tiếng Việt qua pipeline của nhóm.</div>`;
+      renderChat();
+    }
+
+    async function validateCurrentOnServer() {
+      const errEl = document.getElementById("uploadError");
+      errEl.style.display = "none";
+      const payload = currentSource.type === "sample"
+        ? { sample_filename: currentSource.filename }
+        : { image_base64: currentSource.base64, filename: currentSource.filename };
+
+      const res = await apiPost("/api/validate", payload);
+      if (!res.success) {
+        errEl.textContent = `❌ Lỗi kiểm tra ảnh (Trí): ${res.error}`;
+        errEl.style.display = "block";
+        document.getElementById("mQuality").textContent = "✕ Không hợp lệ";
+        document.getElementById("mQuality").className = "meta-chip warn";
+        return false;
+      }
+      const st = res.stats;
+      document.getElementById("mFormat").textContent = (res.meta.format || currentSource.filename.split(".").pop() || "IMG").toUpperCase();
+      document.getElementById("mSize").textContent = `${st.width}×${st.height}px`;
+      document.getElementById("mStats").textContent = `Sáng: ${st.mean_brightness} • σ: ${st.contrast_std}`;
+      document.getElementById("mQuality").textContent = st.warnings.length ? "⚠ Cảnh báo" : "✓ Đạt chuẩn";
+      document.getElementById("mQuality").className = `meta-chip ${st.warnings.length ? "warn" : "ok"}`;
+
+      renderRoiOverlay(res.roi);
+      const refBox = document.getElementById("refInfoBox");
+      if (currentSource.type === "upload") {
+        const top = (res.similar_cases && res.similar_cases[0]) ? res.similar_cases[0] : null;
+        const matchHtml = top
+          ? `<strong>🔍 Nhận diện tương đồng từ dữ liệu nhóm:</strong> ${top.body_part} (${top.view_position} — tương đồng <strong>${Math.round(top.similarity * 100)}%</strong> với <code>${top.filename}</code>).<br/>`
+          : "";
+        const roiHtml = res.roi ? `<strong>🎯 Khoanh vùng dị thường (OpenCV):</strong> ${res.roi.summary}` : "";
+        refBox.style.display = "block";
+        refBox.innerHTML = matchHtml + roiHtml;
+        if (top) {
+          document.getElementById("previewModality").textContent = `${top.view_position} • ${top.body_part.split("(")[0].trim()}`;
+        }
+      } else if (res.roi && refBox.style.display === "block") {
+        refBox.innerHTML += `<br/><strong>🎯 Khoanh vùng chú ý (OpenCV):</strong> ${res.roi.summary}`;
+      }
+      return true;
+    }
+
+    async function selectSample(filename) {
+      const item = datasetImages.find(x => x.filename === filename);
+      if (!item) return;
+      currentSource = { type: "sample", filename: item.filename, base64: "", url: item.url, metaObj: item };
+      document.getElementById("previewImg").src = item.url;
+      document.getElementById("previewCaption").textContent = `${item.image_id} • ${item.filename}`;
+      document.getElementById("previewModality").textContent = `${item.view_position} • ${item.body_part.split("(")[0].trim()}`;
+
+      const refBox = document.getElementById("refInfoBox");
+      refBox.style.display = "block";
+      refBox.innerHTML = `<strong>Thông tin kiểm thử (metadata.csv):</strong> ${item.finding_category} — ${item.finding_description} <span style="color:var(--muted);">(${item.source})</span>`;
+
+      renderSampleList();
+      renderQuickChips(item);
+      resetAnalysis();
+      document.querySelector('.nav-btn[data-tab="analyze"]').click();
+      await validateCurrentOnServer();
+    }
+
+    function handleUpload(file) {
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = async e => {
+        currentSource = { type: "upload", filename: file.name, base64: e.target.result, url: e.target.result, metaObj: null };
+        document.getElementById("previewImg").src = e.target.result;
+        document.getElementById("previewCaption").textContent = file.name;
+        document.getElementById("previewModality").textContent = "Ảnh tải lên";
+        document.getElementById("refInfoBox").style.display = "none";
+        renderSampleList();
+        renderQuickChips(null);
+        resetAnalysis();
+        await validateCurrentOnServer();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    async function runCaption() {
+      const btn = document.getElementById("btnCaption");
+      const errEl = document.getElementById("captionError");
+      errEl.style.display = "none";
+      btn.disabled = true;
+      btn.textContent = "⏳ Đang suy luận...";
+      try {
+        const payload = currentSource.type === "sample"
+          ? { sample_filename: currentSource.filename, mode: getMode() }
+          : { image_base64: currentSource.base64, filename: currentSource.filename, mode: getMode() };
+        const res = await apiPost("/api/caption", payload);
+        if (!res.success) {
+          errEl.textContent = `❌ ${res.error || "Không thể sinh mô tả."}`;
+          errEl.style.display = "block";
+        } else {
+          currentCaptionText = res.answer;
+          document.getElementById("btnCopyCaption").style.display = "inline-flex";
+          document.getElementById("captionResultArea").innerHTML = `
+            <div class="caption-box">
+              <div class="caption-meta"><span>${res.filename}</span><span>⏱️ ${res.time_s}s • ${res.mode}</span></div>
+              <div>${res.answer}</div>
+            </div>
+            <details class="prompt-view">
+              <summary>Xem Prompt Captioning thật (Tôn — prompt_config.yaml)</summary>
+              <pre>${res.prompt}</pre>
+            </details>`;
+          await refreshHistory();
+        }
+      } catch (err) {
+        errEl.textContent = `❌ Lỗi kết nối tới server: ${err.name === "AbortError" ? "Quá thời gian chờ phản hồi" : err.message}`;
+        errEl.style.display = "block";
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "✨ Generate Caption";
+      }
+    }
+
+    function renderChat() {
+      const box = document.getElementById("chatBox");
+      if (!currentChat.length) {
+        box.innerHTML = `<div class="chat-empty">Chọn câu hỏi gợi ý từ <code>questions.csv</code> bên dưới hoặc nhập câu hỏi tiếng Việt bất kỳ về ảnh đang xem.</div>`;
+        return;
+      }
+      box.innerHTML = currentChat.map((m, idx) => `
+        <div class="msg user"><div class="msg-bubble">${m.q}</div></div>
+        <div class="msg ai">
+          <div class="msg-bubble">
+            ${m.a}
+            <details class="prompt-view">
+              <summary>Xem Prompt VQA thật (Tôn)</summary>
+              <pre>${m.prompt}</pre>
+            </details>
+          </div>
+          <div class="msg-meta">
+            <span>⏱️ ${m.time_s}s • ${m.mode}</span>
+            <button class="copy-link" onclick="navigator.clipboard?.writeText(currentChat[${idx}].a)">📋 Sao chép</button>
+          </div>
+        </div>
+      `).join("");
+      box.scrollTop = box.scrollHeight;
+    }
+
+    async function sendVqa() {
+      const input = document.getElementById("questionInput");
+      const q = input.value.trim();
+      const errEl = document.getElementById("vqaError");
+      if (!q) {
+        errEl.textContent = "⚠️ Vui lòng nhập câu hỏi trước khi gửi.";
+        errEl.style.display = "block";
+        return;
+      }
+      errEl.style.display = "none";
+      const btn = document.getElementById("btnAsk");
+      btn.disabled = true;
+      btn.textContent = "⏳...";
+      try {
+        const payload = currentSource.type === "sample"
+          ? { sample_filename: currentSource.filename, question: q, mode: getMode() }
+          : { image_base64: currentSource.base64, filename: currentSource.filename, question: q, mode: getMode() };
+        const res = await apiPost("/api/vqa", payload);
+        if (!res.success) {
+          errEl.textContent = `❌ ${res.error || "Lỗi suy luận VQA."}`;
+          errEl.style.display = "block";
+        } else {
+          currentChat.push({ q: res.question, a: res.answer, time_s: res.time_s, mode: res.mode, prompt: res.prompt });
+          renderChat();
+          input.value = "";
+          await refreshHistory();
+        }
+      } catch (err) {
+        errEl.textContent = `❌ Lỗi kết nối tới server: ${err.name === "AbortError" ? "Quá thời gian chờ phản hồi" : err.message}`;
+        errEl.style.display = "block";
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "💬 Hỏi AI";
+      }
+    }
+
+    async function refreshHistory() {
+      const res = await apiGet("/api/history");
+      historyItems = res.items || [];
+      document.getElementById("histCount").textContent = historyItems.length;
+      renderHistory();
+    }
+
+    function renderHistory() {
+      const f = document.getElementById("histFilter").value;
+      const kw = document.getElementById("histSearch").value.trim().toLowerCase();
+      const list = historyItems.filter(it => {
+        if (f !== "ALL" && it.task_type !== f) return false;
+        if (kw && !(it.image_name.toLowerCase().includes(kw) || it.question.toLowerCase().includes(kw) || it.answer.toLowerCase().includes(kw))) return false;
+        return true;
+      });
+      const box = document.getElementById("historyList");
+      if (!list.length) {
+        box.innerHTML = `<div style="padding:24px;text-align:center;color:var(--muted);">Chưa có mục lịch sử nào.</div>`;
+        return;
+      }
+      box.innerHTML = list.map(it => `
+        <div class="hist-card">
+          <div>
+            <div style="font-size:0.77rem;color:var(--muted);margin-bottom:4px;">
+              <span class="pill ${it.task_type === "Captioning" ? "pill-cap" : "pill-vqa"}">${it.task_type}</span>
+              &nbsp;<strong>${it.image_name}</strong> • 🕒 ${it.timestamp} • ⏱️ ${it.time_s}s • <code>${it.mode}</code>
+            </div>
+            <div><strong>Câu hỏi:</strong> ${it.question}</div>
+            <div style="margin-top:4px;"><strong>Kết quả:</strong> ${it.answer}</div>
+          </div>
+          <button class="btn btn-ghost btn-sm" onclick="delHist('${it.id}')">✕</button>
+        </div>
+      `).join("");
+    }
+
+    window.delHist = async function(id) {
+      await apiPost("/api/history/delete", { id });
+      await refreshHistory();
+    };
+
+    function drawBarChart(canvasId, labels, values, colors, threshold) {
+      const c = document.getElementById(canvasId);
+      const ctx = c.getContext("2d");
+      const W = c.width, H = c.height;
+      ctx.clearRect(0, 0, W, H);
+      const padL = 40, padB = 40, padT = 20, padR = 14;
+      const chartW = W - padL - padR, chartH = H - padT - padB;
+      const textCol = getComputedStyle(document.documentElement).getPropertyValue("--muted").trim() || "#64748b";
+
+      ctx.strokeStyle = "#cbd5e155"; ctx.fillStyle = textCol; ctx.font = "11px Segoe UI";
+      for (let i = 0; i <= 4; i++) {
+        const v = i * 0.25, y = padT + chartH * (1 - v);
+        ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(W - padR, y); ctx.stroke();
+        ctx.fillText(v.toFixed(2), 5, y + 4);
+      }
+
+      const step = chartW / Math.max(labels.length, 1);
+      const barW = Math.min(34, step * 0.62);
+      labels.forEach((lbl, i) => {
+        const v = values[i] || 0;
+        const bh = v * chartH;
+        const x = padL + step * i + (step - barW) / 2;
+        const y = padT + chartH - bh;
+        ctx.fillStyle = Array.isArray(colors) ? colors[i] : colors;
+        ctx.fillRect(x, y, barW, bh);
+        ctx.fillStyle = textCol; ctx.font = "10px Segoe UI";
+        ctx.fillText(v.toFixed(2), x, y - 4);
+        ctx.fillText(lbl.slice(0, 10), x - 4, H - 14);
+      });
+
+      if (threshold) {
+        const ty = padT + chartH * (1 - threshold);
+        ctx.save(); ctx.setLineDash([5, 4]); ctx.strokeStyle = "#f59e0b"; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(padL, ty); ctx.lineTo(W - padR, ty); ctx.stroke(); ctx.restore();
+      }
+    }
+
+    async function runEvaluation() {
+      const btn = document.getElementById("btnRunEval");
+      const errEl = document.getElementById("evalError");
+      errEl.style.display = "none";
+      const [capLim, vqaLim] = document.getElementById("evalScope").value.split(",").map(Number);
+      btn.disabled = true;
+      btn.textContent = "⏳ Đang đánh giá...";
+      try {
+        const res = await apiPost("/api/evaluation/run", { mode: getMode(), cap_limit: capLim, vqa_limit: vqaLim });
+        if (!res.success) {
+          errEl.textContent = `❌ ${res.error}`;
+          errEl.style.display = "block";
+          return;
+        }
+        const s = res.summary;
+        document.getElementById("kpiBleu").textContent = s.avg_bleu1.toFixed(3);
+        document.getElementById("kpiCapF1").textContent = s.avg_caption_f1.toFixed(3);
+        document.getElementById("kpiAcc").textContent = `${s.vqa_accuracy}%`;
+        document.getElementById("kpiVqaF1").textContent = s.avg_vqa_f1.toFixed(3);
+        document.getElementById("kpiTime").textContent = `${s.avg_time_s}s`;
+
+        document.querySelector("#capTable tbody").innerHTML = res.caption_rows.map(r =>
+          `<tr><td><strong>${r.image_id}</strong></td><td>${r.filename}</td><td>${r.body_part.split("(")[0]}</td><td>${r.bleu1}</td><td>${r.f1}</td><td>${r.prediction}</td></tr>`
+        ).join("");
+        document.querySelector("#vqaTable tbody").innerHTML = res.vqa_rows.slice(0, 40).map(r =>
+          `<tr><td><strong>${r.question_id}</strong></td><td>${r.image_name}</td><td>${r.question_vi}</td><td>${r.ground_truth}</td><td>${r.prediction}</td><td>${r.f1}</td><td>${r.match ? "✅" : "❌"}</td></tr>`
+        ).join("");
+
+        document.getElementById("evalOutput").style.display = "block";
+        drawBarChart(
+          "bpChart",
+          res.body_part_summary.map(x => x.body_part.split("/")[0].trim()),
+          res.body_part_summary.map(x => x.avg_f1),
+          "#0284c7"
+        );
+        const topVqa = res.vqa_rows.slice(0, 12);
+        drawBarChart(
+          "vqaChart",
+          topVqa.map(x => x.question_id),
+          topVqa.map(x => x.f1),
+          topVqa.map(x => x.match ? "#16a34a" : "#dc2626"),
+          0.45
+        );
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "▶️ Chạy đánh giá";
+      }
+    }
+
+    function downloadFile(content, filename, mime) {
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(new Blob([content], { type: mime }));
+      a.download = filename;
+      a.click();
+    }
+
+    // =========================================================================
+    // KHỞI TẠO & GẮN SỰ KIỆN
+    // =========================================================================
+    const TAB_TITLES = {
+      analyze: "Phân tích hình ảnh y tế (Captioning & VQA)",
+      history: "Lịch sử phiên làm việc (F05)",
+      eval: "Đánh giá chất lượng mô hình (F06)",
+      arch: "Kiến trúc hệ thống & Phân công nhóm"
+    };
+
+    document.querySelectorAll(".nav-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
+        document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+        btn.classList.add("active");
+        document.getElementById(`tab-${btn.dataset.tab}`).classList.add("active");
+        document.getElementById("topbarTitle").textContent = TAB_TITLES[btn.dataset.tab];
+      });
+    });
+
+    document.getElementById("btnThemeToggle").addEventListener("click", () => {
+      const root = document.documentElement;
+      const isDark = root.getAttribute("data-theme") === "dark";
+      root.setAttribute("data-theme", isDark ? "light" : "dark");
+      document.getElementById("btnThemeToggle").textContent = isDark ? "🌙 Chuyển chế độ Tối" : "☀️ Chuyển chế độ Sáng";
+    });
+
+    document.getElementById("bodyPartFilter").addEventListener("change", renderSampleList);
+    const dropzone = document.getElementById("dropzone");
+    const fileInput = document.getElementById("fileInput");
+    dropzone.addEventListener("click", () => fileInput.click());
+    document.getElementById("btnPickFile").addEventListener("click", () => fileInput.click());
+    dropzone.addEventListener("dragover", e => { e.preventDefault(); dropzone.classList.add("dragover"); });
+    dropzone.addEventListener("dragleave", () => dropzone.classList.remove("dragover"));
+    dropzone.addEventListener("drop", e => { e.preventDefault(); dropzone.classList.remove("dragover"); handleUpload(e.dataTransfer.files[0]); });
+    fileInput.addEventListener("change", e => handleUpload(e.target.files[0]));
+
+    document.getElementById("rngZoom").addEventListener("input", e => { viewState.zoom = +e.target.value; applyViewerTransform(); });
+    document.getElementById("rngBright").addEventListener("input", e => { viewState.bright = +e.target.value; applyViewerTransform(); });
+    document.getElementById("rngContrast").addEventListener("input", e => { viewState.contrast = +e.target.value; applyViewerTransform(); });
+    document.getElementById("modeSelect").addEventListener("change", e => syncModelSelect(e.target.value));
+    document.getElementById("sidebarModeSelect").addEventListener("change", e => syncModelSelect(e.target.value));
+    document.getElementById("btnToggleRoi").addEventListener("click", () => { viewState.showRoi = !viewState.showRoi; applyViewerTransform(); });
+    document.getElementById("btnInvert").addEventListener("click", () => { viewState.invert = !viewState.invert; applyViewerTransform(); });
+    document.getElementById("btnResetView").addEventListener("click", () => {
+      viewState = { zoom: 100, bright: 100, contrast: 100, invert: false, showRoi: true };
+      document.getElementById("rngZoom").value = 100;
+      document.getElementById("rngBright").value = 100;
+      document.getElementById("rngContrast").value = 100;
+      applyViewerTransform();
+    });
+
+    document.getElementById("btnCaption").addEventListener("click", runCaption);
+    document.getElementById("btnCopyCaption").addEventListener("click", () => navigator.clipboard?.writeText(currentCaptionText));
+    document.getElementById("btnAsk").addEventListener("click", sendVqa);
+    document.getElementById("questionInput").addEventListener("keydown", e => {
+      if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendVqa(); }
+    });
+    document.getElementById("btnClearChat").addEventListener("click", () => { currentChat = []; renderChat(); });
+
+    document.getElementById("histFilter").addEventListener("change", renderHistory);
+    document.getElementById("histSearch").addEventListener("input", renderHistory);
+    document.getElementById("btnClearHist").addEventListener("click", async () => { await apiPost("/api/history/clear", {}); await refreshHistory(); });
+    document.getElementById("btnExportJson").addEventListener("click", () => downloadFile(JSON.stringify(historyItems, null, 2), "medical_vqa_history.json", "application/json"));
+    document.getElementById("btnExportCsv").addEventListener("click", () => {
+      const hdr = "id,timestamp,task_type,image_name,question,answer,time_s,mode\n";
+      const rows = historyItems.map(x => [x.id, x.timestamp, x.task_type, x.image_name, x.question, x.answer, x.time_s, x.mode].map(v => `"${String(v).replace(/"/g, '""')}"`).join(",")).join("\n");
+      downloadFile("\uFEFF" + hdr + rows, "medical_vqa_history.csv", "text/csv;charset=utf-8");
+    });
+
+    document.getElementById("btnRunEval").addEventListener("click", runEvaluation);
+
+    document.getElementById("btnOpenReport").addEventListener("click", () => {
+      document.getElementById("repTime").textContent = `Thời gian xuất: ${new Date().toLocaleString("vi-VN")}`;
+      document.getElementById("repImg").src = currentSource.url;
+      document.getElementById("repFile").textContent = currentSource.filename;
+      document.getElementById("repMeta").textContent = `${document.getElementById("mFormat").textContent} • ${document.getElementById("mSize").textContent} • ${document.getElementById("mStats").textContent}`;
+      document.getElementById("repCaption").textContent = currentCaptionText || "(Chưa chạy Generate Caption)";
+      document.getElementById("repVqaList").innerHTML = currentChat.length
+        ? currentChat.map((m, i) => `<div style="margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid #e2e8f0;"><strong>${i + 1}. Hỏi:</strong> ${m.q}<br/><strong>Trả lời:</strong> ${m.a}</div>`).join("")
+        : `<div style="color:#64748b;">Chưa có câu hỏi VQA nào cho ảnh này.</div>`;
+      document.getElementById("reportModal").classList.add("open");
+    });
+    document.getElementById("btnCloseReport").addEventListener("click", () => document.getElementById("reportModal").classList.remove("open"));
+    document.getElementById("reportModal").addEventListener("click", e => { if (e.target.id === "reportModal") document.getElementById("reportModal").classList.remove("open"); });
+
+    // Bootstrap app
+    (async function init() {
+      try {
+        const [hw, ds] = await Promise.all([apiGet("/api/health"), apiGet("/api/dataset")]);
+        document.getElementById("sidebarSub").textContent = `${hw.dataset_images} ảnh • ${hw.dataset_questions} câu hỏi`;
+        document.getElementById("hwBadge").innerHTML = `<span class="status-dot"></span> ${hw.cuda_available ? "GPU: " + hw.device_name : "CPU Mode"} • ${hw.model_id}`;
+        datasetImages = ds.images || [];
+        document.getElementById("imgTotalCount").textContent = datasetImages.length;
+
+        const sel = document.getElementById("bodyPartFilter");
+        (ds.body_parts || []).forEach(bp => {
+          const opt = document.createElement("option");
+          opt.value = bp;
+          opt.textContent = bp;
+          sel.appendChild(opt);
+        });
+        renderSampleList();
+        if (datasetImages.length) await selectSample(datasetImages[0].filename);
+        await refreshHistory();
+      } catch (err) {
+        document.getElementById("hwBadge").textContent = "⚠️ Chưa kết nối server (chạy: python run_web.py)";
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+question_id,image_name,body_part,question_vi,ground_truth,prediction,success,error,match,f1,time_s
+Q_0001,bung_3.jpg,Bụng / Ổ bụng (Abdomen),Cái nào là gan?,Quả bóng màu xám bên trái,Kết quả giả lập,True,,False,0.2,0.01
+Q_0002,phoi_1.jpg,Phổi / Lồng ngực (Chest),Cơ quan ở bên trái của hình ảnh này là gì?,Gan,Kết quả giả lập,True,,False,0.0,0.0
+Q_0003,phoi_1.jpg,Phổi / Lồng ngực (Chest),Bức ảnh có chứa phổi không?,Có,Kết quả giả lập,True,,False,0.0,0.0
+Q_0004,bung_1.jpg,Bụng / Ổ bụng (Abdomen),Loại triệu chứng nào mà bệnh ở thùy trên bên trái của não trong hình ảnh sẽ mang lại cho bệnh nhân?,"Rối loạn thị giác, nôn mửa, ù tai, tăng áp lực nội sọ",Kết quả giả lập,True,,False,0.0,0.0
+Q_0005,khung_chau_1.jpg,Khung chậu (Pelvic Cavity),Bức ảnh có chứa đại tràng không?,Không,Kết quả giả lập,True,,False,0.0,0.0
