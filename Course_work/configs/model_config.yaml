@@ -1,0 +1,13 @@
+# Default: Vietnamese-oriented experiment; no training.
+model:
+  backend: qwen
+  id: Qwen/Qwen3-VL-2B-Instruct
+  device: auto
+  load_in_4bit: false
+  local_files_only: false
+inference:
+  language: vi
+  max_new_tokens: 128
+  max_image_side: 768
+  max_upload_mb: 15
+  max_question_chars: 1500
