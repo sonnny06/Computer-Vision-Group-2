@@ -1,0 +1,16 @@
+﻿filename,path,width,height,mode,sha256
+anh_dem.jpg,data/input/anh_dem.jpg,2730,4088,RGB,2dff44dc3e45b8ea28c4996018ac28fedb2a68a7d3cda6ec05b078041a7e1c33
+buom.jpg,data/input/buom.jpg,4455,2971,RGB,6c1ad008fac8d586b4b277ea992e0cebb94e11a23badd3ee38e7f9e06c95946b
+chim.jpg,data/input/chim.jpg,6240,4160,RGB,3f23b3680252af93d24c7d1683c81a38b89aca7b7d2cd6cc73c4ce7cc4ebc393
+cong_trinh.jpg,data/input/cong_trinh.jpg,3024,4032,RGB,141fee9a00bab158db7c66160e2b9f82953afce5778b1dcfd9d26f4cbca4514c
+da_mat.jpg,data/input/da_mat.jpg,2832,4256,RGB,ccbc6f72d12b8b82f01ff028ae5919db0a769afd796afa1a7bc446750279c3b2
+mat_meo.jpg,data/input/mat_meo.jpg,6016,4000,RGB,55957540ed47303b13f2e6eaefcd9eb2cf3d77dcb048aba0b34b66d2eece481f
+meo_ngu.jpg,data/input/meo_ngu.jpg,5184,3456,RGB,a9f957d9ba3a6f9b924a22c22268a19bec8e30e492ff603093d813b9235e5d3c
+nui_tuyet.jpg,data/input/nui_tuyet.jpg,3648,5472,RGB,d74e355af06cbd5a153fc150b8a79b4c239c0f0097b093f2f1281a2f952372ce
+pho_co.jpg,data/input/pho_co.jpg,4016,6016,RGB,be930cacf098063873aa4cd25ba34608b579ecfe62eec4adeb0fc0e7481f9e92
+puppy.jpg,data/input/puppy.jpg,4092,3163,RGB,cb8f7bc2f72ddb7cfbe8ecdf302588fac3a28cd90665005dfa5a8679726c89e8
+rau_qua.jpg,data/input/rau_qua.jpg,4284,5712,RGB,6ace68935dcda7641a6d3cdb9d2cffe63c6a2cbb48ee7a6b9fe15c0f7b58ac0a
+rung_cay.jpg,data/input/rung_cay.jpg,5907,3938,RGB,b4bfa8dc52e2dfa901fb89da7c915cc250319c6f7c2fc4ec75eb5c2c016d7bfd
+song_bien.jpg,data/input/song_bien.jpg,6000,4000,RGB,57adbc232b8084a5d3a12c7dd191e9b5360455bc01e33d1eb5fe5feec74e0676
+suong_mu.jpg,data/input/suong_mu.jpg,5990,3369,RGB,efdf3aa5cebee7c410094437e0b863f83b3aa8892c3b1d20f917c965c83f95e2
+thu_vien.jpg,data/input/thu_vien.jpg,5184,3456,RGB,63e76572d4cd8f9439c56c1216d2ebb8cb11a2676bcbcea89f7bbaef2e7f8ee0

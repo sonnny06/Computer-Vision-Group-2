@@ -1,0 +1,5 @@
+config_id,wavelet,level,mode,hash_size,image_scale,n_pairs,n_positive,n_negative,auc
+haar_l1_median,haar,1,median,8,64,105,19,86,0.513157894736842
+db4_l1_median,db4,1,median,8,64,105,19,86,0.5664014687882496
+haar_l2_median,haar,2,median,8,64,105,19,86,0.513157894736842
+haar_l1_mean,haar,1,mean,8,64,105,19,86,0.4697062423500612
