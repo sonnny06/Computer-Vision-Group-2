@@ -648,7 +648,7 @@
 
                 <div class="chat-box" id="chatBox">
                   <div class="chat-empty">
-                    Chọn câu hỏi thật từ bộ <code>questions.csv</code> bên dưới hoặc nhập câu hỏi tiếng Việt bất kỳ về ảnh đang xem.
+                    Chọn câu hỏi gợi ý từ bộ demo hoặc nhập câu hỏi tiếng Việt về ảnh đang xem.
                   </div>
                 </div>
 
@@ -694,18 +694,18 @@
         <section id="tab-eval" class="tab-panel">
           <div class="panel">
             <div class="panel-head">
-              <h2>📊 Đánh giá Mô hình trên Tập Dữ Liệu Thật (F06 — Phúc)</h2>
+              <h2>📊 Đánh giá trên bộ demo (F06 — Phúc)</h2>
               <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
                 <select id="evalScope" style="width:auto;padding:6px 10px;font-size:0.82rem;">
                   <option value="15,25">Nhanh (15 ảnh • 25 câu VQA)</option>
                   <option value="35,100">Mở rộng (35 ảnh • 100 câu VQA)</option>
-                  <option value="35,235">Toàn bộ (35 ảnh • 235 câu VQA)</option>
+                  <option value="35,235">Bộ demo đầy đủ (35 ảnh • 235 câu VQA)</option>
                 </select>
                 <button class="btn btn-primary" id="btnRunEval">▶️ Chạy đánh giá</button>
               </div>
             </div>
             <p style="margin:0;color:var(--muted);font-size:0.88rem;">
-              Gọi trực tiếp hàm <code>compute_bleu1</code> và <code>compute_f1_score</code> trong <code>src/evaluation/</code> trên 35 ảnh y tế thật và 235 câu hỏi tiếng Việt.
+              Trang này tính BLEU-1 và F1 trên bộ demo. Báo cáo thực nghiệm dùng bộ VQA 240 câu trên 150 ảnh.
             </p>
             <div id="evalError" class="error-msg"></div>
 
@@ -765,7 +765,7 @@
               <div class="pipe-arrow">→</div>
               <div class="pipe-node" style="border-top-color:#16a34a;"><strong>5. Pipeline (Bão)</strong><span>engine/pipeline.py<br/>Timeout &amp; Error Codes</span></div>
               <div class="pipe-arrow">→</div>
-              <div class="pipe-node" style="border-top-color:#dc2626;"><strong>6. Evaluation (Phúc)</strong><span>evaluate_*.py<br/>235 câu hỏi VQA</span></div>
+              <div class="pipe-node" style="border-top-color:#dc2626;"><strong>6. Evaluation (Phúc)</strong><span>evaluate_*.py<br/>240 câu VQA thực nghiệm</span></div>
             </div>
 
             <div class="grid-2-equal" style="margin-bottom:20px;">
@@ -786,8 +786,8 @@
                 <tr><td><strong>Sơn</strong></td><td>Application Development</td><td><code>web/index.html</code>, <code>web/server.py</code>, <code>app/app.py</code>, <code>src/utils/history.py</code></td></tr>
                 <tr><td><strong>Thái</strong></td><td>Pre-trained Model Integration</td><td><code>src/models/pretrained_vlm.py</code>, <code>configs/model_config.yaml</code></td></tr>
                 <tr><td><strong>Tôn</strong></td><td>Prompt Engineering</td><td><code>src/utils/prompt.py</code>, <code>configs/prompt_config.yaml</code></td></tr>
-                <tr><td><strong>Trí</strong></td><td>Image Preprocessing &amp; Data</td><td><code>src/preprocessing/image_processing.py</code>, <code>src/data/preprocessing.py</code>, 35 ảnh thật</td></tr>
-                <tr><td><strong>Phúc</strong></td><td>Model Evaluation &amp; Testing</td><td><code>src/evaluation/evaluate_captioning.py</code>, <code>evaluate_vqa.py</code>, 235 câu hỏi</td></tr>
+                <tr><td><strong>Trí</strong></td><td>Image Preprocessing &amp; Data</td><td><code>src/preprocessing/image_processing.py</code>, <code>src/data/preprocessing.py</code>, bộ demo 35 ảnh và 235 câu VQA</td></tr>
+                <tr><td><strong>Phúc</strong></td><td>Model Evaluation &amp; Testing</td><td><code>src/evaluation/evaluate_captioning.py</code>, <code>evaluate_vqa.py</code>, bộ thực nghiệm 240 câu VQA trên 150 ảnh</td></tr>
                 <tr><td><strong>Bão</strong></td><td>Backend &amp; System Integration</td><td><code>src/engine/pipeline.py</code>, <code>schemas.py</code>, <code>errors.py</code>, <code>src/inference/*.py</code></td></tr>
               </tbody>
             </table>
@@ -1068,7 +1068,7 @@
     function renderChat() {
       const box = document.getElementById("chatBox");
       if (!currentChat.length) {
-        box.innerHTML = `<div class="chat-empty">Chọn câu hỏi gợi ý từ <code>questions.csv</code> bên dưới hoặc nhập câu hỏi tiếng Việt bất kỳ về ảnh đang xem.</div>`;
+        box.innerHTML = `<div class="chat-empty">Chọn câu hỏi gợi ý từ bộ demo hoặc nhập câu hỏi tiếng Việt về ảnh đang xem.</div>`;
         return;
       }
       box.innerHTML = currentChat.map((m, idx) => `
@@ -1265,7 +1265,7 @@
     const TAB_TITLES = {
       analyze: "Phân tích hình ảnh y tế (Captioning & VQA)",
       history: "Lịch sử phiên làm việc (F05)",
-      eval: "Đánh giá chất lượng mô hình (F06)",
+      eval: "Đánh giá trên bộ demo (F06)",
       arch: "Kiến trúc hệ thống & Phân công nhóm"
     };
 
