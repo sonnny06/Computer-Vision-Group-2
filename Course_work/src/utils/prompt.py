@@ -42,7 +42,7 @@ def get_vqa_prompt(
     templates = cfg.get("vqa", {})
     if lang not in templates:
         raise ValueError(f"Ngôn ngữ không được hỗ trợ cho VQA: {lang}")
-    return templates[lang].strip().format(question=clean_question)
+    return templates[lang].strip().replace("{question}", clean_question)
 
 
 if __name__ == "__main__":
