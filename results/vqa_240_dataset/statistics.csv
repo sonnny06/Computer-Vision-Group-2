@@ -1,0 +1,30 @@
+﻿group,questions,images,open,closed_yes,closed_no
+all,240,150,172,30,38
+open,172,123,172,0,0
+closed,68,50,0,30,38
+chest,121,106,93,11,17
+chest_xray,113,102,88,11,14
+chest_xray_pa,16,10,11,3,2
+origin / new_vimed,126,121,97,15,14
+origin / restored_handover,5,5,5,0,0
+origin / retained_109,109,27,70,15,24
+dataset_split / handover,114,29,75,15,24
+dataset_split / test,91,87,69,12,10
+dataset_split / validation,35,35,28,3,4
+region_group / Bàn tay,2,2,2,0,0
+region_group / Bụng,34,16,25,8,1
+region_group / Cẳng chân,1,1,1,0,0
+region_group / Cổ,24,5,12,3,9
+region_group / Cổ chân / Bàn chân,1,1,1,0,0
+region_group / Khung chậu,25,7,15,5,5
+region_group / Ngực,121,106,93,11,17
+region_group / Ngực–bụng trên,1,1,1,0,0
+region_group / Vùng hàm và cổ trên,1,1,0,1,0
+region_group / Đầu / Sọ não,30,10,22,2,6
+imaging_modality / CT,110,36,69,19,22
+imaging_modality / MRI,13,8,11,0,2
+imaging_modality / X-quang,117,106,92,11,14
+projection / AP,9,9,6,1,2
+projection / Lateral,1,1,1,0,0
+projection / PA,16,10,11,3,2
+projection / frontal_unspecified,88,83,71,7,10

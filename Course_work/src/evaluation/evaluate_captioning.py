@@ -5,15 +5,19 @@ Cách dùng:
     python src/evaluation/evaluate_captioning.py --mock --limit 10
     python src/evaluation/evaluate_captioning.py --mock
     python src/evaluation/evaluate_captioning.py --output results/caption_eval.csv
+    python src/evaluation/evaluate_captioning.py --summarize-reviews refs.csv predictions.csv rubric.csv
 """
 
 import argparse
 import csv
+import math
 import os
 import re
 import string
 import sys
+from collections import Counter
 from pathlib import Path
+from statistics import mean, median
 
 # Đảm bảo import được src
 _ROOT = Path(__file__).resolve().parents[2]
@@ -192,24 +196,141 @@ def run_caption_evaluation(
     return results
 
 
+_REVIEW_GROUPS = ("modality", "region_group", "pilot_overlap")
+_MATCH_FIELDS = ("modality_match", "body_region_match", "core_structure_1_match", "core_structure_2_match")
+
+
+def _read_by_image_id(path: Path, required_columns: tuple[str, ...]):
+    with path.open(encoding="utf-8-sig", newline="") as file:
+        reader = csv.DictReader(file)
+        expected = {"image_id", *required_columns}
+        missing_columns = expected - set(reader.fieldnames or [])
+        if missing_columns:
+            raise ValueError(f"{path}: thiếu cột {', '.join(sorted(missing_columns))}")
+
+        rows = {}
+        for row in reader:
+            image_id = (row["image_id"] or "").strip()
+            if not image_id:
+                raise ValueError(f"{path}:{reader.line_num}: image_id trống")
+            if image_id in rows:
+                raise ValueError(f"{path}:{reader.line_num}: trùng image_id {image_id}")
+            if any(row[column] is None for column in expected):
+                raise ValueError(f"{path}:{reader.line_num}: dòng {image_id} thiếu trường CSV")
+            rows[image_id] = row
+    return rows
+
+
+def _review_group_summary(field, value, rows):
+    successful = [(review, elapsed) for _, review, elapsed in rows if elapsed is not None]
+    reviews = [review for review, _ in successful]
+    times = [elapsed for _, elapsed in successful]
+    coverage = Counter(review["main_coverage"] for review in reviews)
+    language = Counter(review["vietnamese_clarity"] for review in reviews)
+    return dict(
+        group_by=field, group=value, total_images=len(rows), successful=len(successful),
+        execution_error=len(rows) - len(successful), main_complete=coverage["complete"],
+        main_partial=coverage["partial"], main_none=coverage["none"],
+        **{key: sum(review[key] == "1" for review in reviews) for key in _MATCH_FIELDS},
+        salient_feature_applicable=sum(review["required_feature_match"] in {"0", "1"} for review in reviews),
+        salient_feature_match=sum(review["required_feature_match"] == "1" for review in reviews),
+        contains_contradiction=sum(bool(review["contradicts_evidence"].strip()) for review in reviews),
+        contains_unverified_claim=sum(bool(review["needs_verification"].strip()) for review in reviews),
+        vietnamese_clear=language["clear"], vietnamese_needs_edit=language["needs_edit"],
+        mean_time_s=round(mean(times), 3) if times else "",
+        median_time_s=round(median(times), 3) if times else "",
+        min_time_s=round(min(times), 3) if times else "",
+        max_time_s=round(max(times), 3) if times else "",
+    )
+
+
+def summarize_caption_reviews(references_path: Path, predictions_path: Path, rubric_path: Path):
+    references = _read_by_image_id(references_path, _REVIEW_GROUPS)
+    predictions = _read_by_image_id(predictions_path, ("success", "raw_caption", "time_s"))
+    rubric = _read_by_image_id(rubric_path, (*_MATCH_FIELDS, "required_feature_match", "main_coverage",
+                                             "contradicts_evidence", "needs_verification", "vietnamese_clarity"))
+    if not references:
+        raise ValueError(f"{references_path}: không có image_id để tổng hợp")
+    for path, rows in ((predictions_path, predictions), (rubric_path, rubric)):
+        missing = ", ".join(sorted(references.keys() - rows.keys()))
+        extra = ", ".join(sorted(rows.keys() - references.keys()))
+        if missing or extra:
+            details = [f"thiếu image_id {missing}" if missing else "", f"dư image_id {extra}" if extra else ""]
+            raise ValueError(f"{path}: {' / '.join(filter(None, details))}")
+
+    joined = []
+    for image_id, reference in references.items():
+        prediction = predictions[image_id]
+        review = rubric[image_id]
+        success = prediction["success"].strip().lower()
+        if success not in {"true", "false"}:
+            raise ValueError(f"{predictions_path}: {image_id} có giá trị success không hợp lệ")
+
+        elapsed = None
+        if success == "true":
+            if not prediction["raw_caption"].strip():
+                raise ValueError(f"{predictions_path}: {image_id} thành công nhưng raw_caption trống")
+            try:
+                elapsed = float(prediction["time_s"])
+            except (ValueError, TypeError):
+                raise ValueError(f"{predictions_path}: {image_id} có time_s không hợp lệ") from None
+            if not math.isfinite(elapsed) or elapsed < 0:
+                raise ValueError(f"{predictions_path}: {image_id} có time_s không hợp lệ")
+            if review["main_coverage"] not in {"complete", "partial", "none"}:
+                raise ValueError(f"{rubric_path}: {image_id} có main_coverage không hợp lệ")
+            if review["vietnamese_clarity"] not in {"clear", "needs_edit"}:
+                raise ValueError(f"{rubric_path}: {image_id} có vietnamese_clarity không hợp lệ")
+
+        joined.append((reference, review, elapsed))
+
+    summary = [_review_group_summary("all", f"{len(joined)} ảnh", joined)]
+    for field in _REVIEW_GROUPS:
+        groups = {}
+        for row in joined:
+            groups.setdefault(row[0][field], []).append(row)
+        summary.extend(_review_group_summary(field, value, rows) for value, rows in sorted(groups.items()))
+    return summary
+
+
 def main():
-    parser = argparse.ArgumentParser(description="Đánh giá Medical Image Captioning trên metadata.csv")
-    parser.add_argument("--csv", default=str(_ROOT / "data" / "evaluation" / "metadata.csv"),
-                        help="Đường dẫn file metadata.csv")
-    parser.add_argument("--image-dir", default=str(_ROOT / "data" / "evaluation" / "images"),
-                        help="Thư mục chứa ảnh đánh giá")
+    parser = argparse.ArgumentParser(description="Đánh giá Medical Image Captioning hoặc tổng hợp phiếu đã chấm")
+    parser.add_argument("--csv", type=Path, help="Đường dẫn file metadata.csv")
+    parser.add_argument("--image-dir", type=Path, help="Thư mục chứa ảnh đánh giá")
     parser.add_argument("--mock", action="store_true", help="Dùng model giả lập")
     parser.add_argument("--limit", type=int, default=None, help="Giới hạn số ca cần chạy")
-    parser.add_argument("--output", default=None, help="Đường dẫn lưu kết quả CSV")
+    parser.add_argument("--output", type=Path, help="Đường dẫn lưu kết quả CSV")
+    parser.add_argument("--summarize-reviews", nargs=3, type=Path,
+                        metavar=("REFERENCES", "PREDICTIONS", "RUBRIC"),
+                        help="Tổng hợp phiếu chấm đã lưu theo image_id")
     args = parser.parse_args()
 
+    if args.summarize_reviews:
+        if args.csv or args.image_dir or args.mock or args.limit is not None:
+            parser.error("--summarize-reviews dùng với --output hoặc tự in tổng hợp")
+        try:
+            summary = summarize_caption_reviews(*args.summarize_reviews)
+        except (OSError, ValueError) as exc:
+            parser.error(str(exc))
+        if args.output:
+            args.output.parent.mkdir(parents=True, exist_ok=True)
+            with args.output.open("w", encoding="utf-8-sig", newline="") as file:
+                writer = csv.DictWriter(file, fieldnames=list(summary[0]))
+                writer.writeheader()
+                writer.writerows(summary)
+        else:
+            writer = csv.DictWriter(sys.stdout, fieldnames=list(summary[0]))
+            writer.writeheader()
+            writer.writerows(summary)
+        return
+
     use_mock = args.mock or os.getenv("USE_MOCK") == "1"
+    data_dir = _ROOT / "data" / "evaluation"
     run_caption_evaluation(
-        csv_path=Path(args.csv),
-        image_dir=Path(args.image_dir),
+        csv_path=args.csv or data_dir / "metadata.csv",
+        image_dir=args.image_dir or data_dir / "images",
         use_mock=use_mock,
         limit=args.limit,
-        output_path=Path(args.output) if args.output else None,
+        output_path=args.output,
     )
 
 

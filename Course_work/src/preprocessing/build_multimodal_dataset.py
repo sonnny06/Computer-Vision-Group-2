@@ -661,7 +661,11 @@ fieldnames_q = [
     "question_en", "answer_en", "modality", "source"
 ]
 
-for out_csv in [DEST_CW_IMAGES / "questions.csv", DEST_CW_EVAL / "questions.csv", DEST_ROOT_DATA / "questions.csv"]:
+for out_csv in [
+    DEST_CW_IMAGES / "questions.csv",
+    DEST_CW_EVAL / "questions_handover_235.csv",
+    DEST_ROOT_DATA / "questions.csv",
+]:
     with open(out_csv, "w", encoding="utf-8-sig", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames_q)
         writer.writeheader()

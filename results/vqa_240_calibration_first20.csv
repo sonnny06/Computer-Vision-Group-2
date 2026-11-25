@@ -1,0 +1,21 @@
+candidate_id,source_split,image_key,decision,reason
+slake_2513,test,I002,eligible,Hai phế trường chiếm phần lớn ảnh ngực. Câu Việt cần biên tập lại.
+slake_471,test,I006,exclude,So khớp với phoi_5.jpg sau resize và mã hóa lại. Ưu tiên ảnh chưa có trong bộ 109.
+slake_2555,test,I017,eligible,Phim thấy lồng ngực với hai phế trường và xương sườn. Sửa câu dịch về vị trí thành câu hỏi vùng cơ thể.
+slake_1891,test,I018,exclude,Ảnh có vùng tăng đậm độ đáy phải. Mức bằng chứng hiện có chưa xác nhận riêng nhãn xẹp phổi.
+slake_2539,test,I027,exclude,Ảnh chiếu ngực thẳng. Câu gốc gọi đây là mặt cắt vành và gán Có.
+slake_2239,test,I047,eligible,Phế trường phải tối trên ảnh. Diễn đạt màu theo thang xám của phim.
+slake_1928,test,I058,eligible,Ảnh chiếu thẳng nên nhãn Không cho mặt cắt ngang có căn cứ. Bỏ ký tự Hoa lẫn trong bản Việt.
+slake_2028,test,I030,eligible,Ảnh chiếu ngực có các cấu trúc chồng hình và đáp án Không cho câu hỏi CT.
+slake_2354,test,I066,eligible,Hai phế trường thấy được. Giới hạn câu hỏi vào ảnh. Chữ AP trên phim là căn cứ về tư thế.
+slake_2099,test,I080,eligible,Xương sườn và phế trường chồng hình trên phim ngực. Chuẩn hóa X-Ray thành X-quang.
+vqarad_395,test,I052,hold,Ảnh xác nhận phép chiếu thẳng. Nhãn AP có trong annotation nhưng chữ đánh dấu tư thế chưa đọc được.
+vqarad_414,test,I124,exclude,Chữ PA có trên phim. Cấu trúc hơi chồng lên vòm hoành và ảnh thiếu căn cứ để nhận diện chắc đâu là bóng hơi dạ dày.
+vqarad_834,test,I084,exclude,Vùng sau bóng tim có các cấu trúc chồng hình. Chưa đủ căn cứ xác nhận mức tăng đậm độ từ ảnh đơn.
+vqarad_1470,validation,I415,eligible,"Annotation đúng ảnh ghi PA, phù hợp phim ngực chiếu thẳng. Sửa thuật ngữ câu hỏi sang tư thế chụp và ghi rõ căn cứ là annotation."
+slake_4280,test,I003,exclude,Khó phân định tủy sống trên lát cắt này. Annotation gốc thuộc KG và bản dịch Đồng Điều sai.
+slake_1244,validation,I442,eligible,Thấy gan chiếm phần lớn phía trái ảnh ở lát cắt bụng trên. Câu Việt và Anh cùng hỏi gan có xuất hiện.
+vqarad_207,test,I188,eligible,Thấy hai ổ mắt trên ảnh cắt ngang đầu. Bản Việt nguồn chứa nguyên câu tiếng Anh nên cần dịch.
+Q_0119,handover,phoi_4.jpg,restore,Phim và qid 1842 cùng xác nhận vùng ngực. Sửa câu hỏi thành vùng cơ thể để khớp đáp án và giữ ID.
+Q_0182,handover,co_1.jpg,exclude,Ảnh xác nhận vùng cổ nhưng sau khi sửa thành câu hỏi vùng cơ thể sẽ trùng ý Q_0075 trên cùng ảnh.
+Q_0212,handover,tay_1.jpg,restore,"Ảnh nguồn no-fracture.jpg khớp bản bàn giao. Trường ảnh nghiêng thấy cẳng chân dưới, khớp cổ chân và bàn chân. Sửa đáp án gốc Arm và giữ ID."

@@ -43,7 +43,7 @@ inject_light_clinical_css()
 @st.cache_data
 def load_dataset():
     meta_df = pd.read_csv(DATA_DIR / "metadata.csv")
-    q_df = pd.read_csv(DATA_DIR / "questions.csv")
+    q_df = pd.read_csv(DATA_DIR / "questions_handover_235.csv")
     return meta_df, q_df
 
 
@@ -176,7 +176,7 @@ with tab_main:
         st.subheader("3. Medical VQA tiếng Việt (F03)")
         img_qs = q_df[q_df["image_name"] == active_name]["question_vi"].tolist()[:4] if active_name else []
         if img_qs:
-            st.caption("Câu hỏi gợi ý từ bộ questions.csv của nhóm:")
+            st.caption("Câu hỏi gợi ý từ bộ 235 câu bàn giao của nhóm:")
             cols = st.columns(2)
             for idx, q_txt in enumerate(img_qs):
                 if cols[idx % 2].button(f"💡 {q_txt}", key=f"qq_{idx}", use_container_width=True):

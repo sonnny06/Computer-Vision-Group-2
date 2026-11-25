@@ -52,11 +52,11 @@ def show(title, result):
 
 
 def run_from_dataset(num_samples: int = 5):
-    """Lấy mẫu câu hỏi từ questions.csv và metadata.csv để chạy thử."""
+    """Lấy mẫu câu hỏi bàn giao và metadata.csv để chạy thử."""
     from src.inference.captioning import generate_caption
     from src.inference.vqa import answer_question
 
-    q_file = BASE / "data" / "evaluation" / "questions.csv"
+    q_file = BASE / "data" / "evaluation" / "questions_handover_235.csv"
     meta_file = BASE / "data" / "evaluation" / "metadata.csv"
     img_dir = BASE / "data" / "evaluation" / "images"
 
@@ -133,7 +133,7 @@ def main():
     parser.add_argument("--mock", action="store_true",
                         help="Dùng model giả (không cần GPU)")
     parser.add_argument("--dataset", action="store_true",
-                        help="Chạy thử mẫu câu hỏi lấy từ questions.csv & metadata.csv")
+                        help="Chạy thử mẫu từ bộ 235 câu bàn giao và metadata.csv")
     parser.add_argument("-n", "--num-samples", type=int, default=5,
                         help="Số lượng mẫu chạy khi dùng --dataset (mặc định 5)")
     parser.add_argument("--no-error-tests", action="store_true")

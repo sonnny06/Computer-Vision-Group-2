@@ -1,0 +1,45 @@
+Captioning mở rộng | 2026-11-24T23:23:40+07:00 | commit 41e1c65b866c5ffcfeb21615bdf7ea5fffe6fb4c | sha tham chiếu 739bcc4439d187c5d095a5a870127d482d306835db2f9625a688f7ca5d3b89ce
+Qwen/Qwen3-VL-2B-Instruct @89644892e4d85e24eaac8bacfd4f463576704203 | 0/35 ảnh đã lưu
+Python 3.11.9 | torch 2.8.0+cu128 | CUDA 12.8
+transformers 4.57.6 | huggingface_hub 0.36.2 | torchvision 0.23.0+cu128 | accelerate 1.16.0
+GPU NVIDIA GeForce RTX 4050 Laptop GPU | VRAM rảnh/tổng (byte) (5318377472, 6438780928)
+{"model": {"backend": "qwen", "id": "Qwen/Qwen3-VL-2B-Instruct", "device": "auto", "dtype": "auto", "load_in_4bit": false, "local_files_only": false}, "inference": {"language": "vi", "max_new_tokens": 128, "max_image_side": 768, "max_upload_mb": 15, "max_question_chars": 1500}}
+build_pipeline(use_mock=False) 16.360 s | cuda:0 | torch.bfloat16
+task=caption | prompt=caption.vi | do_sample=False | use_cache=True
+The following generation flags are not valid and may be ignored: ['temperature', 'top_p', 'top_k']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+01/35 PHOI_1 | success=True | 11.947 s | 
+02/35 PHOI_2 | success=True | 7.561 s | 
+03/35 PHOI_3 | success=True | 12.487 s | 
+04/35 PHOI_4 | success=True | 10.295 s | 
+05/35 PHOI_5 | success=True | 10.334 s | 
+06/35 NAO_1 | success=True | 12.070 s | 
+07/35 NAO_2 | success=True | 15.113 s | 
+08/35 NAO_3 | success=True | 15.286 s | 
+09/35 NAO_4 | success=True | 15.454 s | 
+10/35 NAO_5 | success=True | 8.478 s | 
+11/35 BUNG_1 | success=True | 8.363 s | 
+12/35 BUNG_2 | success=True | 14.267 s | 
+13/35 BUNG_3 | success=True | 24.833 s | 
+14/35 BUNG_4 | success=True | 16.559 s | 
+15/35 BUNG_5 | success=True | 15.967 s | 
+16/35 KHUNG_CHAU_1 | success=True | 18.487 s | 
+17/35 KHUNG_CHAU_2 | success=True | 10.049 s | 
+18/35 KHUNG_CHAU_3 | success=True | 11.625 s | 
+19/35 KHUNG_CHAU_4 | success=True | 10.738 s | 
+20/35 KHUNG_CHAU_5 | success=True | 8.690 s | 
+21/35 CO_1 | success=True | 9.292 s | 
+22/35 CO_2 | success=True | 8.989 s | 
+23/35 CO_3 | success=True | 9.156 s | 
+24/35 CO_4 | success=True | 11.623 s | 
+25/35 CO_5 | success=True | 8.359 s | 
+26/35 TAY_1 | success=True | 7.553 s | 
+27/35 TAY_2 | success=True | 5.481 s | 
+28/35 TAY_3 | success=True | 8.411 s | 
+29/35 TAY_4 | success=True | 8.472 s | 
+30/35 TAY_5 | success=True | 9.840 s | 
+31/35 CHAN_1 | success=True | 7.624 s | 
+32/35 CHAN_2 | success=True | 7.343 s | 
+33/35 CHAN_3 | success=True | 5.463 s | 
+34/35 CHAN_4 | success=True | 8.238 s | 
+35/35 CHAN_5 | success=True | 9.610 s | 
+Hoàn tất 35 ảnh | 2026-11-24T23:30:21+07:00

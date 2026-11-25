@@ -1,0 +1,17 @@
+﻿group_by,group,total_images,successful,execution_error,main_complete,main_partial,main_none,modality_match,body_region_match,core_structure_1_match,core_structure_2_match,salient_feature_applicable,salient_feature_match,contains_contradiction,contains_unverified_claim,vietnamese_clear,vietnamese_needs_edit,mean_time_s,median_time_s,min_time_s,max_time_s
+all,35 ảnh,35,35,0,9,26,0,34,27,15,17,6,2,23,27,15,20,10.973,9.84,5.463,24.833
+modality,CT,20,20,0,6,14,0,19,17,10,8,0,0,16,14,12,8,12.618,11.624,7.561,24.833
+modality,MRI,2,2,0,0,2,0,2,2,1,0,2,1,0,2,0,2,10.274,10.274,8.478,12.07
+modality,X-quang,13,13,0,3,10,0,13,8,4,9,4,1,7,11,3,10,8.55,8.411,5.463,12.487
+region_group,Bàn tay,4,4,0,0,4,0,4,4,1,3,1,0,0,3,0,4,9.04,9.041,8.238,9.84
+region_group,Bụng,3,3,0,0,3,0,3,3,2,1,0,0,3,3,3,0,14.825,15.967,11.947,16.559
+region_group,Bụng–đáy ngực,3,3,0,2,1,0,3,3,2,3,0,0,2,3,3,0,15.821,14.267,8.363,24.833
+region_group,Cẳng chân,2,2,0,0,2,0,2,0,0,0,1,0,2,1,0,2,7.484,7.484,7.343,7.624
+region_group,Cẳng tay–bàn tay,2,2,0,0,2,0,2,0,0,2,0,0,2,2,1,1,6.946,6.946,5.481,8.411
+region_group,Cổ,5,5,0,1,4,0,4,5,1,1,0,0,3,2,3,2,9.484,9.156,8.359,11.623
+region_group,Cổ chân–bàn chân,2,2,0,0,2,0,2,1,0,1,1,0,2,2,0,2,6.508,6.508,5.463,7.553
+region_group,Khung chậu,5,5,0,0,5,0,5,2,1,0,0,0,4,3,1,4,11.918,10.738,8.69,18.487
+region_group,Ngực,4,4,0,4,0,0,4,4,4,4,1,1,2,4,3,1,10.169,10.315,7.561,12.487
+region_group,Đầu,5,5,0,2,3,0,5,5,4,2,2,1,3,4,1,4,13.28,15.113,8.478,15.454
+pilot_overlap,0,32,32,0,6,26,0,31,24,12,14,5,1,22,24,13,19,10.967,9.451,5.463,24.833
+pilot_overlap,1,3,3,0,3,0,0,3,3,3,3,1,1,1,3,2,1,11.039,10.334,10.295,12.487
