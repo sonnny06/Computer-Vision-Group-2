@@ -8,7 +8,7 @@ python run_web.py
 ```
 Trình duyệt sẽ tự mở tại `http://127.0.0.1:8000` với đầy đủ 6 chức năng **F01 – F06**, bộ demo gồm 35 ảnh y tế thật (7 vùng cơ thể) và 235 câu hỏi tiếng Việt, khoanh vùng dị thường OpenCV và xuất phiếu báo cáo PDF.
 
-Evaluator VQA dùng bộ thực nghiệm chính thức gồm 240 câu trên 150 ảnh. Xem kết quả và cách tái lập trong [báo cáo thực nghiệm](docs/evaluation_report.md).
+Bộ đánh giá VQA chính gồm [199 cặp câu hỏi Anh–Việt trên 127 ảnh](data/evaluation/questions.csv). CLI hiện chạy phía tiếng Việt theo mặc định. Việc chọn cặp dựa trên kết quả đã biết, nên tỷ lệ đo trên bộ này mô tả hiệu năng trên các cặp được chọn.
 
 ## 2. Cách chạy giao diện Streamlit
 ```powershell
