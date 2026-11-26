@@ -1,0 +1,60 @@
+﻿answer_type,answer_vi,total,images,retained_109,restored_handover,vimed_test,vimed_validation
+closed,Không,38,32,24,0,10,4
+closed,Có,30,26,15,0,12,3
+open,X-quang,20,20,2,0,10,8
+open,Lồng ngực,19,19,0,1,13,5
+open,Phổi,19,19,5,0,10,4
+open,CT,8,8,6,0,2,0
+open,Hô hấp,6,6,0,0,3,3
+open,Đen hoặc xám đậm,6,6,0,0,6,0
+open,2,5,5,2,0,2,1
+open,Bụng,5,5,3,0,2,0
+open,MRI,4,4,2,0,2,0
+open,Tim,4,4,1,0,3,0
+open,1,3,3,1,0,1,1
+open,Gan,3,3,3,0,0,0
+open,Khoang chậu,3,3,3,0,0,0
+open,PA (sau–trước),3,3,0,0,1,2
+open,Phổi phải,3,3,1,0,1,1
+open,Đen,3,3,3,0,0,0
+open,Đầu,3,3,2,1,0,0
+open,Ở giữa,3,3,3,0,0,0
+open,0,2,2,1,0,1,0
+open,Bàn tay,2,2,1,1,0,0
+open,Bàng quang,2,2,2,0,0,0
+open,Khoảng trống màu đen,2,2,2,0,0,0
+open,Khung chậu,2,2,0,0,2,0
+open,Màu xám,2,2,2,0,0,0
+open,Mặt cắt ngang,2,2,0,0,2,0
+open,Phế trường,2,2,0,0,2,0
+open,Phổi trái,2,2,2,0,0,0
+open,Thanh quản,2,2,2,0,0,0
+open,Thực quản,2,2,2,0,0,0
+open,Trực tràng,2,2,2,0,0,0
+open,Đầu (não),2,2,0,1,1,0
+open,Bên phải,1,1,0,0,0,1
+open,Bên trái ảnh,1,1,1,0,0,0
+open,Bờ trái,1,1,0,0,0,1
+open,Cao hơn mức ổ mắt,1,1,0,0,1,0
+open,Chứa nước tiểu,1,1,1,0,0,0
+open,Cổ,1,1,1,0,0,0
+open,Cổ chân và bàn chân,1,1,0,1,0,0
+open,Dưới khí quản,1,1,1,0,0,0
+open,Dẫn khí,1,1,1,0,0,0
+open,Giữa,1,1,1,0,0,0
+open,"Hệ hô hấp, hệ tim mạch và hệ cơ xương",1,1,0,0,1,0
+open,Lan tỏa hai bên phổi,1,1,0,0,1,0
+open,Lá lách,1,1,1,0,0,0
+open,Mô vú hai bên,1,1,0,0,1,0
+open,Mắt,1,1,1,0,0,0
+open,Mặt phẳng ngang,1,1,1,0,0,0
+open,Ngực,1,1,1,0,0,0
+open,Não,1,1,1,0,0,0
+open,T2,1,1,1,0,0,0
+open,Trái tim,1,1,1,0,0,0
+open,"Trực tràng, ruột non",1,1,1,0,0,0
+open,Vùng tròn màu xám ở bên trái ảnh,1,1,1,0,0,0
+open,X-quang ngực tư thế PA (sau–trước),1,1,0,0,0,1
+open,Xung quanh bàng quang,1,1,1,0,0,0
+open,Xương cẳng chân,1,1,1,0,0,0
+open,Ảnh chiếu thẳng,1,1,0,0,1,0

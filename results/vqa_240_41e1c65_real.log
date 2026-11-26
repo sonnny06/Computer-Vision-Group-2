@@ -1,0 +1,543 @@
+Phiên đánh giá 2026-11-24T21:38:36+07:00
+CSV SHA-256 b1532e857a96c55764dd70862b638a83c5814bdb175ed8ed8e8a2b903c9640b9
+Checkout 41e1c65b866c5ffcfeb21615bdf7ea5fffe6fb4c | Qwen Qwen/Qwen3-VL-2B-Instruct @89644892e4d85e24eaac8bacfd4f463576704203
+Python 3.11.9 | PyTorch 2.8.0+cu128 | CUDA 12.8
+transformers 4.57.6 | huggingface_hub 0.36.2 | torchvision 0.23.0+cu128 | accelerate 1.16.0
+GPU NVIDIA GeForce RTX 4050 Laptop GPU | VRAM rảnh/tổng (byte) (5318377472, 6438780928)
+=== ĐÁNH GIÁ MEDICAL VQA ===
+Tập dữ liệu   : questions.csv (Chạy 240/240 câu)
+Thư mục ảnh   : D:\projectComputerVision\results\vqa_240_dataset\images
+Chế độ chạy   : MODEL THẬT
+-----------------------------------------------------------------
+Số câu đã lưu trong checkpoint: 0
+Khởi tạo pipeline trước khi chạy các câu: 25.234 giây
+The following generation flags are not valid and may be ignored: ['temperature', 'top_p', 'top_k']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+[001/240] Q_0001 | bung_3.jpg | score | pending_manual
+      Tham chiếu: Vùng tròn màu xám ở bên trái ảnh | Đầu ra: Gan không xuất hiện trong ảnh này. Ảnh chỉ hiển thị phần ngực và cơ thể, không c
+[002/240] Q_0005 | khung_chau_1.jpg | score | needs_review
+      Tham chiếu: Không | Đầu ra: Bức ảnh cho thấy một cấu trúc hình cầu lớn ở giữa, nằm trong vùng bụng, có thể l
+[003/240] Q_0006 | nao_2.jpg | score | pending_manual
+      Tham chiếu: Đầu | Đầu ra: Hình ảnh này là hình ảnh cắt ngang của não bộ, thuộc bộ phận cơ thể là hệ thần k
+[004/240] Q_0008 | phoi_4.jpg | score | pending_manual
+      Tham chiếu: 1 | Đầu ra: Ảnh không đủ rõ hoặc không chứa thông tin để trả lời câu hỏi này.
+[005/240] Q_0009 | nao_5.jpg | score | pending_manual
+      Tham chiếu: MRI | Đầu ra: Hình ảnh này là hình ảnh chụp não bằng phương pháp MRI (Magnetic Resonance Imagi
+[006/240] Q_0011 | khung_chau_1.jpg | score | needs_review
+      Tham chiếu: Có | Đầu ra: Bức ảnh cho thấy một cơ quan hình cầu lớn ở giữa, nằm trong vùng bụng, có thể là
+[007/240] Q_0013 | khung_chau_3.jpg | score | incorrect
+      Tham chiếu: Có | Đầu ra: Không, bức ảnh không chứa cơ quan có tác dụng tiêu hóa thức ăn. Các cơ quan được
+[008/240] Q_0014 | khung_chau_4.jpg | score | incorrect
+      Tham chiếu: Không | Đầu ra: Ảnh không đủ rõ hoặc không chứa thông tin để trả lời câu hỏi này.
+[009/240] Q_0015 | khung_chau_5.jpg | score | pending_manual
+      Tham chiếu: Chứa nước tiểu | Đầu ra: Cơ quan màu xám đậm ở giữa ảnh là cơ quan sinh dục nam, có chức năng sản xuất ti
+[010/240] Q_0016 | bung_2.jpg | score | pending_manual
+      Tham chiếu: Phổi trái | Đầu ra: Cơ quan ở bên phải nhất trong hình ảnh này là gan. Gan có hình dạng lớn, màu sán
+[011/240] Q_0017 | bung_4.jpg | score | pending_manual
+      Tham chiếu: CT | Đầu ra: Hình ảnh này được chụp bằng phương pháp chụp cắt lớp vi tính (CT).
+[012/240] Q_0019 | bung_3.jpg | score | pending_manual
+      Tham chiếu: Tim | Đầu ra: Trong hình ảnh này, tim lớn hơn gan. Tim có thể được nhìn thấy rõ hơn ở vị trí t
+[013/240] Q_0021 | co_3.jpg | score | pending_manual
+      Tham chiếu: Thực quản | Đầu ra: Cơ quan trong hình thuộc hệ tiêu hóa là miệng, được nhìn thấy ở phần trên của hì
+[014/240] Q_0024 | bung_5.jpg | score | correct
+      Tham chiếu: Có | Đầu ra: Có, bức ảnh có chứa lách. Lách được nhìn thấy ở phía bên trái của hình ảnh, nằm 
+[015/240] Q_0025 | khung_chau_2.jpg | score | pending_manual
+      Tham chiếu: Trực tràng, ruột non | Đầu ra: Ảnh không đủ rõ hoặc không chứa thông tin để trả lời câu hỏi này.
+[016/240] Q_0026 | nao_3.jpg | score | pending_manual
+      Tham chiếu: 2 | Đầu ra: Trong hình ảnh này, có thể thấy rõ hai thùy thái dương (thùy thái dương) ở hai b
+[017/240] Q_0027 | bung_5.jpg | score | correct
+      Tham chiếu: Có | Đầu ra: Có, bức ảnh có chứa gan. Gan được nhìn thấy ở phía bên trái của hình ảnh, có hìn
+[018/240] Q_0028 | nao_2.jpg | score | pending_manual
+      Tham chiếu: Mắt | Đầu ra: Bộ phận trong hình thuộc cơ quan cảm giác là não.
+[019/240] Q_0032 | co_4.jpg | score | incorrect
+      Tham chiếu: Không | Đầu ra: Có, thực quản có thể được nhìn thấy trong hình ảnh này. Nó nằm ở vị trí giữa các
+[020/240] Q_0040 | co_2.jpg | score | needs_review
+      Tham chiếu: Có | Đầu ra: Bức ảnh cho thấy tủy sống ở vùng cổ, nằm giữa các cột sống và các cơ quan lân cậ
+[021/240] Q_0045 | khung_chau_1.jpg | score | pending_manual
+      Tham chiếu: Trực tràng | Đầu ra: Trong hình ảnh này, bàng quang là cấu trúc lớn nhất, nằm ở vị trí trung tâm, có 
+[022/240] Q_0046 | co_5.jpg | score | correct
+      Tham chiếu: Không | Đầu ra: Không, hình ảnh này là một hình ảnh CT của vùng cổ, không phải khoang chậu. Các 
+[023/240] Q_0047 | khung_chau_4.jpg | score | pending_manual
+      Tham chiếu: Xung quanh bàng quang | Đầu ra: Ruột non nằm ở vị trí giữa hai bên bắp chân, gần trung tâm hình ảnh, bên trong c
+[024/240] Q_0051 | bung_4.jpg | score | pending_manual
+      Tham chiếu: Mặt phẳng ngang | Đầu ra: Ảnh được chụp ở mặt phẳng ngang (axial), vì trong hình có thể thấy rõ các cấu tr
+[025/240] Q_0052 | khung_chau_1.jpg | score | pending_manual
+      Tham chiếu: Khoang chậu | Đầu ra: Hình ảnh này là một hình ảnh cắt ngang của cơ thể, cho thấy vùng bụng và phần dư
+[026/240] Q_0054 | co_1.jpg | score | incorrect
+      Tham chiếu: Không | Đầu ra: Ảnh không đủ rõ hoặc không chứa thông tin để trả lời câu hỏi này.
+[027/240] Q_0056 | phoi_1.jpg | score | pending_manual
+      Tham chiếu: Bụng | Đầu ra: Hình ảnh này là một cắt ngang của cơ thể người, cho thấy các cấu trúc trong vùng
+[028/240] Q_0058 | phoi_3.jpg | score | pending_manual
+      Tham chiếu: X-quang | Đầu ra: Ảnh được chụp bằng phương thức X-quang.
+[029/240] Q_0062 | co_3.jpg | score | correct
+      Tham chiếu: Không | Đầu ra: Không, hình ảnh này là một mặt cắt của cơ thể, không phải mặt cắt vành. Trong hì
+[030/240] Q_0065 | khung_chau_5.jpg | score | pending_manual
+      Tham chiếu: Khoang chậu | Đầu ra: Hình ảnh này là một hình ảnh cắt ngang (CT) của vùng hậu môn – trực tràng, được 
+[031/240] Q_0071 | nao_1.jpg | score | pending_manual
+      Tham chiếu: Đầu | Đầu ra: Hình ảnh này là một hình ảnh cắt ngang của não bộ, cụ thể là hình ảnh cắt ngang 
+[032/240] Q_0072 | nao_3.jpg | score | pending_manual
+      Tham chiếu: Não | Đầu ra: Hình ảnh cho thấy phần đầu não, bao gồm cả não và các cấu trúc liên quan như não
+[033/240] Q_0073 | nao_1.jpg | score | correct
+      Tham chiếu: Không | Đầu ra: Không, hình ảnh này là một hình ảnh cắt ngang của não người, không phải là nghiê
+[034/240] Q_0074 | nao_2.jpg | score | correct
+      Tham chiếu: Không | Đầu ra: Không, bức ảnh không chứa xương hàm dưới. Hình ảnh chỉ hiển thị phần đầu não, kh
+[035/240] Q_0075 | co_1.jpg | score | pending_manual
+      Tham chiếu: Cổ | Đầu ra: Hình ảnh này là một cắt ngang của cơ thể ở vùng cổ, cho thấy các cấu trúc như xư
+[036/240] Q_0077 | phoi_1.jpg | score | pending_manual
+      Tham chiếu: Gan | Đầu ra: Gan là phần lớn nhất trong hình ảnh này.
+[037/240] Q_0078 | co_1.jpg | score | correct
+      Tham chiếu: Không | Đầu ra: Không, dạ dày không xuất hiện trong hình ảnh này. Hình ảnh chỉ hiển thị phần mặt
+[038/240] Q_0079 | phoi_1.jpg | score | pending_manual
+      Tham chiếu: Bên trái ảnh | Đầu ra: Gan nằm ở bên trái của hình ảnh, gần với vùng bụng trên, bên cạnh các cơ quan nh
+[039/240] Q_0080 | phoi_3.jpg | score | pending_manual
+      Tham chiếu: Đen | Đầu ra: Phổi trong hình ảnh có màu tối, đặc biệt ở phần giữa và dưới, cho thấy sự giảm đ
+[040/240] Q_0081 | nao_5.jpg | score | pending_manual
+      Tham chiếu: T2 | Đầu ra: Ảnh này là MRI trọng T1, vì các vùng não có màu sáng, đặc biệt là vùng có thể là
+[041/240] Q_0082 | phoi_3.jpg | score | incorrect
+      Tham chiếu: Không | Đầu ra: Có, phổi phải có dấu hiệu bất thường. Phổi phải có vùng mờ, không đều và có thể 
+[042/240] Q_0083 | nao_3.jpg | score | pending_manual
+      Tham chiếu: CT | Đầu ra: Hình ảnh này là một hình ảnh CT đầu, được chụp theo góc nhìn từ phía trước, với 
+[043/240] Q_0085 | khung_chau_2.jpg | score | pending_manual
+      Tham chiếu: Khoang chậu | Đầu ra: Ảnh chụp vùng hậu môn và bàng quang.
+[044/240] Q_0086 | bung_3.jpg | score | pending_manual
+      Tham chiếu: Phổi phải | Đầu ra: Phần màu đen ở bên trái của hình ảnh là phổi.
+[045/240] Q_0090 | bung_2.jpg | score | needs_review
+      Tham chiếu: Có | Đầu ra: Bức ảnh cho thấy một cấu trúc hình dạng tròn, nằm ở vị trí giữa các cơ quan tron
+[046/240] Q_0093 | khung_chau_5.jpg | score | pending_manual
+      Tham chiếu: Bàng quang | Đầu ra: Cơ quan trong hình thuộc hệ tiết niệu là cơ quan sinh dục nam, cụ thể là cơ quan
+[047/240] Q_0094 | co_4.jpg | score | correct
+      Tham chiếu: Không | Đầu ra: Không, hình ảnh không chứa thân não. Hình ảnh hiển thị một phần của cơ thể, cụ t
+[048/240] Q_0096 | co_4.jpg | score | pending_manual
+      Tham chiếu: Đen | Đầu ra: Ảnh không đủ rõ hoặc không chứa thông tin để trả lời câu hỏi này.
+[049/240] Q_0097 | bung_2.jpg | score | pending_manual
+      Tham chiếu: Bụng | Đầu ra: Hình ảnh này là một hình ảnh cắt ngang của cơ thể, cho thấy phần bụng và các cơ 
+[050/240] Q_0100 | co_4.jpg | score | pending_manual
+      Tham chiếu: Thanh quản | Đầu ra: Vùng rỗng màu đen ở phía trên ảnh là vùng khí quản. Đây là một cơ quan trong hệ 
+[051/240] Q_0102 | nao_2.jpg | score | pending_manual
+      Tham chiếu: Ở giữa | Đầu ra: Thân não nằm ở giữa hình ảnh, phía sau các cơ quan mặt và ở vị trí trung tâm của
+[052/240] Q_0104 | nao_1.jpg | score | pending_manual
+      Tham chiếu: MRI | Đầu ra: Hình ảnh này là một hình ảnh cắt ngang (magnetic resonance imaging - MRI) của nã
+[053/240] Q_0108 | co_5.jpg | score | pending_manual
+      Tham chiếu: Màu xám | Đầu ra: Tủy sống trong hình ảnh có màu trắng, do nó là cấu trúc có mật độ cao và phản ch
+[054/240] Q_0110 | phoi_4.jpg | score | correct
+      Tham chiếu: Không | Đầu ra: Không, đây là một hình ảnh chụp X-quang ngực, không phải mặt cắt ngang. Hình ảnh
+[055/240] Q_0112 | nao_4.jpg | score | incorrect
+      Tham chiếu: Không | Đầu ra: Ảnh không đủ rõ hoặc không chứa thông tin để trả lời câu hỏi này.
+[056/240] Q_0117 | bung_1.jpg | score | pending_manual
+      Tham chiếu: Phổi | Đầu ra: Cơ quan lớn nhất trong hình là gan. Gan có hình dạng lớn, nằm ở vị trí trung tâm
+[057/240] Q_0118 | khung_chau_3.jpg | score | pending_manual
+      Tham chiếu: Bàng quang | Đầu ra: Phần màu xám đậm ở trung tâm của hình ảnh là cơ quan sinh dục nam.
+[058/240] Q_0120 | nao_3.jpg | score | needs_review
+      Tham chiếu: Có | Đầu ra: Đây là một hình ảnh CT đầu, cho thấy cấu trúc đầu và não. Hình ảnh cho thấy các 
+[059/240] Q_0123 | co_2.jpg | score | correct
+      Tham chiếu: Không | Đầu ra: Không, cơ quan trong hình ảnh không nằm trong đầu. Hình ảnh cho thấy một cấu trú
+[060/240] Q_0126 | nao_2.jpg | score | pending_manual
+      Tham chiếu: 2 | Đầu ra: Trong hình ảnh này, có thể thấy rõ hai thùy thái dương (thùy thái dương) ở hai b
+[061/240] Q_0130 | co_2.jpg | score | pending_manual
+      Tham chiếu: Dưới khí quản | Đầu ra: Thực quản nằm ở vị trí giữa hai bên họng, gần vùng cổ, và có thể thấy rõ ở phần 
+[062/240] Q_0131 | nao_2.jpg | score | pending_manual
+      Tham chiếu: Đen | Đầu ra: Mắt trong ảnh có màu đen, không có bất kỳ màu sắc nào khác. Mắt có thể là mắt ph
+[063/240] Q_0132 | khung_chau_3.jpg | score | correct
+      Tham chiếu: Không | Đầu ra: Không, thùy thái dương không xuất hiện trong hình ảnh này. Hình ảnh cho thấy một
+[064/240] Q_0133 | phoi_2.jpg | score | pending_manual
+      Tham chiếu: Trái tim | Đầu ra: Cơ quan ở phần trên của ảnh là tim. Hình ảnh cho thấy tim nằm ở vị trí trung tâm
+[065/240] Q_0134 | khung_chau_2.jpg | score | correct
+      Tham chiếu: Không | Đầu ra: Không, hình ảnh này là một mặt cắt cắt ngang của cơ thể, không phải mặt cắt vành
+[066/240] Q_0135 | phoi_1.jpg | score | pending_manual
+      Tham chiếu: Lá lách | Đầu ra: Cơ quan ở bên phải nhất trong hình ảnh này là thận. Ảnh không đủ rõ hoặc không c
+[067/240] Q_0136 | phoi_2.jpg | score | correct
+      Tham chiếu: Không | Đầu ra: Không, bức ảnh không chứa gan. Hình ảnh cho thấy một vùng cơ thể có cấu trúc giố
+[068/240] Q_0137 | co_3.jpg | score | pending_manual
+      Tham chiếu: Khoảng trống màu đen | Đầu ra: Khí quản trong hình ảnh này là cấu trúc hình trụ, nằm ở vị trí giữa các cơ quan 
+[069/240] Q_0139 | nao_4.jpg | score | correct
+      Tham chiếu: Không | Đầu ra: Không, bức ảnh không chứa cơ quan có tác dụng chứa nước tiểu. Hình ảnh chỉ hiển 
+[070/240] Q_0140 | khung_chau_3.jpg | score | pending_manual
+      Tham chiếu: CT | Đầu ra: Ảnh được chụp bằng phương thức CT (Chụp cộng hưởng từ).
+[071/240] Q_0150 | bung_1.jpg | score | pending_manual
+      Tham chiếu: Gan | Đầu ra: Cơ quan ở phần trên của ảnh là gan.
+[072/240] Q_0152 | co_1.jpg | score | pending_manual
+      Tham chiếu: Khoảng trống màu đen | Đầu ra: Thanh quản nằm ở phần trên của hình ảnh, gần vùng cổ, và có thể thấy rõ cấu trúc
+[073/240] Q_0153 | phoi_5.jpg | score | needs_review
+      Tham chiếu: Có | Đầu ra: Hình ảnh này cho thấy một vùng mờ ở phần dưới của phổi bên phải, có thể là dấu h
+[074/240] Q_0154 | nao_4.jpg | score | pending_manual
+      Tham chiếu: Ở giữa | Đầu ra: Thân não nằm ở phần trung tâm của hình ảnh, phía dưới vùng mắt và trên vùng hộp 
+[075/240] Q_0155 | co_1.jpg | score | pending_manual
+      Tham chiếu: Thanh quản | Đầu ra: Trong ảnh chụp CT, các cơ quan thuộc hệ hô hấp có thể được quan sát ở vùng cổ, b
+[076/240] Q_0156 | bung_2.jpg | score | needs_review
+      Tham chiếu: Có | Đầu ra: Bức ảnh có chứa phổi. Phổi được nhìn thấy ở hai bên hông, với các vùng màu tối (
+[077/240] Q_0160 | khung_chau_1.jpg | score | incorrect
+      Tham chiếu: Có | Đầu ra: Không, không có chỏm xương đùi trong hình ảnh này. Hình ảnh cho thấy vùng xương 
+[078/240] Q_0161 | co_5.jpg | score | pending_manual
+      Tham chiếu: CT | Đầu ra: Hình ảnh này là một hình ảnh CT (chụp cộng hưởng từ) cắt ngang của vùng cổ, được
+[079/240] Q_0164 | nao_4.jpg | score | pending_manual
+      Tham chiếu: Màu xám | Đầu ra: Thùy thái dương trái trong ảnh có màu trắng, do nó là vùng mô mềm, không có đặc 
+[080/240] Q_0165 | phoi_2.jpg | score | pending_manual
+      Tham chiếu: Ngực | Đầu ra: Hình ảnh này là một hình ảnh cắt ngang của cơ thể, cụ thể là vùng ngực, bao gồm 
+[081/240] Q_0166 | nao_4.jpg | score | pending_manual
+      Tham chiếu: 0 | Đầu ra: Hình ảnh hiển thị hai mắt, một ở mỗi bên của đầu.
+[082/240] Q_0171 | phoi_5.jpg | score | pending_manual
+      Tham chiếu: X-quang | Đầu ra: Ảnh được chụp bằng phương thức X-quang.
+[083/240] Q_0172 | khung_chau_2.jpg | score | correct
+      Tham chiếu: Không | Đầu ra: Không, bức ảnh không chứa mắt. Hình ảnh chỉ hiển thị các cấu trúc xương và cơ qu
+[084/240] Q_0173 | co_2.jpg | score | pending_manual
+      Tham chiếu: Dẫn khí | Đầu ra: Cơ quan ở phía trên ảnh là cổ họng, có chức năng điều tiết âm thanh và hỗ trợ ho
+[085/240] Q_0174 | khung_chau_2.jpg | score | pending_manual
+      Tham chiếu: Trực tràng | Đầu ra: Trong hình ảnh này, bàng quang là cấu trúc nhỏ nhất, nằm ở vị trí trung tâm, phí
+[086/240] Q_0176 | co_2.jpg | score | correct
+      Tham chiếu: Không | Đầu ra: Không, hình ảnh không hiển thị rõ ràng các phần của ruột non.
+[087/240] Q_0177 | nao_5.jpg | score | correct
+      Tham chiếu: Không | Đầu ra: Không, hình ảnh này là một mặt cắt trung tâm của não, không phải mặt cắt vành. M
+[088/240] Q_0178 | khung_chau_4.jpg | score | incorrect
+      Tham chiếu: Có | Đầu ra: Không, đầu xương đùi không xuất hiện trong hình ảnh này. Hình ảnh chỉ hiển thị p
+[089/240] Q_0179 | khung_chau_4.jpg | score | pending_manual
+      Tham chiếu: CT | Đầu ra: Hình ảnh này được chụp bằng phương pháp chụp CT (Computed Tomography), một kỹ th
+[090/240] Q_0180 | bung_2.jpg | score | pending_manual
+      Tham chiếu: Phổi | Đầu ra: Cơ quan lớn nhất trong hình là gan, nằm ở phía trên bên trái của hình ảnh.
+[091/240] Q_0183 | phoi_2.jpg | score | pending_manual
+      Tham chiếu: Phổi | Đầu ra: Trong hình ảnh này, tim lớn hơn phổi. Tim có thể được nhìn thấy rõ hơn do nó nằm
+[092/240] Q_0184 | bung_3.jpg | score | needs_review
+      Tham chiếu: Có | Đầu ra: Bức ảnh có chứa tim. Tim được nhìn thấy ở vị trí trung tâm, phía trên vùng ngực,
+[093/240] Q_0189 | nao_3.jpg | score | incorrect
+      Tham chiếu: Không | Đầu ra: Ảnh không đủ rõ hoặc không chứa thông tin để trả lời câu hỏi này.
+[094/240] Q_0190 | bung_2.jpg | score | correct
+      Tham chiếu: Không | Đầu ra: Không, bức ảnh không chứa thận. Trong hình ảnh này, có thể thấy các cấu trúc như
+[095/240] Q_0191 | bung_1.jpg | score | pending_manual
+      Tham chiếu: CT | Đầu ra: Hình ảnh này được chụp bằng phương pháp chụp CT (Computed Tomography), một kỹ th
+[096/240] Q_0192 | bung_5.jpg | score | pending_manual
+      Tham chiếu: Bụng | Đầu ra: Hình ảnh này là một cắt ngang của cơ thể người, cho thấy các cấu trúc trong vùng
+[097/240] Q_0193 | bung_5.jpg | score | pending_manual
+      Tham chiếu: Gan | Đầu ra: Cơ quan lớn nhất trong hình là gan, nằm ở phía bên trái của hình ảnh.
+[098/240] Q_0194 | bung_3.jpg | score | pending_manual
+      Tham chiếu: Phổi | Đầu ra: Cơ quan lớn nhất trong hình là tim. Đây là cơ quan lớn nhất trong cơ thể, nằm ở 
+[099/240] Q_0195 | khung_chau_2.jpg | score | pending_manual
+      Tham chiếu: Giữa | Đầu ra: Bàng quang nằm ở vị trí trung tâm của hình ảnh, phía trước các xương sọ và hai b
+[100/240] Q_0198 | co_3.jpg | score | incorrect
+      Tham chiếu: Có | Đầu ra: Ảnh không đủ rõ hoặc không chứa thông tin để trả lời câu hỏi này.
+[101/240] Q_0199 | khung_chau_1.jpg | score | correct
+      Tham chiếu: Có | Đầu ra: Có, trong hình ảnh có cơ quan thuộc hệ tiết niệu là bóng khối lớn ở giữa, có thể
+[102/240] Q_0201 | nao_3.jpg | score | pending_manual
+      Tham chiếu: Ở giữa | Đầu ra: Thân não nằm ở phần giữa hình ảnh, phía dưới vùng não trung tâm, và có thể thấy 
+[103/240] Q_0204 | phoi_2.jpg | score | pending_manual
+      Tham chiếu: Phổi trái | Đầu ra: Cơ quan ở bên phải trong hình ảnh này là tim. Tim nằm ở vị trí trung tâm, phía t
+[104/240] Q_0205 | co_2.jpg | score | pending_manual
+      Tham chiếu: Thực quản | Đầu ra: Cơ quan trong hình thuộc hệ tiêu hóa là miệng, được nhìn thấy ở phần trên của hì
+[105/240] Q_0206 | phoi_4.jpg | score | pending_manual
+      Tham chiếu: Phổi | Đầu ra: Trong hình ảnh này, các cơ quan của hệ hô hấp được thể hiện là phổi (phổi phải v
+[106/240] Q_0209 | co_1.jpg | score | incorrect
+      Tham chiếu: Có | Đầu ra: Ảnh không đủ rõ hoặc không chứa thông tin để trả lời câu hỏi này.
+[107/240] Q_0210 | co_5.jpg | score | needs_review
+      Tham chiếu: Không | Đầu ra: Trong ảnh chụp CT, cơ quan kiểm soát nhịp tim và hô hấp là tim và phổi. Tim nằm 
+[108/240] Q_0220 | tay_4.jpg | score | pending_manual
+      Tham chiếu: Bàn tay | Đầu ra: Ảnh chụp X-quang này là của bàn tay.
+[109/240] Q_0224 | chan_1.jpg | score | pending_manual
+      Tham chiếu: Xương cẳng chân | Đầu ra: Hình ảnh này chụp cấu trúc giải phẫu là xương tay, cụ thể là xương cánh tay (hìn
+[110/240] Q_0119 | phoi_4.jpg | score | pending_manual
+      Tham chiếu: Lồng ngực | Đầu ra: Ảnh chụp vùng ngực, bao gồm cả hai lồng ngực và phần thân trên của cơ thể.
+[111/240] Q_0128 | nao_4.jpg | score | pending_manual
+      Tham chiếu: Đầu | Đầu ra: Ảnh chụp vùng đầu, cụ thể là vùng não.
+[112/240] Q_0142 | nao_5.jpg | score | pending_manual
+      Tham chiếu: Đầu (não) | Đầu ra: Ảnh chụp vùng não, cụ thể là phần não trái. Có một vùng hình khối sáng ở bên phả
+[113/240] Q_0212 | tay_1.jpg | score | pending_manual
+      Tham chiếu: Cổ chân và bàn chân | Đầu ra: Hình ảnh này chụp bộ phận chân, cụ thể là phần từ đầu bàn chân đến khớp gối.
+[114/240] Q_0232 | chan_4.jpg | score | pending_manual
+      Tham chiếu: Bàn tay | Đầu ra: Ảnh này chụp vùng bàn tay, bao gồm các xương của ngón tay và các xương nối (các 
+[115/240] VM240_SLAKE_2513 | vqa240_i002.jpg | score | pending_manual
+      Tham chiếu: Phổi | Đầu ra: Cơ quan chính nhìn thấy trên ảnh là ngực, bao gồm cả hai lồng ngực (lồng ngực tr
+[116/240] VM240_RAD_1212 | vqa240_i007.jpg | score | incorrect
+      Tham chiếu: Không | Đầu ra: Có, các cung sườn bên trái có thể nhìn thấy trên phim.
+[117/240] VM240_SLAKE_2555 | vqa240_i017.jpg | score | pending_manual
+      Tham chiếu: Lồng ngực | Đầu ra: Ảnh chụp vùng ngực, bao gồm cả hai lồng ngực và phần thân trên của cơ thể.
+[118/240] VM240_SLAKE_1894 | vqa240_i018.jpg | score | pending_manual
+      Tham chiếu: Hô hấp | Đầu ra: Hai cơ quan lớn hai bên lồng ngực là phổi, chức năng chính của chúng là hô hấp, 
+[119/240] VM240_SLAKE_860 | vqa240_i026.jpg | score | pending_manual
+      Tham chiếu: Bụng | Đầu ra: Ảnh chụp vùng bụng, cụ thể là vùng bụng trên, bao gồm các cơ quan như gan, thận,
+[120/240] VM240_SLAKE_2028 | vqa240_i030.jpg | score | needs_review
+      Tham chiếu: Không | Đầu ra: Không, đây là ảnh X-quang, không phải CT. CT là hình ảnh được tạo ra từ các lần 
+[121/240] VM240_SLAKE_2453 | vqa240_i038.jpg | score | pending_manual
+      Tham chiếu: Lồng ngực | Đầu ra: Ảnh chụp vùng ngực, bao gồm cả hai lồng ngực và các cấu trúc liên quan như xương
+[122/240] VM240_SLAKE_2465 | vqa240_i038.jpg | score | pending_manual
+      Tham chiếu: Tim | Đầu ra: Trong hình ảnh này, cơ quan nhìn thấy trên ảnh thuộc hệ tuần hoàn là tim. Tim có
+[123/240] VM240_SLAKE_4877 | vqa240_i044.jpg | score | correct
+      Tham chiếu: Không | Đầu ra: Không, tim không thể thấy trong lát cắt này. Hình ảnh chỉ hiển thị các cấu trúc 
+[124/240] VM240_SLAKE_567 | vqa240_i045.jpg | score | pending_manual
+      Tham chiếu: Phế trường | Đầu ra: Đám mờ tròn nổi bật nằm ở vùng phế trường bên phải. Bóng tim nằm ở vùng phế trườ
+[125/240] VM240_SLAKE_2239 | vqa240_i047.jpg | score | pending_manual
+      Tham chiếu: Đen hoặc xám đậm | Đầu ra: Phế trường phải có sắc độ tối, đặc biệt là ở phần dưới của phế trường, do không 
+[126/240] VM240_RAD_1153 | vqa240_i049.jpg | score | needs_review
+      Tham chiếu: Có | Đầu ra: Đây là phim X-quang ngực tư thế PA (sau–trước), vì hình ảnh được chụp từ phía sa
+Tiếp tục lúc 2026-11-24T22:06:53.8008089+07:00 sau khi dừng tiến trình để khôi phục độ trễ GPU. Giữ nguyên cấu hình, SHA và checkpoint.
+Phiên đánh giá 2026-11-24T22:07:01+07:00
+CSV SHA-256 b1532e857a96c55764dd70862b638a83c5814bdb175ed8ed8e8a2b903c9640b9
+Checkout 41e1c65b866c5ffcfeb21615bdf7ea5fffe6fb4c | Qwen Qwen/Qwen3-VL-2B-Instruct @89644892e4d85e24eaac8bacfd4f463576704203
+Python 3.11.9 | PyTorch 2.8.0+cu128 | CUDA 12.8
+transformers 4.57.6 | huggingface_hub 0.36.2 | torchvision 0.23.0+cu128 | accelerate 1.16.0
+GPU NVIDIA GeForce RTX 4050 Laptop GPU | VRAM rảnh/tổng (byte) (5318377472, 6438780928)
+=== ĐÁNH GIÁ MEDICAL VQA ===
+Tập dữ liệu   : questions.csv (Chạy 240/240 câu)
+Thư mục ảnh   : D:\projectComputerVision\results\vqa_240_dataset\images
+Chế độ chạy   : MODEL THẬT
+-----------------------------------------------------------------
+Số câu đã lưu trong checkpoint: 126
+Khởi tạo pipeline trước khi chạy các câu: 20.961 giây
+The following generation flags are not valid and may be ignored: ['temperature', 'top_p', 'top_k']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+[127/240] VM240_SLAKE_1928 | vqa240_i058.jpg | score | needs_review
+      Tham chiếu: Không | Đầu ra: Không, đây là một hình ảnh chụp X-quang ngực, không phải mặt cắt ngang. Hình ảnh
+[128/240] VM240_SLAKE_1933 | vqa240_i058.jpg | score | pending_manual
+      Tham chiếu: Lồng ngực | Đầu ra: Ảnh chụp vùng ngực, bao gồm cả hai lồng ngực và phần thân trên của cơ thể.
+[129/240] VM240_SLAKE_2098 | vqa240_i062.jpg | score | pending_manual
+      Tham chiếu: Tim | Đầu ra: Trong hình ảnh này, cơ quan nhìn thấy trên ảnh thuộc hệ tuần hoàn là tim. Tim có
+[130/240] VM240_SLAKE_2354 | vqa240_i066.jpg | score | pending_manual
+      Tham chiếu: Phổi | Đầu ra: Trên ảnh, cơ quan xuất hiện thành đôi là cơ quan ở vùng ngực, cụ thể là cơ quan 
+[131/240] VM240_SLAKE_4608 | vqa240_i072.jpg | score | pending_manual
+      Tham chiếu: Khung chậu | Đầu ra: Ảnh chụp vùng bụng dưới, bao gồm phần dưới của cơ thể, với các cấu trúc như xươn
+[132/240] VM240_SLAKE_1798 | vqa240_i073.jpg | score | pending_manual
+      Tham chiếu: Phổi | Đầu ra: Trên ảnh, cơ quan xuất hiện thành đôi là cơ quan ngực, cụ thể là hai cơ quan ngự
+[133/240] VM240_SLAKE_2045 | vqa240_i076.jpg | score | pending_manual
+      Tham chiếu: Lồng ngực | Đầu ra: Ảnh chụp vùng ngực, bao gồm cả hai lồng ngực và phần trên của cơ thể.
+[134/240] VM240_SLAKE_2099 | vqa240_i080.jpg | score | pending_manual
+      Tham chiếu: X-quang | Đầu ra: Ảnh được chụp bằng phương thức chụp X-quang.
+[135/240] VM240_SLAKE_442 | vqa240_i082.jpg | score | pending_manual
+      Tham chiếu: X-quang | Đầu ra: Ảnh được chụp bằng phương thức chụp X-quang ngực (chest X-ray).
+[136/240] VM240_SLAKE_1922 | vqa240_i089.jpg | score | pending_manual
+      Tham chiếu: Đen hoặc xám đậm | Đầu ra: Phế trường trên ảnh có sắc độ tối, đặc biệt ở phần dưới và giữa, cho thấy sự giả
+[137/240] VM240_SLAKE_202 | vqa240_i096.jpg | score | pending_manual
+      Tham chiếu: Lồng ngực | Đầu ra: Ảnh chụp vùng ngực, bao gồm cả hai bên ngực và phần trên của cơ thể.
+[138/240] VM240_SLAKE_368 | vqa240_i100.jpg | score | pending_manual
+      Tham chiếu: Phổi | Đầu ra: Cơ quan chiếm phần lớn trường chụp là tim.
+[139/240] VM240_SLAKE_2647 | vqa240_i106.jpg | score | pending_manual
+      Tham chiếu: Đen hoặc xám đậm | Đầu ra: Phế trường trái trên phim có sắc độ tối, với các vùng tối hơn so với phế trường 
+[140/240] VM240_SLAKE_102 | vqa240_i112.jpg | score | pending_manual
+      Tham chiếu: CT | Đầu ra: Ảnh được chụp bằng phương thức CT (Chụp cộng hưởng từ).
+[141/240] VM240_RAD_556 | vqa240_i118.jpg | score | pending_manual
+      Tham chiếu: Mặt cắt ngang | Đầu ra: Đây là ảnh mặt cắt CT của vùng bụng, nhìn từ phía trước (anterior). Ảnh cho thấy
+[142/240] VM240_SLAKE_2180 | vqa240_i121.jpg | score | pending_manual
+      Tham chiếu: 2 | Đầu ra: Trong lát cắt này, có thể thấy hai quả thận xuất hiện, nằm ở hai bên của cơ thể,
+[143/240] VM240_SLAKE_2740 | vqa240_i127.jpg | score | correct
+      Tham chiếu: Không | Đầu ra: Không, đây là ảnh chụp X-quang ngực (thay vì mặt cắt ngang). Ảnh cho thấy cấu tr
+[144/240] VM240_RAD_241 | vqa240_i138.jpg | score | pending_manual
+      Tham chiếu: Mô vú hai bên | Đầu ra: Ảnh không đủ rõ hoặc không chứa thông tin để trả lời câu hỏi này.
+[145/240] VM240_SLAKE_279 | vqa240_i143.jpg | score | pending_manual
+      Tham chiếu: X-quang | Đầu ra: Ảnh được chụp bằng phương thức X-quang.
+[146/240] VM240_SLAKE_280 | vqa240_i143.jpg | score | pending_manual
+      Tham chiếu: Lồng ngực | Đầu ra: Ảnh chụp vùng ngực, bao gồm cả hai lồng ngực và các cấu trúc liên quan như xương
+[147/240] VM240_SLAKE_152 | vqa240_i146.jpg | score | pending_manual
+      Tham chiếu: Lồng ngực | Đầu ra: Ảnh chụp vùng ngực, bao gồm cả hai lồng ngực và phần thân trên của cơ thể.
+[148/240] VM240_SLAKE_1364 | vqa240_i148.jpg | score | correct
+      Tham chiếu: Có | Đầu ra: Có, phần gan có thể thấy rõ ở bên trái của hình ảnh, nằm gần trung tâm.
+[149/240] VM240_SLAKE_1157 | vqa240_i150.jpg | score | correct
+      Tham chiếu: Có | Đầu ra: Có, thận được thấy ở hai bên của hình ảnh, cụ thể là ở phía bên trái và bên phải
+[150/240] VM240_SLAKE_3988 | vqa240_i153.jpg | score | pending_manual
+      Tham chiếu: MRI | Đầu ra: Ảnh được chụp bằng phương thức MRI (Magnetic Resonance Imaging). Hình ảnh cho th
+[151/240] VM240_SLAKE_4800 | vqa240_i158.jpg | score | correct
+      Tham chiếu: Không | Đầu ra: Không, trong lát cắt này không thấy gan. Các cấu trúc được quan sát rõ ràng là c
+[152/240] VM240_SLAKE_2574 | vqa240_i161.jpg | score | correct
+      Tham chiếu: Không | Đầu ra: Không, đây là ảnh chụp ngực (thực tế là ảnh chụp ngực), không phải ảnh chụp đầu.
+[153/240] VM240_RAD_1074 | vqa240_i163.jpg | score | incorrect
+      Tham chiếu: Có | Đầu ra: Không, góc sườn–hoành không bị tù trên phim này.
+[154/240] VM240_SLAKE_159 | vqa240_i165.jpg | score | pending_manual
+      Tham chiếu: Lồng ngực | Đầu ra: Ảnh chụp vùng ngực, bao gồm cả hai lồng ngực và các cấu trúc liên quan như xương
+[155/240] VM240_RAD_636 | vqa240_i167.jpg | score | needs_review
+      Tham chiếu: Không | Đầu ra: Góc sườn–hoành phải có thể nhìn thấy rõ trong bức ảnh này. Góc sườn–hoành phải l
+[156/240] VM240_SLAKE_2437 | vqa240_i170.jpg | score | correct
+      Tham chiếu: Không | Đầu ra: Không, đây là ảnh chụp X-quang ngực (thay vì mặt cắt ngang). Ảnh này cho thấy cấ
+[157/240] VM240_SLAKE_2450 | vqa240_i170.jpg | score | pending_manual
+      Tham chiếu: Phổi | Đầu ra: Trên ảnh X-quang, cơ quan nhìn thấy thuộc hệ hô hấp là hai lồng ngực (lồng ngực 
+[158/240] VM240_SLAKE_429 | vqa240_i173.jpg | score | pending_manual
+      Tham chiếu: Lồng ngực | Đầu ra: Ảnh chụp vùng ngực, bao gồm cả hai lồng ngực và các cấu trúc liên quan như xương
+[159/240] VM240_RAD_1067 | vqa240_i180.jpg | score | pending_manual
+      Tham chiếu: X-quang | Đầu ra: Ảnh này được chụp bằng phương thức chụp X-quang ngực.
+[160/240] VM240_RAD_207 | vqa240_i188.jpg | score | incorrect
+      Tham chiếu: Có | Đầu ra: Không, không có dấu hiệu nào cho thấy các ổ mắt trong lát cắt này.
+[161/240] VM240_SLAKE_2059 | vqa240_i192.jpg | score | correct
+      Tham chiếu: Không | Đầu ra: Không, đây là ảnh chụp ngực (thực tế là hình ảnh X-quang ngực), không phải mặt c
+[162/240] VM240_SLAKE_2170 | vqa240_i196.jpg | score | pending_manual
+      Tham chiếu: 1 | Đầu ra: Ảnh không đủ rõ hoặc không chứa thông tin để trả lời câu hỏi này.
+[163/240] VM240_SLAKE_1611 | vqa240_i200.jpg | score | pending_manual
+      Tham chiếu: 0 | Đầu ra: Trong lát cắt này, có thể thấy một quả thận ở bên trái và một quả thận ở bên phả
+[164/240] VM240_RAD_1482 | vqa240_i212.jpg | score | pending_manual
+      Tham chiếu: Hệ hô hấp, hệ tim mạch và hệ cơ xương | Đầu ra: Trên phim X-quang ngực, có thể thấy các cấu trúc chính gồm: xương sườn, xương ức
+[165/240] VM240_SLAKE_2679 | vqa240_i226.jpg | score | pending_manual
+      Tham chiếu: Hô hấp | Đầu ra: Hai cơ quan lớn hai bên lồng ngực là phổi, chức năng chính của chúng là hô hấp, 
+[166/240] VM240_SLAKE_2704 | vqa240_i230.jpg | score | pending_manual
+      Tham chiếu: Đen hoặc xám đậm | Đầu ra: Phế trường trên phim X-quang có sắc độ tối, do đó, phế trường phải chủ yếu có sắ
+[167/240] VM240_SLAKE_2279 | vqa240_i232.jpg | score | needs_review
+      Tham chiếu: Có | Đầu ra: Đây là ảnh vùng ngực, thể hiện rõ các cấu trúc như xương sườn, xương ức và các c
+[168/240] VM240_SLAKE_1735 | vqa240_i234.jpg | score | pending_manual
+      Tham chiếu: Bụng | Đầu ra: Ảnh chụp vùng bụng, cụ thể là vùng bụng trên, bao gồm cả gan và các cơ quan lân 
+[169/240] VM240_SLAKE_4101 | vqa240_i238.jpg | score | pending_manual
+      Tham chiếu: 2 | Đầu ra: Trong lát cắt này, có thể thấy rõ hai quả thận nằm ở hai bên của trung tâm, gần 
+[170/240] VM240_SLAKE_1881 | vqa240_i245.jpg | score | pending_manual
+      Tham chiếu: Phổi | Đầu ra: Trên ảnh X-quang, cơ quan nhìn thấy thuộc hệ hô hấp là hai bên phổi, được thể hi
+[171/240] VM240_SLAKE_2149 | vqa240_i252.jpg | score | pending_manual
+      Tham chiếu: Lồng ngực | Đầu ra: Ảnh chụp vùng ngực, bao gồm cả xương sườn và các cấu trúc liên quan đến cơ thể ở
+[172/240] VM240_SLAKE_197 | vqa240_i253.jpg | score | pending_manual
+      Tham chiếu: Phổi | Đầu ra: Cơ quan chiếm phần lớn trường chụp là tim. Trong hình ảnh, tim có thể được nhìn 
+[173/240] VM240_RAD_1615 | vqa240_i254.jpg | score | pending_manual
+      Tham chiếu: Lan tỏa hai bên phổi | Đầu ra: Đám mờ dạng nốt trên ảnh phân bố lan tỏa hai bên.
+[174/240] VM240_SLAKE_2606 | vqa240_i256.jpg | score | pending_manual
+      Tham chiếu: Tim | Đầu ra: Trong hình ảnh này, cơ quan nhìn thấy trên ảnh thuộc hệ tuần hoàn là tim.
+[175/240] VM240_SLAKE_210 | vqa240_i262.jpg | score | pending_manual
+      Tham chiếu: Lồng ngực | Đầu ra: Ảnh chụp vùng ngực, bao gồm cả hai lồng ngực và phần thân trên của cơ thể.
+[176/240] VM240_RAD_1376 | vqa240_i266.jpg | score | pending_manual
+      Tham chiếu: Mặt cắt ngang | Đầu ra: Ảnh MRI này là cắt ngang (axial) theo mặt phẳng ngang, nhìn từ phía trên xuống d
+[177/240] VM240_SLAKE_4184 | vqa240_i268.jpg | score | correct
+      Tham chiếu: Có | Đầu ra: Có, lách được thấy rõ trong lát cắt này, nằm ở phía bên trái của hình ảnh, gần v
+[178/240] VM240_SLAKE_568 | vqa240_i276.jpg | score | pending_manual
+      Tham chiếu: X-quang | Đầu ra: Ảnh được chụp bằng phương thức X-quang.
+[179/240] VM240_SLAKE_2335 | vqa240_i278.jpg | score | pending_manual
+      Tham chiếu: Ảnh chiếu thẳng | Đầu ra: Phim X-quang ngực này là ảnh chiếu thẳng, vì nó cho thấy toàn bộ cấu trúc ngực t
+[180/240] VM240_RAD_22 | vqa240_i292.jpg | score | pending_manual
+      Tham chiếu: PA (sau–trước) | Đầu ra: Phim X-quang ngực này được chụp theo tư thế AP (anterior-posterior).
+[181/240] VM240_SLAKE_2801 | vqa240_i302.jpg | score | pending_manual
+      Tham chiếu: Đen hoặc xám đậm | Đầu ra: Phế trường trên ảnh có sắc độ tối, đặc trưng bởi độ mờ và độ sáng thấp, cho thấy
+[182/240] VM240_SLAKE_4401 | vqa240_i308.jpg | score | pending_manual
+      Tham chiếu: Khung chậu | Đầu ra: Ảnh chụp vùng hậu môn và bàng quang.
+[183/240] VM240_RAD_956 | vqa240_i312.jpg | score | pending_manual
+      Tham chiếu: Cao hơn mức ổ mắt | Đầu ra: Lát cắt này nằm ở mức thấp hơn mức ổ mắt. Ảnh không đủ rõ hoặc không chứa thông 
+[184/240] VM240_SLAKE_628 | vqa240_i319.jpg | score | pending_manual
+      Tham chiếu: Lồng ngực | Đầu ra: Ảnh chụp vùng ngực, bao gồm cả hai lồng ngực và phần thân trên của cơ thể. Trong
+[185/240] VM240_SLAKE_223 | vqa240_i321.jpg | score | pending_manual
+      Tham chiếu: Phế trường | Đầu ra: Vùng mờ nổi bật ở đáy ngực trong hình ảnh này là vùng phế trường, và nó chiếu ch
+[186/240] VM240_RAD_36 | vqa240_i323.jpg | score | incorrect
+      Tham chiếu: Có | Đầu ra: Không, góc sườn–hoành trái không bị tù trên phim này. Góc sườn–hoành trái ở vị t
+[187/240] VM240_RAD_126 | vqa240_i325.jpg | score | pending_manual
+      Tham chiếu: X-quang | Đầu ra: Đây là ảnh chụp X-quang ngực.
+[188/240] VM240_RAD_386 | vqa240_i326.jpg | score | pending_manual
+      Tham chiếu: CT | Đầu ra: Ảnh được chụp bằng CT, vì nó cho thấy các cấu trúc giải phẫu với độ phân giải ca
+[189/240] VM240_SLAKE_621 | vqa240_i334.jpg | score | pending_manual
+      Tham chiếu: Phổi | Đầu ra: Trong hình ảnh chụp ngực, cơ quan chiếm phần lớn là phổi. Phổi có thể bị giảm độ
+[190/240] VM240_SLAKE_648 | vqa240_i336.jpg | score | pending_manual
+      Tham chiếu: Phổi | Đầu ra: Trong hình ảnh chụp ngực, cơ quan chiếm phần lớn là phổi. Phổi có thể được nhìn 
+[191/240] VM240_RAD_379 | vqa240_i345.jpg | score | correct
+      Tham chiếu: Có | Đầu ra: Có, các vùng mờ rải rác được quan sát trên cả hai phế trường. Các vùng này có th
+[192/240] VM240_SLAKE_1859 | vqa240_i346.jpg | score | pending_manual
+      Tham chiếu: MRI | Đầu ra: Ảnh này được chụp bằng phương thức MRI (Magnetic Resonance Imaging). Trong hình 
+[193/240] VM240_SLAKE_3115 | vqa240_i358.jpg | score | incorrect
+      Tham chiếu: Có | Đầu ra: Không, xương hàm dưới không thể thấy trong lát cắt này.
+[194/240] VM240_SLAKE_1995 | vqa240_i359.jpg | score | pending_manual
+      Tham chiếu: Hô hấp | Đầu ra: Hai cơ quan lớn hai bên lồng ngực là phổi, chức năng chính của chúng là hô hấp, 
+[195/240] VM240_SLAKE_600 | vqa240_i360.jpg | score | pending_manual
+      Tham chiếu: X-quang | Đầu ra: Ảnh được chụp bằng phương thức chụp X-quang ngực.
+[196/240] VM240_SLAKE_380 | vqa240_i369.jpg | score | pending_manual
+      Tham chiếu: X-quang | Đầu ra: Ảnh được chụp bằng phương thức chụp X-quang ngực.
+[197/240] VM240_SLAKE_2321 | vqa240_i371.jpg | score | needs_review
+      Tham chiếu: Có | Đầu ra: Đây là ảnh vùng ngực, thể hiện rõ cấu trúc xương và các cơ quan trong vùng ngực.
+[198/240] VM240_SLAKE_1972 | vqa240_i377.jpg | score | pending_manual
+      Tham chiếu: Phổi phải | Đầu ra: Vùng mờ nổi bật cạnh rốn phổi chiếu lên phế trường bên phải.
+[199/240] VM240_SLAKE_2533 | vqa240_i384.jpg | score | pending_manual
+      Tham chiếu: Đen hoặc xám đậm | Đầu ra: Phế trường trên phim X-quang có sắc độ tối, do đó, phế trường phải chủ yếu có sắ
+[200/240] VM240_SLAKE_2826 | vqa240_i389.jpg | score | pending_manual
+      Tham chiếu: Phổi | Đầu ra: Trên ảnh, cơ quan xuất hiện thành đôi là cơ quan ở vùng ngực, cụ thể là cơ quan 
+[201/240] VM240_SLAKE_577 | vqa240_i391.jpg | score | pending_manual
+      Tham chiếu: X-quang | Đầu ra: Ảnh được chụp bằng phương thức X-quang.
+[202/240] VM240_SLAKE_3394 | vqa240_i423.jpg | score | pending_manual
+      Tham chiếu: Đầu (não) | Đầu ra: Ảnh chụp vùng não.
+[203/240] VM240_SLAKE_256 | vqa240_i428.jpg | score | pending_manual
+      Tham chiếu: Lồng ngực | Đầu ra: Ảnh chụp vùng ngực, bao gồm cả hai lồng ngực và phần bụng phía dưới.
+[204/240] VM240_SLAKE_2304 | vqa240_i429.jpg | score | pending_manual
+      Tham chiếu: X-quang | Đầu ra: Ảnh được chụp bằng phương thức X-quang.
+[205/240] VM240_RAD_1150 | vqa240_i435.jpg | score | correct
+      Tham chiếu: Có | Đầu ra: Có, trên phim này có thể thấy ít nhất tám cung sườn phía sau. Các cung sườn này 
+[206/240] VM240_SLAKE_663 | vqa240_i036.jpg | score | pending_manual
+      Tham chiếu: X-quang | Đầu ra: Ảnh được chụp bằng phương thức X-quang.
+[207/240] VM240_SLAKE_2110 | vqa240_i080.jpg | score | pending_manual
+      Tham chiếu: 2 | Đầu ra: Trên ảnh chụp X-quang ngực, có thể thấy rõ hai lá phổi, một lá phổi bên trái và 
+[208/240] VM240_SLAKE_2025 | vqa240_i104.jpg | score | pending_manual
+      Tham chiếu: Hô hấp | Đầu ra: Hai cơ quan lớn hai bên lồng ngực là hai lồng ngực, có chức năng chính là chứa v
+[209/240] VM240_SLAKE_516 | vqa240_i105.jpg | score | pending_manual
+      Tham chiếu: X-quang | Đầu ra: Ảnh được chụp bằng phương thức X-quang.
+[210/240] VM240_RAD_443 | vqa240_i124.jpg | score | pending_manual
+      Tham chiếu: PA (sau–trước) | Đầu ra: Phim X-quang ngực này được chụp tư thế PA (Posteroanterior).
+[211/240] VM240_SLAKE_2220 | vqa240_i176.jpg | score | pending_manual
+      Tham chiếu: Lồng ngực | Đầu ra: Ảnh chụp vùng ngực, bao gồm cả hai lồng ngực và phần bụng phía dưới.
+[212/240] VM240_SLAKE_2652 | vqa240_i181.jpg | score | pending_manual
+      Tham chiếu: X-quang | Đầu ra: Ảnh được chụp bằng phương thức X-quang.
+[213/240] VM240_RAD_1551 | vqa240_i203.jpg | score | pending_manual
+      Tham chiếu: X-quang ngực tư thế PA (sau–trước) | Đầu ra: Ảnh này được chụp bằng phương thức X-quang và theo tư thế chiếu đứng.
+[214/240] VM240_SLAKE_2622 | vqa240_i214.jpg | score | needs_review
+      Tham chiếu: Có | Đầu ra: Đây là ảnh X-quang, thể hiện hình ảnh ngực với các cấu trúc xương và các vùng mờ
+[215/240] VM240_SLAKE_422 | vqa240_i218.jpg | score | pending_manual
+      Tham chiếu: Phổi | Đầu ra: Trong hình ảnh chụp ngực, cơ quan chiếm phần lớn là phổi. Phổi có thể thấy rõ ở 
+[216/240] VM240_SLAKE_296 | vqa240_i220.jpg | score | pending_manual
+      Tham chiếu: X-quang | Đầu ra: Ảnh được chụp bằng phương thức X-quang.
+[217/240] VM240_SLAKE_2141 | vqa240_i221.jpg | score | pending_manual
+      Tham chiếu: Hô hấp | Đầu ra: Hai cơ quan lớn hai bên lồng ngực là phổi, chức năng chính của chúng là hô hấp, 
+[218/240] VM240_SLAKE_2808 | vqa240_i277.jpg | score | pending_manual
+      Tham chiếu: Lồng ngực | Đầu ra: Ảnh chụp vùng ngực, bao gồm cả hai lồng ngực và các cấu trúc liên quan như xương
+[219/240] VM240_SLAKE_311 | vqa240_i287.jpg | score | pending_manual
+      Tham chiếu: X-quang | Đầu ra: Ảnh được chụp bằng phương thức X-quang.
+[220/240] VM240_SLAKE_542 | vqa240_i337.jpg | score | pending_manual
+      Tham chiếu: X-quang | Đầu ra: Ảnh được chụp bằng phương thức X-quang.
+[221/240] VM240_SLAKE_2205 | vqa240_i378.jpg | score | pending_manual
+      Tham chiếu: Phổi | Đầu ra: Trên ảnh, cơ quan xuất hiện thành đôi là cơ quan ở vùng ngực, cụ thể là cơ quan 
+[222/240] VM240_RAD_1470 | vqa240_i415.jpg | score | pending_manual
+      Tham chiếu: PA (sau–trước) | Đầu ra: Phim X-quang ngực này được chụp tư thế AP (anterior-posterior).
+[223/240] VM240_RAD_1035 | vqa240_i451.jpg | score | pending_manual
+      Tham chiếu: Bờ trái | Đầu ra: Bờ trái của bóng tim nhìn rõ hơn trên ảnh.
+[224/240] VM240_RAD_586 | vqa240_i465.jpg | score | correct
+      Tham chiếu: Không | Đầu ra: Không, không có dấu hiệu nào cho thấy góc sườn–hoành bị tù trên phim này.
+[225/240] VM240_SLAKE_232 | vqa240_i471.jpg | score | pending_manual
+      Tham chiếu: X-quang | Đầu ra: Ảnh được chụp bằng phương thức X-quang.
+[226/240] VM240_RAD_215 | vqa240_i477.jpg | score | pending_manual
+      Tham chiếu: Lồng ngực | Đầu ra: Ảnh X-quang này chụp vùng ngực, bao gồm cả hai lồng ngực và phần dưới của cơ thể
+[227/240] VM240_SLAKE_2115 | vqa240_i486.jpg | score | correct
+      Tham chiếu: Không | Đầu ra: Không, đây là ảnh chụp X-quang ngực (thay vì mặt cắt đứng dọc). Ảnh cho thấy cấu
+[228/240] VM240_SLAKE_2780 | vqa240_i499.jpg | score | pending_manual
+      Tham chiếu: 1 | Đầu ra: Ảnh không đủ rõ hoặc không chứa thông tin để trả lời câu hỏi này.
+[229/240] VM240_SLAKE_1807 | vqa240_i506.jpg | score | correct
+      Tham chiếu: Không | Đầu ra: Không, đây là ảnh X-quang, không phải CT. Ảnh này có độ phân giải thấp và không 
+[230/240] VM240_SLAKE_2372 | vqa240_i508.jpg | score | correct
+      Tham chiếu: Có | Đầu ra: Có, vùng mờ lớn và không đối xứng giữa hai bên ngực được quan sát trên phim. Vùn
+[231/240] VM240_RAD_643 | vqa240_i520.jpg | score | pending_manual
+      Tham chiếu: Bên phải | Đầu ra: Dải sáng khí sát dưới vòm hoành được hỏi nằm bên phải của người bệnh.
+[232/240] VM240_SLAKE_2714 | vqa240_i521.jpg | score | pending_manual
+      Tham chiếu: Lồng ngực | Đầu ra: Ảnh chụp vùng ngực, bao gồm cả hai lồng ngực và phần thân trên của cơ thể.
+[233/240] VM240_SLAKE_2469 | vqa240_i525.jpg | score | pending_manual
+      Tham chiếu: Phổi phải | Đầu ra: Vùng mờ nổi bật ở đáy phổi nằm về bên phải của người bệnh. Đây là vùng mờ do khí
+[234/240] VM240_SLAKE_327 | vqa240_i527.jpg | score | pending_manual
+      Tham chiếu: Phổi | Đầu ra: Trong hình ảnh chụp ngực, cơ quan chiếm phần lớn là phổi. Phổi có thể được nhìn 
+[235/240] VM240_SLAKE_274 | vqa240_i549.jpg | score | pending_manual
+      Tham chiếu: Phổi | Đầu ra: Trong hình ảnh chụp ngực, cơ quan chiếm phần lớn là phổi.
+[236/240] VM240_SLAKE_509 | vqa240_i564.jpg | score | pending_manual
+      Tham chiếu: Lồng ngực | Đầu ra: Ảnh chụp vùng ngực, bao gồm cả hai lồng ngực và phần trên của cơ thể.
+[237/240] VM240_SLAKE_2391 | vqa240_i574.jpg | score | pending_manual
+      Tham chiếu: Hô hấp | Đầu ra: Hai cơ quan lớn hai bên lồng ngực là phổi và tim. Phổi có chức năng hô hấp, giúp
+[238/240] VM240_RAD_497 | vqa240_i576.jpg | score | needs_review
+      Tham chiếu: Có | Đầu ra: Đây là phim X-quang ngực tư thế PA (sau–trước), vì hình ảnh được chụp từ phía sa
+[239/240] VM240_RAD_965 | vqa240_i580.jpg | score | needs_review
+      Tham chiếu: Không | Đầu ra: Bờ cơ hoành không bị che khuất trên phim này. Bờ cơ hoành được nhìn thấy rõ ràng
+[240/240] VM240_SLAKE_411 | vqa240_i584.jpg | score | pending_manual
+      Tham chiếu: X-quang | Đầu ra: Ảnh được chụp bằng phương thức X-quang.
+
+=================================================================
+=== KẾT QUẢ TỔNG HỢP VQA ===
+Thực thi thành công: 240/240
+Thời gian phản hồi trung bình lượt thành công, sau khởi tạo: 9.805 giây
+Tập chính                      | 240 câu | 34/50 đã chấm | Chờ chấm tay: 172 | Cần xem lại: 18 | Lỗi: 0
+open                           | 172 câu | chưa có điểm | Chờ chấm tay: 172 | Cần xem lại: 0 | Lỗi: 0
+closed                         |  68 câu | 34/50 đã chấm | Chờ chấm tay: 0 | Cần xem lại: 18 | Lỗi: 0
+closed / tham chiếu Có         |  30 câu | 9/18 đã chấm | Chờ chấm tay: 0 | Cần xem lại: 12 | Lỗi: 0
+closed / tham chiếu Không      |  38 câu | 25/32 đã chấm | Chờ chấm tay: 0 | Cần xem lại: 6 | Lỗi: 0
+closed / tham chiếu Không đủ thông tin |   0 câu | chưa có điểm | Chờ chấm tay: 0 | Cần xem lại: 0 | Lỗi: 0
+Ngực (mọi phương thức)         | 121 câu | 14/18 đã chấm | Chờ chấm tay: 93 | Cần xem lại: 10 | Lỗi: 0
+X-quang ngực                   | 113 câu | 11/15 đã chấm | Chờ chấm tay: 88 | Cần xem lại: 10 | Lỗi: 0
+X-quang ngực PA                |  16 câu | 1/2 đã chấm | Chờ chấm tay: 11 | Cần xem lại: 3 | Lỗi: 0
+Bàn tay                        |   1 câu | chưa có điểm | Chờ chấm tay: 1 | Cần xem lại: 0 | Lỗi: 0
+Bụng                           |  10 câu | 3/3 đã chấm | Chờ chấm tay: 7 | Cần xem lại: 0 | Lỗi: 0
+Bụng (Abdomen)                 |   4 câu | chưa có điểm | Chờ chấm tay: 4 | Cần xem lại: 0 | Lỗi: 0
+Bụng / Ổ bụng (Abdomen)        |  20 câu | 3/3 đã chấm | Chờ chấm tay: 14 | Cần xem lại: 3 | Lỗi: 0
+Cổ / Vùng cổ (Neck)            |  24 câu | 6/10 đã chấm | Chờ chấm tay: 12 | Cần xem lại: 2 | Lỗi: 0
+Cổ chân / Bàn chân             |   1 câu | chưa có điểm | Chờ chấm tay: 1 | Cần xem lại: 0 | Lỗi: 0
+Khung chậu                     |   2 câu | chưa có điểm | Chờ chấm tay: 2 | Cần xem lại: 0 | Lỗi: 0
+Khung chậu (Pelvic Cavity)     |  23 câu | 4/8 đã chấm | Chờ chấm tay: 13 | Cần xem lại: 2 | Lỗi: 0
+Ngực                           |   3 câu | 2/2 đã chấm | Chờ chấm tay: 1 | Cần xem lại: 0 | Lỗi: 0
+Ngực–bụng trên                 |   1 câu | chưa có điểm | Chờ chấm tay: 1 | Cần xem lại: 0 | Lỗi: 0
+Não / Sọ não (Brain)           |  23 câu | 4/6 đã chấm | Chờ chấm tay: 16 | Cần xem lại: 1 | Lỗi: 0
+Phổi / Lồng ngực (Chest)       | 118 câu | 12/16 đã chấm | Chờ chấm tay: 92 | Cần xem lại: 10 | Lỗi: 0
+Vùng hàm và cổ trên            |   1 câu | 0/1 đã chấm | Chờ chấm tay: 0 | Cần xem lại: 0 | Lỗi: 0
+Xương chân (Leg)               |   1 câu | chưa có điểm | Chờ chấm tay: 1 | Cần xem lại: 0 | Lỗi: 0
+Xương tay (Arm)                |   1 câu | chưa có điểm | Chờ chấm tay: 1 | Cần xem lại: 0 | Lỗi: 0
+Đầu / Sọ não                   |   7 câu | 0/1 đã chấm | Chờ chấm tay: 6 | Cần xem lại: 0 | Lỗi: 0
+Cột f1 là số đo trùng token tham khảo cho câu open. Câu open cần chấm theo ý nghĩa.
+
+Đã lưu kết quả chi tiết ra: D:\projectComputerVision\results\vqa_240_41e1c65_real.csv
+Đã lưu đủ 240 kết quả vào lúc 2026-11-24T22:18:58+07:00

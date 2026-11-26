@@ -1,0 +1,56 @@
+41e1c65, real, Python 3.11.9
+torch 2.8.0+cu128; CUDA 12.8; available: True
+transformers 4.57.6
+huggingface_hub 0.36.2
+torchvision 0.23.0+cu128
+accelerate 1.16.0
+NVIDIA GeForce RTX 4050 Laptop GPU; free/total VRAM bytes: (5318377472, 6438780928)
+=== ĐÁNH GIÁ MEDICAL VQA ===
+Tập dữ liệu   : pilot_vqa_input_41e1c65.csv (Chạy 7/7 câu)
+Thư mục ảnh   : D:\projectComputerVision\group2-evaluation-41e1c65\Course_work\data\evaluation\images
+Chế độ chạy   : MODEL THẬT
+-----------------------------------------------------------------
+Khởi tạo pipeline trước khi chạy các câu: 18.382 giây
+The following generation flags are not valid and may be ignored: ['temperature', 'top_p', 'top_k']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+[001/007] Q_0058 | phoi_3.jpg | score | pending_manual
+      Tham chiếu: X-quang | Đầu ra: Ảnh được chụp bằng phương thức X-quang.
+[002/007] Q_0008 | phoi_4.jpg | score | pending_manual
+      Tham chiếu: 1 | Đầu ra: Ảnh không đủ rõ hoặc không chứa thông tin để trả lời câu hỏi này.
+[003/007] Q_0110 | phoi_4.jpg | score | correct
+      Tham chiếu: Không | Đầu ra: Không, đây là một hình ảnh chụp X-quang ngực, không phải mặt cắt ngang. Hình ảnh
+[004/007] Q_0206 | phoi_4.jpg | score | pending_manual
+      Tham chiếu: Phổi | Đầu ra: Trong hình ảnh này, các cơ quan của hệ hô hấp được thể hiện là phổi (phổi phải v
+[005/007] Q_0171 | phoi_5.jpg | score | pending_manual
+      Tham chiếu: X-quang | Đầu ra: Ảnh được chụp bằng phương thức X-quang.
+[006/007] PILOT_01 | phoi_5.jpg | score | needs_review
+      Tham chiếu: Có | Đầu ra: Đây là một ảnh X-quang ngực, thể hiện rõ cấu trúc xương, phổi và các cơ quan tro
+[007/007] PILOT_02 | phoi_3.jpg | probe | correct
+      Tham chiếu: Không đủ thông tin | Đầu ra: Không thể xác định từ hình ảnh này. Ảnh không đủ rõ hoặc không chứa thông tin để
+
+=================================================================
+=== KẾT QUẢ TỔNG HỢP VQA ===
+Thực thi thành công: 7/7
+Thời gian phản hồi trung bình lượt thành công, sau khởi tạo: 4.658 giây
+Tập chính                      |   6 câu | 1/1 đã chấm | Chờ chấm tay: 4 | Cần xem lại: 1 | Lỗi: 0
+open                           |   4 câu | chưa có điểm | Chờ chấm tay: 4 | Cần xem lại: 0 | Lỗi: 0
+closed                         |   2 câu | 1/1 đã chấm | Chờ chấm tay: 0 | Cần xem lại: 1 | Lỗi: 0
+closed / tham chiếu Có         |   1 câu | chưa có điểm | Chờ chấm tay: 0 | Cần xem lại: 1 | Lỗi: 0
+closed / tham chiếu Không      |   1 câu | 1/1 đã chấm | Chờ chấm tay: 0 | Cần xem lại: 0 | Lỗi: 0
+closed / tham chiếu Không đủ thông tin |   0 câu | chưa có điểm | Chờ chấm tay: 0 | Cần xem lại: 0 | Lỗi: 0
+X-quang ngực PA                |   6 câu | 1/1 đã chấm | Chờ chấm tay: 4 | Cần xem lại: 1 | Lỗi: 0
+Phổi / Lồng ngực (Chest)       |   6 câu | 1/1 đã chấm | Chờ chấm tay: 4 | Cần xem lại: 1 | Lỗi: 0
+Ca thăm dò PILOT_02: correct | Nhãn: Không đủ thông tin
+Cột f1 là số đo trùng token tham khảo cho câu open. Câu open cần chấm theo ý nghĩa.
+
+Đã lưu kết quả chi tiết ra: D:\projectComputerVision\results\vqa_pilot_41e1c65_real.csv
+Khởi tạo pipeline Captioning trong cùng tiến trình sau VQA: 0.003 giây
+Qwen model ID: Qwen/Qwen3-VL-2B-Instruct; device: cuda:0; dtype: torch.bfloat16
+Caption PHOI_3: True | 12.491 giây | 1. Đây là một hình ảnh X-quang ngực, chụp từ phía trước, hiển thị hai lá phổi, xương sườn, và các cấu trúc liên quan đến ngực.
+2. Hai lá phổi có hình dạng và độ sáng bình thường, không có vùng mờ hoặc vùng sáng bất thường rõ rệt. Bóng tim có hình dạng và độ sáng phù hợp với bình thường.
+3. Không có dấu hiệu rõ ràng của các tổn thương hoặc bất thường trong các cấu trúc giải phẫu chính.
+Caption PHOI_4: True | 13.757 giây | 1. Đây là một hình ảnh X-quang ngực, chụp từ phía trước, hiển thị toàn bộ vùng ngực, bao gồm hai lá phổi, xương sườn, và các cấu trúc cơ thể khác.
+2. Hai lá phổi có hình dạng rõ ràng, nhưng có một vùng mờ ở phần dưới bên phải, và có thể thấy một số dây dẫn y tế được đặt trong vùng ngực.
+3. Không có dấu hiệu rõ ràng của vùng mờ hoặc vùng sáng bất thường, và đường bờ xương không có mất liên tục.
+Caption PHOI_5: True | 17.654 giây | 1. Đây là một bức ảnh X-quang ngực, chụp từ phía trước, hiển thị hai lá phổi, xương sườn, và các cấu trúc cơ thể ở vùng ngực.
+2. Hai lá phổi có hình dạng và độ sáng bình thường, không có vùng mờ hoặc vùng sáng bất thường. Bóng tim và các cấu trúc khác như xương sườn, xương ức, và xương đùi cũng được nhìn thấy rõ.
+3. Không có dấu hiệu rõ ràng của các vấn đề như khí quản, phổi tắc nghẽn, hoặc các bất thường về cấu trúc xương.

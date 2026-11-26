@@ -6,7 +6,9 @@ Hệ thống hỗ trợ phân tích hình ảnh y tế thông qua **Image Captio
 ```powershell
 python run_web.py
 ```
-Trình duyệt sẽ tự mở tại `http://127.0.0.1:8000` với đầy đủ 6 chức năng **F01 – F06**, 35 ảnh y tế thật (7 vùng cơ thể), 235 câu hỏi kiểm thử tiếng Việt, khoanh vùng dị thường OpenCV và xuất phiếu báo cáo PDF.
+Trình duyệt sẽ tự mở tại `http://127.0.0.1:8000` với đầy đủ 6 chức năng **F01 – F06**, bộ demo gồm 35 ảnh y tế thật (7 vùng cơ thể) và 235 câu hỏi tiếng Việt, khoanh vùng dị thường OpenCV và xuất phiếu báo cáo PDF.
+
+Evaluator VQA dùng bộ thực nghiệm chính thức gồm 240 câu trên 150 ảnh. Xem kết quả và cách tái lập trong [báo cáo thực nghiệm](docs/evaluation_report.md).
 
 ## 2. Cách chạy giao diện Streamlit
 ```powershell
