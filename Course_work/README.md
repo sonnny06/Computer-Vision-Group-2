@@ -6,7 +6,7 @@ Hệ thống hỗ trợ phân tích hình ảnh y tế thông qua **Image Captio
 ```powershell
 python run_web.py
 ```
-Trình duyệt sẽ tự mở tại `http://127.0.0.1:8000` với đầy đủ 6 chức năng **F01 – F06**, bộ demo gồm 35 ảnh y tế thật (7 vùng cơ thể) và 235 câu hỏi tiếng Việt, khoanh vùng dị thường OpenCV và xuất phiếu báo cáo PDF.
+Trình duyệt sẽ tự mở tại `http://127.0.0.1:8000` với đầy đủ 6 chức năng **F01 – F06**, bộ VQA gồm 199 câu hỏi tiếng Việt trên 127 ảnh và bộ Captioning gồm 35 ảnh tham chiếu, khoanh vùng dị thường OpenCV và xuất phiếu báo cáo PDF.
 
 Bộ đánh giá VQA chính gồm [199 cặp câu hỏi Anh–Việt trên 127 ảnh](data/evaluation/questions.csv). CLI hiện chạy phía tiếng Việt theo mặc định. Xem [kết quả đánh giá Anh–Việt](docs/evaluation_vqa_en_vi.md).
 

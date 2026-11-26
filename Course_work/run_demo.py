@@ -7,7 +7,6 @@ Ví dụ:
     python run_demo.py data\evaluation\images\phoi_1.jpg -q "Bức ảnh có chứa phổi không?" --mock
 """
 import argparse
-import csv
 import os
 import sys
 from pathlib import Path
@@ -52,29 +51,15 @@ def show(title, result):
 
 
 def run_from_dataset(num_samples: int = 5):
-    """Lấy mẫu câu hỏi bàn giao và metadata.csv để chạy thử."""
+    """Chạy các câu VQA từ cùng bộ dữ liệu với giao diện local."""
+    from src.data.ui_dataset import load_ui_dataset
     from src.inference.captioning import generate_caption
     from src.inference.vqa import answer_question
 
-    q_file = BASE / "data" / "evaluation" / "questions_handover_235.csv"
-    meta_file = BASE / "data" / "evaluation" / "metadata.csv"
-    img_dir = BASE / "data" / "evaluation" / "images"
-
-    if not q_file.exists() or not img_dir.exists():
-        sys.exit(f"Không tìm thấy tập dữ liệu tại: {q_file}")
-
-    # Đọc metadata làm đối chiếu
-    metadata_map = {}
-    if meta_file.exists():
-        with meta_file.open("r", encoding="utf-8") as f:
-            for r in csv.DictReader(f):
-                metadata_map[r.get("filename")] = r
-
-    # Đọc câu hỏi
-    questions = []
-    with q_file.open("r", encoding="utf-8") as f:
-        for r in csv.DictReader(f):
-            questions.append(r)
+    data_dir = BASE / "data" / "evaluation"
+    img_dir = data_dir / "vqa_images"
+    _, questions, captions = load_ui_dataset(data_dir)
+    metadata_map = {row["filename"]: row for row in captions}
 
     # Chọn mẫu đa dạng theo các bộ phận cơ thể khác nhau
     sampled = []
@@ -133,7 +118,7 @@ def main():
     parser.add_argument("--mock", action="store_true",
                         help="Dùng model giả (không cần GPU)")
     parser.add_argument("--dataset", action="store_true",
-                        help="Chạy thử mẫu từ bộ 235 câu bàn giao và metadata.csv")
+                        help="Chạy thử mẫu từ bộ VQA 199 cặp Anh–Việt")
     parser.add_argument("-n", "--num-samples", type=int, default=5,
                         help="Số lượng mẫu chạy khi dùng --dataset (mặc định 5)")
     parser.add_argument("--no-error-tests", action="store_true")

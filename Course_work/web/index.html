@@ -483,6 +483,14 @@
     .pipe-node strong { display: block; font-size: 0.86rem; }
     .pipe-node span { font-size: 0.74rem; color: var(--muted); }
     .pipe-arrow { font-size: 1.15rem; font-weight: 800; color: var(--primary); }
+    .f1-plot { display: grid; grid-template-columns: repeat(10,minmax(0,1fr)); gap: 3px; margin-top: 8px; }
+    .f1-track { height: 136px; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; border-bottom: 1px solid var(--muted); }
+    .f1-track small { color: var(--text); font-variant-numeric: tabular-nums; }
+    .f1-stack { display: flex; flex-direction: column-reverse; width: 65%; }
+    .f1-open { background: #0284c7; }
+    .f1-closed { background: #d97706; }
+    .f1-bound { color: var(--muted); font-size: 0.69rem; text-align: center; display: block; }
+    .f1-key { display: inline-block; width: 10px; height: 10px; margin: 0 4px 0 10px; }
     canvas.chart-canvas { width: 100%; height: 230px; display: block; }
 
     /* Print Report Modal */
@@ -526,7 +534,7 @@
       <div class="sidebar-dataset">
         <div class="nav-label">Bộ ảnh thật của nhóm (<span id="imgTotalCount">0</span>)</div>
         <select id="bodyPartFilter" style="padding:6px 8px;font-size:0.8rem;">
-          <option value="ALL">Tất cả 7 vùng cơ thể</option>
+          <option value="ALL">Tất cả vùng cơ thể</option>
         </select>
         <div class="sample-scroll" id="sampleList"></div>
       </div>
@@ -693,28 +701,36 @@
         <!-- TAB 3: EVALUATION -->
         <section id="tab-eval" class="tab-panel">
           <div class="panel">
+            <h2>Kết quả nghiệm thu Qwen · 199 cặp trên 127 ảnh</h2>
+            <table><thead><tr><th>Ngôn ngữ</th><th>Số câu đúng</th><th>Accuracy theo phiếu chấm</th><th>Macro-F1 trên 63 câu đóng</th></tr></thead><tbody id="acceptanceRows"><tr><td colspan="4">Đang đọc phiếu tổng hợp…</td></tr></tbody></table>
+            <p>Kết quả từ phiếu chấm đã lưu. <a href="/results/en_vi_metrics_199.csv" download>Tải CSV chỉ số</a></p>
+          </div>
+          <div class="panel">
             <div class="panel-head">
-              <h2>📊 Đánh giá trên bộ demo (F06 — Phúc)</h2>
+              <h2>Chạy thử trên localhost</h2>
               <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
                 <select id="evalScope" style="width:auto;padding:6px 10px;font-size:0.82rem;">
+                  <option value="1,1">Thử kết nối (1 ảnh • 1 câu VQA)</option>
                   <option value="15,25">Nhanh (15 ảnh • 25 câu VQA)</option>
                   <option value="35,100">Mở rộng (35 ảnh • 100 câu VQA)</option>
-                  <option value="35,235">Bộ demo đầy đủ (35 ảnh • 235 câu VQA)</option>
+                  <option value="35,199">Đầy đủ (35 ảnh Captioning • 199 câu VQA)</option>
                 </select>
                 <button class="btn btn-primary" id="btnRunEval">▶️ Chạy đánh giá</button>
               </div>
             </div>
             <p style="margin:0;color:var(--muted);font-size:0.88rem;">
-              Trang này tính BLEU-1 và F1 trên bộ demo. Báo cáo thực nghiệm dùng bộ VQA 240 câu trên 150 ảnh.
+              Captioning dùng 35 ảnh có mô tả tham chiếu. VQA dùng câu hỏi tiếng Việt từ 199 cặp Anh–Việt trên 127 ảnh. Lượt chạy thử so khớp văn bản. Smart CV dùng dữ liệu tham chiếu để trả lời.
             </p>
+            <p id="evalProgress" role="status"></p>
             <div id="evalError" class="error-msg"></div>
 
             <div id="evalOutput" style="display:none;">
+              <p id="evalRunMode"></p>
               <div class="kpi-grid">
                 <div class="kpi"><div class="val" id="kpiBleu">0.00</div><div class="lbl">Avg BLEU-1</div></div>
                 <div class="kpi"><div class="val" id="kpiCapF1">0.00</div><div class="lbl">Caption Avg F1</div></div>
-                <div class="kpi"><div class="val" id="kpiAcc">0%</div><div class="lbl">VQA Accuracy</div></div>
-                <div class="kpi"><div class="val" id="kpiVqaF1">0.00</div><div class="lbl">VQA Avg F1</div></div>
+                <div class="kpi"><div class="val" id="kpiAcc">0%</div><div class="lbl">Tỷ lệ khớp đáp án tự động</div></div>
+                <div class="kpi"><div class="val" id="kpiVqaF1">0.00</div><div class="lbl">Token F1 trung bình (VQA)</div></div>
                 <div class="kpi"><div class="val" id="kpiTime">0.00s</div><div class="lbl">Avg Latency</div></div>
               </div>
 
@@ -724,8 +740,10 @@
                   <canvas id="bpChart" class="chart-canvas" width="540" height="230"></canvas>
                 </div>
                 <div class="panel" style="box-shadow:none;background:var(--surface-subtle);">
-                  <h2 style="font-size:0.93rem;margin-top:0;">Medical VQA Token F1 (12 câu hỏi đầu)</h2>
-                  <canvas id="vqaChart" class="chart-canvas" width="540" height="230"></canvas>
+                  <h2 id="vqaChartTitle" style="font-size:0.93rem;margin-top:0;">Phân bố Token F1</h2>
+                  <div style="font-size:.8rem;">Số câu <span class="f1-key f1-open"></span>Câu mở <span class="f1-key f1-closed"></span>Có/Không</div>
+                  <div id="vqaChart" class="f1-plot" role="list" aria-labelledby="vqaChartTitle"></div>
+                  <small>Token F1 · Mỗi cột rộng 0,1 điểm. Nhãn dưới cột là cận dưới, cột cuối gồm cả 1,0.</small>
                 </div>
               </div>
 
@@ -739,6 +757,10 @@
 
               <h3 style="margin-top:20px;">Chi tiết đánh giá Medical VQA</h3>
               <div style="overflow-x:auto;">
+                <label>Sắp xếp <select id="vqaSort" style="width:auto;">
+                    <option value="run">Theo thứ tự chạy</option>
+                    <option value="low">Token F1 tăng dần</option>
+                  </select></label>
                 <table id="vqaTable">
                   <thead><tr><th>Mã</th><th>Ảnh</th><th>Câu hỏi</th><th>Đáp án chuẩn</th><th>Trả lời AI</th><th>F1</th><th>Đạt</th></tr></thead>
                   <tbody></tbody>
@@ -765,7 +787,7 @@
               <div class="pipe-arrow">→</div>
               <div class="pipe-node" style="border-top-color:#16a34a;"><strong>5. Pipeline (Bão)</strong><span>engine/pipeline.py<br/>Timeout &amp; Error Codes</span></div>
               <div class="pipe-arrow">→</div>
-              <div class="pipe-node" style="border-top-color:#dc2626;"><strong>6. Evaluation (Phúc)</strong><span>evaluate_*.py<br/>240 câu VQA thực nghiệm</span></div>
+              <div class="pipe-node" style="border-top-color:#dc2626;"><strong>6. Evaluation (Phúc)</strong><span>evaluate_*.py<br/>199 cặp VQA thực nghiệm</span></div>
             </div>
 
             <div class="grid-2-equal" style="margin-bottom:20px;">
@@ -786,8 +808,8 @@
                 <tr><td><strong>Sơn</strong></td><td>Application Development</td><td><code>web/index.html</code>, <code>web/server.py</code>, <code>app/app.py</code>, <code>src/utils/history.py</code></td></tr>
                 <tr><td><strong>Thái</strong></td><td>Pre-trained Model Integration</td><td><code>src/models/pretrained_vlm.py</code>, <code>configs/model_config.yaml</code></td></tr>
                 <tr><td><strong>Tôn</strong></td><td>Prompt Engineering</td><td><code>src/utils/prompt.py</code>, <code>configs/prompt_config.yaml</code></td></tr>
-                <tr><td><strong>Trí</strong></td><td>Image Preprocessing &amp; Data</td><td><code>src/preprocessing/image_processing.py</code>, <code>src/data/preprocessing.py</code>, bộ demo 35 ảnh và 235 câu VQA</td></tr>
-                <tr><td><strong>Phúc</strong></td><td>Model Evaluation &amp; Testing</td><td><code>src/evaluation/evaluate_captioning.py</code>, <code>evaluate_vqa.py</code>, bộ thực nghiệm 240 câu VQA trên 150 ảnh</td></tr>
+                <tr><td><strong>Trí</strong></td><td>Image Preprocessing &amp; Data</td><td><code>src/preprocessing/image_processing.py</code>, <code>src/data/preprocessing.py</code>, bộ ảnh và câu hỏi VQA</td></tr>
+                <tr><td><strong>Phúc</strong></td><td>Model Evaluation &amp; Testing</td><td><code>src/evaluation/evaluate_captioning.py</code>, <code>evaluate_vqa.py</code>, bộ thực nghiệm 199 cặp VQA trên 127 ảnh</td></tr>
                 <tr><td><strong>Bão</strong></td><td>Backend &amp; System Integration</td><td><code>src/engine/pipeline.py</code>, <code>schemas.py</code>, <code>errors.py</code>, <code>src/inference/*.py</code></td></tr>
               </tbody>
             </table>
@@ -924,7 +946,7 @@
     function renderQuickChips(metaObj) {
       const box = document.getElementById("quickChips");
       const qs = (metaObj && metaObj.questions && metaObj.questions.length)
-        ? metaObj.questions.slice(0, 4).map(q => q.question_vi)
+        ? metaObj.questions.map(q => q.question_vi)
         : [
             "Hình ảnh này thuộc bộ phận nào của cơ thể?",
             "Phương pháp nào được sử dụng để chụp hình ảnh này?",
@@ -1002,7 +1024,7 @@
 
       const refBox = document.getElementById("refInfoBox");
       refBox.style.display = "block";
-      refBox.innerHTML = `<strong>Thông tin kiểm thử (metadata.csv):</strong> ${item.finding_category} — ${item.finding_description} <span style="color:var(--muted);">(${item.source})</span>`;
+      refBox.innerHTML = `<strong>Thông tin tham chiếu:</strong> ${item.finding_category} — ${item.finding_description} <span style="color:var(--muted);">(${item.source})</span>`;
 
       renderSampleList();
       renderQuickChips(item);
@@ -1166,7 +1188,7 @@
       await refreshHistory();
     };
 
-    function drawBarChart(canvasId, labels, values, colors, threshold) {
+    function drawBarChart(canvasId, labels, values, colors) {
       const c = document.getElementById(canvasId);
       const ctx = c.getContext("2d");
       const W = c.width, H = c.height;
@@ -1196,10 +1218,76 @@
         ctx.fillText(lbl.slice(0, 10), x - 4, H - 14);
       });
 
-      if (threshold) {
-        const ty = padT + chartH * (1 - threshold);
-        ctx.save(); ctx.setLineDash([5, 4]); ctx.strokeStyle = "#f59e0b"; ctx.lineWidth = 2;
-        ctx.beginPath(); ctx.moveTo(padL, ty); ctx.lineTo(W - padR, ty); ctx.stroke(); ctx.restore();
+    }
+
+    let lastVqaRows = [];
+    function renderVqaDetails() {
+      const rows = document.getElementById("vqaSort").value === "low"
+        ? [...lastVqaRows].sort((a, b) => a.f1 - b.f1) : lastVqaRows;
+      const body = document.querySelector("#vqaTable tbody");
+      body.replaceChildren();
+      for (const r of rows) {
+        const tr = body.insertRow();
+        for (const value of [r.question_id, r.image_name, r.question_vi, r.ground_truth, r.prediction, r.f1, r.match ? "✅" : "❌"]) {
+          tr.insertCell().textContent = value;
+        }
+      }
+    }
+    document.getElementById("vqaSort").addEventListener("change", renderVqaDetails);
+
+    function tokenF1Bins(rows) {
+      const bins = Array.from({length: 10}, () => ({open: 0, closed: 0}));
+      for (const row of rows) {
+        const index = Math.min(9, Math.floor(row.f1 * 10));
+        // Local servers started before answer_type was added return only the reference.
+        const type = row.answer_type ?? (["có", "không"].includes(row.ground_truth.trim().toLowerCase()) ? "closed" : "open");
+        bins[index][type]++;
+      }
+      return bins;
+    }
+
+    function drawVqaDistribution(rows) {
+      const bins = tokenF1Bins(rows);
+      const peak = Math.max(1, ...bins.map(b => b.open + b.closed));
+      const plot = document.getElementById("vqaChart");
+      document.getElementById("vqaChartTitle").textContent = "Phân bố Token F1 của " + rows.length + " câu VQA";
+      plot.innerHTML = bins.map((bin, i) => {
+        const total = bin.open + bin.closed;
+        const lower = (i / 10).toFixed(1).replace(".", ",");
+        const upper = ((i + 1) / 10).toFixed(1).replace(".", ",");
+        const title = `[${lower}; ${upper}${i === 9 ? "]" : ")"} · ${bin.open} câu mở, ${bin.closed} câu Có/Không`;
+        return `<div role="listitem" aria-label="${title}" title="${title}">
+          <div class="f1-track"><small>${total}</small><div class="f1-stack">
+            <span class="f1-open" style="height:${112 * bin.open / peak}px"></span>
+            <span class="f1-closed" style="height:${112 * bin.closed / peak}px"></span>
+          </div></div><span class="f1-bound">${lower}</span></div>`;
+      }).join("");
+    }
+
+    async function evaluateWithProgress(payload, show) {
+      const response = await fetch("/api/evaluation/run", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/x-ndjson" },
+        body: JSON.stringify(payload)
+      });
+      if (!response.headers.get("content-type")?.includes("application/x-ndjson")) return response.json();
+      const reader = response.body.pipeThrough(new TextDecoderStream()).getReader();
+      let pending = "";
+      try {
+        while (true) {
+          const {value, done} = await reader.read();
+          if (done) throw new Error("Kết nối kết thúc trước khi nhận được bảng điểm.");
+          pending += value;
+          const lines = pending.split("\n");
+          pending = lines.pop();
+          for (const line of lines) {
+            const event = JSON.parse(line);
+            if (event.type === "result" || event.type === "error") return event;
+            show(event);
+          }
+        }
+      } finally {
+        reader.releaseLock();
       }
     }
 
@@ -1207,17 +1295,30 @@
       const btn = document.getElementById("btnRunEval");
       const errEl = document.getElementById("evalError");
       errEl.style.display = "none";
+      document.getElementById("evalOutput").style.display = "none";
       const [capLim, vqaLim] = document.getElementById("evalScope").value.split(",").map(Number);
       btn.disabled = true;
+      const start = performance.now();
+      const status = document.getElementById("evalProgress");
+      let message = "Đang kết nối máy chủ";
+      const updateProgress = () => {
+        status.textContent = message + " · " + Math.floor((performance.now() - start) / 1000) + " giây";
+      };
+      updateProgress();
+      const timer = setInterval(updateProgress, 1000);
       btn.textContent = "⏳ Đang đánh giá...";
       try {
-        const res = await apiPost("/api/evaluation/run", { mode: getMode(), cap_limit: capLim, vqa_limit: vqaLim });
+        const res = await evaluateWithProgress({ mode: getMode(), cap_limit: capLim, vqa_limit: vqaLim }, event => {
+          message = event.stage + (event.sample ? " · " + event.sample : "") + " · hoàn tất " + event.completed + "/" + event.total;
+          updateProgress();
+        });
         if (!res.success) {
           errEl.textContent = `❌ ${res.error}`;
           errEl.style.display = "block";
           return;
         }
         const s = res.summary;
+        document.getElementById("evalRunMode").textContent = res.mode === "qwen3-vl-live" ? "Lượt chạy Qwen thực tế" : "Lượt chạy Smart CV";
         document.getElementById("kpiBleu").textContent = s.avg_bleu1.toFixed(3);
         document.getElementById("kpiCapF1").textContent = s.avg_caption_f1.toFixed(3);
         document.getElementById("kpiAcc").textContent = `${s.vqa_accuracy}%`;
@@ -1227,9 +1328,8 @@
         document.querySelector("#capTable tbody").innerHTML = res.caption_rows.map(r =>
           `<tr><td><strong>${r.image_id}</strong></td><td>${r.filename}</td><td>${r.body_part.split("(")[0]}</td><td>${r.bleu1}</td><td>${r.f1}</td><td>${r.prediction}</td></tr>`
         ).join("");
-        document.querySelector("#vqaTable tbody").innerHTML = res.vqa_rows.slice(0, 40).map(r =>
-          `<tr><td><strong>${r.question_id}</strong></td><td>${r.image_name}</td><td>${r.question_vi}</td><td>${r.ground_truth}</td><td>${r.prediction}</td><td>${r.f1}</td><td>${r.match ? "✅" : "❌"}</td></tr>`
-        ).join("");
+        lastVqaRows = res.vqa_rows;
+        renderVqaDetails();
 
         document.getElementById("evalOutput").style.display = "block";
         drawBarChart(
@@ -1238,16 +1338,14 @@
           res.body_part_summary.map(x => x.avg_f1),
           "#0284c7"
         );
-        const topVqa = res.vqa_rows.slice(0, 12);
-        drawBarChart(
-          "vqaChart",
-          topVqa.map(x => x.question_id),
-          topVqa.map(x => x.f1),
-          topVqa.map(x => x.match ? "#16a34a" : "#dc2626"),
-          0.45
-        );
+        drawVqaDistribution(lastVqaRows);
+      } catch (error) {
+        errEl.textContent = String(error);
+        errEl.style.display = "block";
       } finally {
         btn.disabled = false;
+        clearInterval(timer);
+        status.textContent = "";
         btn.textContent = "▶️ Chạy đánh giá";
       }
     }
@@ -1344,6 +1442,40 @@
     });
     document.getElementById("btnCloseReport").addEventListener("click", () => document.getElementById("reportModal").classList.remove("open"));
     document.getElementById("reportModal").addEventListener("click", e => { if (e.target.id === "reportModal") document.getElementById("reportModal").classList.remove("open"); });
+
+    async function showAcceptanceScores() {
+      const body = document.getElementById("acceptanceRows");
+      try {
+        const link = document.querySelector('a[href="/results/en_vi_metrics_199.csv"]');
+        const response = await fetch(link.href, {cache: "no-store"});
+        if (!response.ok) throw new Error("Không tải được CSV nghiệm thu.");
+        // The metrics export contains only enum labels and numeric columns.
+        const [header, ...lines] = (await response.text()).trim().split(/\r?\n/);
+        const columns = header.split(",");
+        const rows = lines.map(line => Object.fromEntries(line.split(",").map((value, i) => [columns[i], value])));
+        const fragment = document.createDocumentFragment();
+        for (const [lang, label] of [["vi", "Tiếng Việt"], ["en", "Tiếng Anh"]]) {
+          const total = rows.find(row => row.language === lang && row.group === "all");
+          const macro = rows.find(row => row.language === lang && row.group === "closed_macro");
+          if (!total?.correct || !total?.accuracy_pct || !macro?.macro_f1_pct || total.n !== "199") {
+            throw new Error("CSV thiếu số liệu nghiệm thu cho bộ 199 cặp.");
+          }
+          const tr = document.createElement("tr");
+          for (const value of [label, total.correct + "/" + total.n, total.accuracy_pct.replace(".", ",") + "%", macro.macro_f1_pct.replace(".", ",") + "%"]) {
+            tr.insertCell().textContent = value;
+          }
+          fragment.appendChild(tr);
+        }
+        body.replaceChildren(fragment);
+      } catch (error) {
+        body.replaceChildren();
+        const cell = body.insertRow().insertCell();
+        cell.colSpan = 4;
+        cell.textContent = String(error);
+      }
+    }
+
+    showAcceptanceScores();
 
     // Bootstrap app
     (async function init() {
