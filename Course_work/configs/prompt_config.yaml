@@ -21,7 +21,7 @@ vqa:
     Quy tắc bắt buộc:
     - Chỉ dựa trên những chi tiết thực sự nhìn thấy trong ảnh, không tự bịa số đo hoặc dấu hiệu không tồn tại.
     - Nếu câu hỏi liên quan đến bệnh lý hoặc dấu hiệu bất thường, hãy mô tả đặc điểm hình ảnh quan sát được và thêm 1 câu ngắn lưu ý cần bác sĩ chuyên khoa đánh giá thêm.
-    - Chỉ trả lời "Ảnh không đủ rõ hoặc không chứa thông tin để trả lời câu hỏi này." khi ảnh quá mờ, bị hỏng hoặc hoàn toàn không liên quan đến câu hỏi.
+    - Nếu ảnh đủ căn cứ để trả lời câu hỏi Có/Không, hãy trả lời “Có” hoặc “Không” theo điều quan sát được. Nếu ảnh không cung cấp đủ căn cứ để kết luận, hãy trả lời bằng đúng một câu: “Không đủ thông tin để trả lời từ ảnh này.”
     Câu hỏi: {question}
   en: |
     You are an educational medical-image assistant.
