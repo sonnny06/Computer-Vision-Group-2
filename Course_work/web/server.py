@@ -11,7 +11,6 @@ Hoặc:
 from __future__ import annotations
 
 import base64
-import csv
 import importlib.util
 import io
 import json
@@ -33,6 +32,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
+from src.data.ui_dataset import load_ui_dataset
 from src.data.preprocessing import prepare_image
 from src.engine.pipeline import MedicalPipeline, build_pipeline
 from src.evaluation.evaluate_captioning import compute_bleu1, compute_f1_score
@@ -44,7 +44,7 @@ from src.utils.prompt import get_caption_prompt, get_vqa_prompt
 
 WEB_DIR = PROJECT_ROOT / "web"
 DATA_DIR = PROJECT_ROOT / "data" / "evaluation"
-IMAGES_DIR = DATA_DIR / "images"
+IMAGES_DIR = DATA_DIR / "vqa_images"
 RESULTS_DIR = PROJECT_ROOT / "results"
 IMAGE_DIR_EXTRA = PROJECT_ROOT / "image"
 
@@ -52,33 +52,11 @@ IMAGE_DIR_EXTRA = PROJECT_ROOT / "image"
 # =============================================================================
 # 1. NẠP DỮ LIỆU THẬT CỦA NHÓM VÀO RAM 1 LẦN (PHẢN HỒI < 5ms)
 # =============================================================================
-def _load_dataset_cache() -> tuple[list[dict[str, Any]], dict[str, dict[str, Any]], list[dict[str, Any]], dict[str, list[dict[str, Any]]]]:
-    meta_rows: list[dict[str, Any]] = []
-    meta_by_file: dict[str, dict[str, Any]] = {}
-    meta_path = DATA_DIR / "metadata.csv"
-    if meta_path.exists():
-        with meta_path.open("r", encoding="utf-8-sig") as f:
-            for row in csv.DictReader(f):
-                fn = (row.get("filename") or "").strip()
-                if fn and (IMAGES_DIR / fn).exists():
-                    meta_rows.append(row)
-                    meta_by_file[fn] = row
-
-    q_rows: list[dict[str, Any]] = []
-    q_by_file: dict[str, list[dict[str, Any]]] = {}
-    q_path = DATA_DIR / "questions_handover_235.csv"
-    if q_path.exists():
-        with q_path.open("r", encoding="utf-8-sig") as f:
-            for row in csv.DictReader(f):
-                fn = (row.get("image_name") or "").strip()
-                q_rows.append(row)
-                if fn:
-                    q_by_file.setdefault(fn, []).append(row)
-
-    return meta_rows, meta_by_file, q_rows, q_by_file
-
-
-META_ROWS, META_BY_FILE, Q_ROWS, Q_BY_FILE = _load_dataset_cache()
+META_ROWS, Q_ROWS, CAPTION_ROWS = load_ui_dataset(DATA_DIR)
+META_BY_FILE = {row["filename"]: row for row in CAPTION_ROWS + META_ROWS}
+Q_BY_FILE: dict[str, list[dict[str, str]]] = {}
+for question in Q_ROWS:
+    Q_BY_FILE.setdefault(question["image_name"], []).append(question)
 VISUAL_INDEX = VisualKnowledgeIndex(META_ROWS, IMAGES_DIR)
 HISTORY = SessionHistory()
 HISTORY_LOCK = threading.Lock()
@@ -91,9 +69,9 @@ class _SmartDemoVLM:
     """
     Bộ suy luận tốc độ cao kết hợp:
     - Tiền xử lý thật (Trí) + Prompt thật (Tôn) bên trong MedicalPipeline (Bão).
-    - So khớp tương đồng hình ảnh (Visual Retrieval) với 35 ảnh & 235 câu hỏi thật của nhóm.
+    - So khớp tương đồng hình ảnh (Visual Retrieval) với ảnh và câu hỏi trong bộ VQA.
     - Phát hiện và khoanh vùng dị thường bằng OpenCV (bất đối xứng + độ lệch cục bộ).
-    Hoạt động tốt cho MỌI ảnh người dùng tải lên (kể cả ngoài bộ 35 ảnh mẫu).
+    Hoạt động tốt cho MỌI ảnh người dùng tải lên (kể cả ngoài bộ ảnh mẫu).
     """
 
     def __init__(self) -> None:
@@ -155,7 +133,7 @@ class _SmartDemoVLM:
                 "Ảnh y tế không chứa thông tin hành chính, tiền sử bệnh hay phác đồ điều trị."
             )
 
-        # Tìm câu hỏi khớp gần như chính xác trong bộ 235 câu hỏi của đúng ảnh (hoặc ảnh khớp nhất)
+        # Tìm câu hỏi khớp gần như chính xác trong bộ câu hỏi của đúng ảnh (hoặc ảnh khớp nhất)
         search_files = [hint] if hint in Q_BY_FILE else ([similar[0]["filename"]] if similar and similar[0]["filename"] in Q_BY_FILE else [])
         best_score = 0.0
         best_ans = None
@@ -255,7 +233,7 @@ def _get_live_pipeline(allow_cpu: bool = False) -> MedicalPipeline:
             raise RuntimeError(_LIVE_UNAVAILABLE_REASON)
         if not hw.get("cuda_available") and not allow_cpu:
             _LIVE_UNAVAILABLE_REASON = (
-                "Máy đang chạy CPU (không có GPU NVIDIA); tự động dùng chế độ nhanh để tránh treo web."
+                "Tiến trình Web chưa nhận CUDA. Chọn Smart CV để chạy demo nhanh hoặc chọn chế độ Qwen CPU."
             )
             raise RuntimeError(_LIVE_UNAVAILABLE_REASON)
 
@@ -346,29 +324,39 @@ def _compute_image_stats(img_rgb: Image.Image) -> dict[str, Any]:
     }
 
 
-def _run_evaluation_api(mode: str, cap_limit: int, vqa_limit: int) -> dict[str, Any]:
-    """Chạy đánh giá bằng đúng công thức của Phúc trên tập dữ liệu thật."""
-    active_mode = mode
-    if mode == "qwen3-vl":
-        try:
-            pipe = _get_live_pipeline()
-            active_mode = "qwen3-vl-live"
-        except Exception:  # noqa: BLE001
-            pipe = _get_smart_pipeline()
-            active_mode = "qwen3-vl (auto-fallback)"
-    else:
+_EVALUATION_LOCK = threading.Lock()
+
+
+def _run_evaluation_api(mode: str, cap_limit: int, vqa_limit: int, progress=None) -> dict[str, Any]:
+    """Score live outputs using text overlap."""
+    captions = CAPTION_ROWS[:cap_limit]
+    questions = Q_ROWS[:vqa_limit]
+    total = len(captions) + len(questions)
+
+    def notify(stage, completed, sample=""):
+        if progress:
+            progress({"stage": stage, "completed": completed, "total": total, "sample": sample})
+
+    notify("Khởi tạo mô hình", 0)
+    if mode in ("qwen3-vl", "qwen3-vl-cpu"):
+        pipe = _get_live_pipeline(allow_cpu=(mode == "qwen3-vl-cpu"))
+        active_mode = "qwen3-vl-live"
+    elif mode == "smart-demo":
         pipe = _get_smart_pipeline()
         active_mode = "smart-demo"
+    else:
+        raise ValueError("Chế độ đánh giá không hợp lệ.")
 
     cap_rows_out = []
     bp_stats: dict[str, list[float]] = {}
 
-    for row in META_ROWS[:cap_limit]:
+    for index, row in enumerate(captions):
+        notify("Captioning", index, row["filename"])
         fn = row["filename"]
         gt = row.get("ground_truth_caption_vi", "")
         if active_mode != "qwen3-vl-live":
             _SMART_VLM.set_context(fn, "")
-        res = pipe.run(IMAGES_DIR / fn, task="caption")
+        res = pipe.run(DATA_DIR / "images" / fn, task="caption")
         pred = res.answer or ""
         b1 = round(compute_bleu1(pred, gt), 3) if res.success else 0.0
         f1 = round(compute_f1_score(pred, gt), 3) if res.success else 0.0
@@ -389,11 +377,12 @@ def _run_evaluation_api(mode: str, cap_limit: int, vqa_limit: int) -> dict[str, 
         )
 
     vqa_rows_out = []
-    for row in Q_ROWS[:vqa_limit]:
+    for index, row in enumerate(questions, start=len(captions)):
+        notify("VQA", index, row["question_id"])
         fn = row["image_name"]
         img_path = IMAGES_DIR / fn
-        if not img_path.exists():
-            continue
+        if not img_path.is_file():
+            raise FileNotFoundError(f"Thiếu ảnh VQA: {fn}")
         q_vi = row.get("question_vi", "")
         gt = row.get("answer_vi", "")
         if active_mode != "qwen3-vl-live":
@@ -408,6 +397,7 @@ def _run_evaluation_api(mode: str, cap_limit: int, vqa_limit: int) -> dict[str, 
                 "image_name": fn,
                 "body_part": row.get("body_part", ""),
                 "question_vi": q_vi,
+                "answer_type": row["answer_type"],
                 "ground_truth": gt,
                 "prediction": pred,
                 "f1": f1,
@@ -432,7 +422,7 @@ def _run_evaluation_api(mode: str, cap_limit: int, vqa_limit: int) -> dict[str, 
     ]
 
     return {
-        "mode": mode,
+        "mode": active_mode,
         "summary": {
             "caption_count": len(cap_rows_out),
             "vqa_count": len(vqa_rows_out),
@@ -505,13 +495,16 @@ class MedicalVQAHandler(BaseHTTPRequestHandler):
         if path == "/api/health":
             return self._send_json(_get_hardware_status())
 
+        if path == "/results/en_vi_metrics_199.csv":
+            return self._send_file(RESULTS_DIR / "en_vi_metrics_199.csv")
+
         if path == "/api/dataset":
             items = []
             for row in META_ROWS:
                 fn = row["filename"]
                 qs = [
                     {"id": q.get("question_id"), "question_vi": q.get("question_vi"), "answer_vi": q.get("answer_vi")}
-                    for q in Q_BY_FILE.get(fn, [])[:6]
+                    for q in Q_BY_FILE.get(fn, [])
                 ]
                 items.append(
                     {
@@ -626,14 +619,36 @@ class MedicalVQAHandler(BaseHTTPRequestHandler):
             )
 
         if path == "/api/evaluation/run":
-            mode = payload.get("mode", "smart-demo")
-            cap_limit = int(payload.get("cap_limit", 15))
-            vqa_limit = int(payload.get("vqa_limit", 25))
+            if not _EVALUATION_LOCK.acquire(blocking=False):
+                return self._send_json({"success": False, "error": "Một lượt đánh giá đang chạy trên máy chủ."}, status=409)
+            streaming = self.headers.get("Accept") == "application/x-ndjson"
+
+            def emit(kind, data):
+                event = json.dumps({"type": kind, **data}, ensure_ascii=False)
+                self.wfile.write((event + "\n").encode("utf-8"))
+                self.wfile.flush()
+
             try:
-                data = _run_evaluation_api(mode=mode, cap_limit=cap_limit, vqa_limit=vqa_limit)
-                return self._send_json({"success": True, **data})
-            except Exception as exc:  # noqa: BLE001
-                return self._send_json({"success": False, "error": str(exc)}, status=500)
+                if streaming:
+                    self.send_response(200)
+                    self.send_header("Content-Type", "application/x-ndjson; charset=utf-8")
+                    self.send_header("Cache-Control", "no-store")
+                    self.end_headers()
+                data = _run_evaluation_api(
+                    payload.get("mode", "smart-demo"),
+                    int(payload.get("cap_limit", 15)),
+                    int(payload.get("vqa_limit", 25)),
+                    progress=(lambda event: emit("progress", event)) if streaming else None,
+                )
+                result = {"success": True, **data}
+                return emit("result", result) if streaming else self._send_json(result)
+            except ConnectionError:
+                return
+            except Exception as exc:
+                error = {"success": False, "error": str(exc)}
+                return emit("error", error) if streaming else self._send_json(error, status=500)
+            finally:
+                _EVALUATION_LOCK.release()
 
         if path == "/api/history/clear":
             with HISTORY_LOCK:
@@ -653,7 +668,7 @@ def run_server(host: str = "127.0.0.1", port: int = 8000) -> None:
     server = ThreadingHTTPServer((host, port), MedicalVQAHandler)
     print("=" * 64)
     print(f"🩺 Medical-VQA Fast Web Server đang chạy tại: http://{host}:{port}")
-    print(f"📂 Đã nạp sẵn {len(META_ROWS)} ảnh y tế thật (7 vùng) & {len(Q_ROWS)} câu hỏi VQA")
+    print(f"📂 Đã nạp sẵn {len(META_ROWS)} ảnh y tế thật & {len(Q_ROWS)} câu hỏi VQA")
     print("⏹️  Nhấn Ctrl + C để dừng server.")
     print("=" * 64)
     try:

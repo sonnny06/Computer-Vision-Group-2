@@ -78,7 +78,7 @@ def render_header(mode_label: str, total_images: int, total_questions: int) -> N
         <div class="header-bar">
             <h1>🩺 Medical-VQA — Hệ thống AI Đa phương thức Phân tích Ảnh Y tế</h1>
             <p>
-                Tích hợp Qwen3-VL • <b>{total_images} ảnh y tế thực tế (7 vùng cơ thể)</b> •
+                Tích hợp Qwen3-VL • <b>{total_images} ảnh y tế thực tế</b> •
                 <b>{total_questions} câu hỏi kiểm thử tiếng Việt</b> • Chế độ: <b>{mode_label}</b>
             </p>
         </div>

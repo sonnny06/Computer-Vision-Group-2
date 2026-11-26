@@ -1,0 +1,13 @@
+﻿group,language,reference_label,n,correct,accuracy_pct,predicted_yes,predicted_no,predicted_unclear,precision_pct,recall_pct,f1_pct,macro_f1_pct
+all,vi,,199,140,70.35,,,,,,,
+open,vi,,136,93,68.38,,,,,,,
+closed,vi,,63,47,74.60,,,,,,,
+closed_by_label,vi,Có,26,15,,15,6,5,78.95,57.69,66.67,
+closed_by_label,vi,Không,37,32,,4,32,1,84.21,86.49,85.33,
+closed_macro,vi,,63,,,,,,,,,76.00
+all,en,,199,144,72.36,,,,,,,
+open,en,,136,97,71.32,,,,,,,
+closed,en,,63,47,74.60,,,,,,,
+closed_by_label,en,Có,26,21,,21,5,0,65.63,80.77,72.41,
+closed_by_label,en,Không,37,26,,11,26,0,83.87,70.27,76.47,
+closed_macro,en,,63,,,,,,,,,74.44

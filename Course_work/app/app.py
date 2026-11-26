@@ -20,6 +20,7 @@ import pandas as pd
 import streamlit as st
 
 from components import inject_light_clinical_css, render_disclaimer, render_header, render_result_box
+from src.data.ui_dataset import load_ui_dataset
 from src.engine.pipeline import build_pipeline
 from src.inference.captioning import generate_caption
 from src.inference.vqa import answer_question
@@ -28,7 +29,7 @@ from src.utils.history import SessionHistory
 from src.utils.prompt import get_caption_prompt, get_vqa_prompt
 
 DATA_DIR = PROJECT_ROOT / "data" / "evaluation"
-IMAGES_DIR = DATA_DIR / "images"
+IMAGES_DIR = DATA_DIR / "vqa_images"
 RESULTS_DIR = PROJECT_ROOT / "results"
 
 st.set_page_config(
@@ -42,8 +43,8 @@ inject_light_clinical_css()
 
 @st.cache_data
 def load_dataset():
-    meta_df = pd.read_csv(DATA_DIR / "metadata.csv")
-    q_df = pd.read_csv(DATA_DIR / "questions_handover_235.csv")
+    images, questions, _ = load_ui_dataset(DATA_DIR)
+    meta_df, q_df = pd.DataFrame(images), pd.DataFrame(questions)
     return meta_df, q_df
 
 
@@ -88,7 +89,7 @@ with st.sidebar:
 
     st.divider()
     st.markdown("### 📂 Dữ liệu nhóm đã tích hợp")
-    st.write(f"- **Số ảnh hợp lệ:** `{len(meta_df)}` ảnh (7 vùng cơ thể)")
+    st.write(f"- **Số ảnh hợp lệ:** `{len(meta_df)}` ảnh")
     st.write(f"- **Số câu hỏi VQA:** `{len(q_df)}` câu hỏi tiếng Việt")
     st.write(f"- **Lịch sử phiên:** `{len(history)}` lượt")
 
@@ -112,8 +113,8 @@ with tab_main:
         st.subheader("1. Chọn hoặc tải ảnh y tế (F01)")
         src_mode = st.segmented_control(
             "Nguồn ảnh",
-            ["Bộ ảnh kiểm thử của nhóm (35 ảnh)", "Tải ảnh từ máy (JPG/PNG)"],
-            default="Bộ ảnh kiểm thử của nhóm (35 ảnh)",
+            [f"Bộ ảnh kiểm thử của nhóm ({len(meta_df)} ảnh)", "Tải ảnh từ máy (JPG/PNG)"],
+            default=f"Bộ ảnh kiểm thử của nhóm ({len(meta_df)} ảnh)",
         )
         if src_mode == "Tải ảnh từ máy (JPG/PNG)":
             uploaded = st.file_uploader("Chọn ảnh JPG, JPEG, PNG", type=["jpg", "jpeg", "png"])
@@ -143,7 +144,7 @@ with tab_main:
                 st.image(img_rgb, caption=f"{active_name} ({img_rgb.size[0]}×{img_rgb.size[1]}px)", use_container_width=True)
                 st.success(f"✓ {msg}")
                 if selected_row is not None:
-                    with st.expander("Thông tin lâm sàng tham chiếu (metadata.csv)"):
+                    with st.expander("Thông tin tham chiếu của ảnh"):
                         st.write(f"**Vùng cơ thể:** {selected_row['body_part']}")
                         st.write(f"**Tư thế / Modal:** {selected_row['view_position']} — {selected_row['finding_category']}")
                         st.write(f"**Mô tả chuẩn:** {selected_row['ground_truth_caption_vi']}")
@@ -174,9 +175,9 @@ with tab_main:
 
         st.divider()
         st.subheader("3. Medical VQA tiếng Việt (F03)")
-        img_qs = q_df[q_df["image_name"] == active_name]["question_vi"].tolist()[:4] if active_name else []
+        img_qs = q_df[q_df["image_name"] == active_name]["question_vi"].tolist() if active_name else []
         if img_qs:
-            st.caption("Câu hỏi gợi ý từ bộ 235 câu bàn giao của nhóm:")
+            st.caption("Câu hỏi VQA cho ảnh này:")
             cols = st.columns(2)
             for idx, q_txt in enumerate(img_qs):
                 if cols[idx % 2].button(f"💡 {q_txt}", key=f"qq_{idx}", use_container_width=True):
@@ -239,10 +240,13 @@ with tab_hist:
 with tab_eval:
     st.subheader("📊 Kết quả đánh giá từ thư mục `results/` (Phúc)")
     cap_csv = RESULTS_DIR / "caption_sample.csv"
-    vqa_csv = RESULTS_DIR / "vqa_sample.csv"
+    vqa_csv = RESULTS_DIR / "en_vi_metrics_199.csv"
     if cap_csv.exists():
         st.markdown("#### Captioning (`results/caption_sample.csv`)")
         st.dataframe(pd.read_csv(cap_csv), use_container_width=True, hide_index=True)
     if vqa_csv.exists():
-        st.markdown("#### Medical VQA (`results/vqa_sample.csv`)")
+        st.markdown(f"#### Nghiệm thu VQA Anh–Việt · {len(q_df)} cặp trên {len(meta_df)} ảnh")
         st.dataframe(pd.read_csv(vqa_csv), use_container_width=True, hide_index=True)
+        st.download_button("Tải CSV chỉ số VQA", vqa_csv.read_bytes(), file_name=vqa_csv.name, mime="text/csv")
+    else:
+        st.error("Thiếu tệp kết quả nghiệm thu en_vi_metrics_199.csv.")
